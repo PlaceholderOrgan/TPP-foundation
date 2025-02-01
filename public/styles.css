@@ -1,0 +1,35 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+    background-color: #fafafa;
+  }
+  header, footer {
+    background-color: #28334a;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+  }
+  main {
+    padding: 2rem;
+    text-align: center;
+  }
+  h1, h2, h3 {
+    margin: 1rem 0;
+  }
+  .section-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .section-card {
+    background-color: #fff;
+    padding: 1rem;
+    border: 1px solid #ccc;
+  }
+  img {
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    display: block;
+  }
