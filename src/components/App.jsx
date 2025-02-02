@@ -5,6 +5,7 @@ import Forum from './Forum';
 import Home from './Home';
 import LoginPopup from './Login';
 import News from './News';
+import ForumPost from './ForumPost'
 
 // Import navigation button images.
 var welcomeButton = require('../assets/test_button.webp');
@@ -99,8 +100,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/forum" element={<Forum />} />
+            <Route path="/forum/:id" element={<ForumPost />} />
             <Route path="/news" element={<News />} />
-          </Routes>
+            </Routes>
         </main>
 
         {/* Display the LoginPopup when needed */}

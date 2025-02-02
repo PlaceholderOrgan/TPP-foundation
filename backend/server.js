@@ -94,14 +94,18 @@ const forumDb = new sqlite3.Database('./database/forumListings.db', (err) => {
     console.log('Connected to the forumListings.db database.');
     // Create the 'posts' table if it does not exist (now with title & description).
     forumDb.run(
-      `CREATE TABLE IF NOT EXISTS posts (
+      `CREATE TABLE IF NOT EXISTS comments (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT,
-        description TEXT,
-        timestamp TEXT
+        post_id INTEGER,
+        user_id INTEGER,
+        username TEXT,
+        content TEXT,
+        timestamp TEXT,
+        FOREIGN KEY (post_id) REFERENCES posts (id),
+        FOREIGN KEY (user_id) REFERENCES users (id)
       )`,
       (tableErr) => {
-        if (tableErr) console.error('Error creating posts table:', tableErr.message);
+        if (tableErr) console.error('Error creating comments table:', tableErr.message);
       }
     );
   }
@@ -132,4 +136,34 @@ app.get('/api/posts', (req, res) => {
     }
     res.status(200).json(rows);
   });
+});
+
+// Get single post with comments
+app.get('/api/posts/:id', (req, res) => {
+  const postId = req.params.id;
+  forumDb.get('SELECT * FROM posts WHERE id = ?', [postId], (err, post) => {
+    if (err) return res.status(500).json({ error: 'Failed to fetch post' });
+    if (!post) return res.status(404).json({ error: 'Post not found' });
+    
+    forumDb.all('SELECT * FROM comments WHERE post_id = ? ORDER BY timestamp DESC', [postId], (err, comments) => {
+      if (err) return res.status(500).json({ error: 'Failed to fetch comments' });
+      res.json({ post, comments });
+    });
+  });
+});
+
+// Add comment
+app.post('/api/posts/:id/comments', (req, res) => {
+  const { content, userId, username } = req.body;
+  const postId = req.params.id;
+  const timestamp = new Date().toLocaleString();
+
+  forumDb.run(
+    'INSERT INTO comments (post_id, user_id, username, content, timestamp) VALUES (?, ?, ?, ?, ?)',
+    [postId, userId, username, content, timestamp],
+    function(err) {
+      if (err) return res.status(500).json({ error: 'Failed to add comment' });
+      res.status(201).json({ message: 'Comment added', commentId: this.lastID });
+    }
+  );
 });

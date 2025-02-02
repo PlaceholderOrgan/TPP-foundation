@@ -85,7 +85,12 @@ function Forum() {
           <p>No posts yet. Be the first to post!</p>
         ) : (
           posts.map((post) => (
-            <div key={post.id} className="post">
+            <div
+              key={post.id}
+              className="post"
+              onClick={() => window.location.href = `/forum/${post.id}`}
+              style={{ cursor: 'pointer' }}
+            >
               <h3 className="post-title">{post.title}</h3>
               <p className="post-content">{post.description}</p>
               <span className="post-timestamp">{post.timestamp}</span>
