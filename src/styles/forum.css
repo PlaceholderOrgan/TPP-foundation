@@ -47,6 +47,20 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
+/* Title styling inside posts */
+.post-title {
+  text-align: left;
+  margin: 0;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+/* Content styling inside posts */
+.post-content {
+  text-align: left;
+  margin: 5px 0;
+}
+
 /* Timestamp styling inside posts */
 .post-timestamp {
   display: block;

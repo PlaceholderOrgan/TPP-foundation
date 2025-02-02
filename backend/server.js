@@ -16,22 +16,22 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
 
-// Initialize SQLite database connection.
-const usersdb = new sqlite3.Database('./database/users.db', (err) => {
+// Initialize SQLite database connection for users.
+const db = new sqlite3.Database('./database/users.db', (err) => {
   if (err) {
-    console.error("Error opening users.db:", err.message);
+    console.error('Error opening users.db:', err.message);
   } else {
-    console.log("Connected to the SQLite database.");
+    console.log('Connected to the users.db database.');
     // Create the 'users' table if it does not exist.
-    usersdb.run(
+    db.run(
       `CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE,
         email TEXT,
         password TEXT
       )`,
-      (err) => {
-        if (err) console.error("Error creating table:", err.message);
+      (tableErr) => {
+        if (tableErr) console.error('Error creating users table:', tableErr.message);
       }
     );
   }
@@ -45,12 +45,10 @@ app.post('/api/register', (req, res) => {
     [username, email, password],
     function (err) {
       if (err) {
-        console.error("Error inserting user:", err.message);
-        // If error occurs (e.g., duplicate username), respond with an error.
-        return res.status(500).json({ error: "Registration failed. The username might already be taken." });
+        console.error('Error inserting user:', err.message);
+        return res.status(500).json({ error: 'Registration failed. The username might already be taken.' });
       }
-      // Respond with success message and the new user id.
-      res.status(201).json({ message: "Registration successful", userId: this.lastID });
+      res.status(201).json({ message: 'Registration successful', userId: this.lastID });
     }
   );
 });
@@ -60,61 +58,63 @@ app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
   db.get('SELECT * FROM users WHERE username = ?', [username], (err, user) => {
     if (err) {
-      console.error("Error during login:", err.message);
-      return res.status(500).json({ error: "Login failed" });
+      console.error('Error during login:', err.message);
+      return res.status(500).json({ error: 'Login failed' });
     }
     if (!user) {
-      return res.status(400).json({ error: "User not found" });
+      return res.status(400).json({ error: 'User not found' });
     }
-    // Check if the password matches.
     if (user.password === password) {
-      return res.status(200).json({ message: "Login successful", userId: user.id });
+      return res.status(200).json({ message: 'Login successful', userId: user.id });
     } else {
-      return res.status(400).json({ error: "Incorrect password" });
+      return res.status(400).json({ error: 'Incorrect password' });
     }
   });
 });
 
+// Initialize SQLite database connection for forum posts.
 const forumDb = new sqlite3.Database('./database/forumListings.db', (err) => {
   if (err) {
-    console.error("Error opening forumListings.db:", err.message);
+    console.error('Error opening forumListings.db:', err.message);
   } else {
-    console.log("Connected to the forumListings.db database.");
-    // Create the 'posts' table if it does not exist.
+    console.log('Connected to the forumListings.db database.');
+    // Create the 'posts' table if it does not exist (now with title & description).
     forumDb.run(
       `CREATE TABLE IF NOT EXISTS posts (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        content TEXT,
+        title TEXT,
+        description TEXT,
         timestamp TEXT
       )`,
-      (err) => {
-        if (err) console.error("Error creating posts table:", err.message);
+      (tableErr) => {
+        if (tableErr) console.error('Error creating posts table:', tableErr.message);
       }
     );
   }
 });
 
-// API endpoint for adding forum posts.
+// API endpoint for adding forum posts (with title & description).
 app.post('/api/posts', (req, res) => {
-  const { content, timestamp } = req.body;
+  const { title, description, timestamp } = req.body;
   forumDb.run(
-    'INSERT INTO posts (content, timestamp) VALUES (?, ?)',
-    [content, timestamp],
+    'INSERT INTO posts (title, description, timestamp) VALUES (?, ?, ?)',
+    [title, description, timestamp],
     function (err) {
       if (err) {
-        console.error("Error inserting post:", err.message);
-        return res.status(500).json({ error: "Failed to add post." });
+        console.error('Error inserting post:', err.message);
+        return res.status(500).json({ error: 'Failed to add post.' });
       }
-      res.status(201).json({ message: "Post added", postId: this.lastID });
+      res.status(201).json({ message: 'Post added', postId: this.lastID });
     }
   );
 });
 
+// API endpoint for retrieving forum posts.
 app.get('/api/posts', (req, res) => {
   forumDb.all('SELECT * FROM posts ORDER BY id DESC', [], (err, rows) => {
     if (err) {
-      console.error("Error fetching posts:", err.message);
-      return res.status(500).json({ error: "Failed to fetch posts." });
+      console.error('Error fetching posts:', err.message);
+      return res.status(500).json({ error: 'Failed to fetch posts.' });
     }
     res.status(200).json(rows);
   });
