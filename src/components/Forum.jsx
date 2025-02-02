@@ -5,12 +5,19 @@ function Forum() {
   const [postTitle, setPostTitle] = useState('');
   const [postDescription, setPostDescription] = useState('');
   const [posts, setPosts] = useState([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     fetch('http://localhost:5000/api/posts')
       .then((res) => res.json())
       .then((data) => setPosts(data))
       .catch((err) => console.error('Error fetching posts:', err));
+
+    // Check if the user is authenticated
+    const user = localStorage.getItem('user');
+    if (user) {
+      setIsAuthenticated(true);
+    }
   }, []);
 
   const handleSubmit = (e) => {
@@ -40,22 +47,26 @@ function Forum() {
   return (
     <div className="forum-page">
       <h2>Forum</h2>
-      <form onSubmit={handleSubmit} className="post-form">
-        <input
-          type="text"
-          placeholder="Post title..."
-          value={postTitle}
-          onChange={(e) => setPostTitle(e.target.value)}
-          className="post-title-input"
-        />
-        <textarea
-          placeholder="Post description..."
-          value={postDescription}
-          onChange={(e) => setPostDescription(e.target.value)}
-          className="post-textarea"
-        />
-        <button type="submit" className="post-submit-btn">Post</button>
-      </form>
+      {isAuthenticated ? (
+        <form onSubmit={handleSubmit} className="post-form">
+          <input
+            type="text"
+            placeholder="Post title..."
+            value={postTitle}
+            onChange={(e) => setPostTitle(e.target.value)}
+            className="post-title-input"
+          />
+          <textarea
+            placeholder="Post description..."
+            value={postDescription}
+            onChange={(e) => setPostDescription(e.target.value)}
+            className="post-textarea"
+          />
+          <button type="submit" className="post-submit-btn">Post</button>
+        </form>
+      ) : (
+        <p>Please sign in to post.</p>
+      )}
       <div className="posts">
         {posts.length === 0 ? (
           <p>No posts yet. Be the first to post!</p>
