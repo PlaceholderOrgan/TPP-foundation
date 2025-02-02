@@ -17,13 +17,13 @@ app.listen(PORT, () => {
 });
 
 // Initialize SQLite database connection.
-const db = new sqlite3.Database('./database/users.db', (err) => {
+const usersdb = new sqlite3.Database('./database/users.db', (err) => {
   if (err) {
     console.error("Error opening users.db:", err.message);
   } else {
     console.log("Connected to the SQLite database.");
     // Create the 'users' table if it does not exist.
-    db.run(
+    usersdb.run(
       `CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE,
@@ -72,5 +72,50 @@ app.post('/api/login', (req, res) => {
     } else {
       return res.status(400).json({ error: "Incorrect password" });
     }
+  });
+});
+
+const forumDb = new sqlite3.Database('./database/forumListings.db', (err) => {
+  if (err) {
+    console.error("Error opening forumListings.db:", err.message);
+  } else {
+    console.log("Connected to the forumListings.db database.");
+    // Create the 'posts' table if it does not exist.
+    forumDb.run(
+      `CREATE TABLE IF NOT EXISTS posts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        content TEXT,
+        timestamp TEXT
+      )`,
+      (err) => {
+        if (err) console.error("Error creating posts table:", err.message);
+      }
+    );
+  }
+});
+
+// API endpoint for adding forum posts.
+app.post('/api/posts', (req, res) => {
+  const { content, timestamp } = req.body;
+  forumDb.run(
+    'INSERT INTO posts (content, timestamp) VALUES (?, ?)',
+    [content, timestamp],
+    function (err) {
+      if (err) {
+        console.error("Error inserting post:", err.message);
+        return res.status(500).json({ error: "Failed to add post." });
+      }
+      res.status(201).json({ message: "Post added", postId: this.lastID });
+    }
+  );
+});
+
+app.get('/api/posts', (req, res) => {
+  forumDb.all('SELECT * FROM posts ORDER BY id DESC', [], (err, rows) => {
+    if (err) {
+      console.error("Error fetching posts:", err.message);
+      return res.status(500).json({ error: "Failed to fetch posts." });
+    }
+    res.status(200).json(rows);
   });
 });

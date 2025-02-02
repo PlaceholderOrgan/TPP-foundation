@@ -1,5 +1,5 @@
 // Forum component for displaying and submitting posts.
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/forum.css';
 
 function Forum() {
@@ -7,20 +7,36 @@ function Forum() {
   const [posts, setPosts] = useState([]);
   const [postContent, setPostContent] = useState('');
 
+  useEffect(() => {
+    fetch('http://localhost:5000/api/posts')
+      .then((res) => res.json())
+      .then((data) => setPosts(data))
+      .catch((err) => console.error('Error fetching posts:', err));
+  }, []);
+  
+
   // Handle the form submit to add a new post.
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Ignore empty posts.
     if (postContent.trim() === '') return;
     const newPost = {
-      id: Date.now(), // Unique identifier based on timestamp.
-      content: postContent.trim(), // Cleaned post text.
-      timestamp: new Date().toLocaleString(), // Human-readable timestamp.
+      content: postContent.trim(),
+      timestamp: new Date().toLocaleString(),
     };
-    // Add the new post to the beginning of the list.
-    setPosts([newPost, ...posts]);
-    // Clear the textarea.
-    setPostContent('');
+    fetch('http://localhost:5000/api/posts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newPost),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        setPostContent('');
+        // Re-fetch to update the list
+        return fetch('http://localhost:5000/api/posts');
+      })
+      .then((res) => res.json())
+      .then((updatedPosts) => setPosts(updatedPosts))
+      .catch((err) => console.error('Error adding post:', err));
   };
 
   return (
