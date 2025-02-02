@@ -1,16 +1,16 @@
+// Home component showing the main landing page.
 import React from 'react';
-var welcomeIcon = require('../assets/test_button.webp');
-var newsIcon = require('../assets/test_button.webp');
-var forumIcon = require('../assets/test_button.webp');
-var loginIcon = require('../assets/test_button.webp');
 
-function App() {
+function Home() {
   return (
     <>
       <main>
+        {/* Main title and description */}
         <h2>RiverHealth Solutions</h2>
         <p>Well-being of river communities and clean water solutions</p>
+        {/* Display a placeholder image */}
         <img src={require('../assets/placeholder.webp')} alt="River" />
+        {/* Grid layout section with three cards */}
         <div className="section-grid">
           <div className="section-card">
             <h3>SANITATION</h3>
@@ -26,6 +26,7 @@ function App() {
           </div>
         </div>
       </main>
+      {/* Footer */}
       <footer>
         <p>© 2023 RiverHealth Solutions</p>
       </footer>
@@ -33,4 +34,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;

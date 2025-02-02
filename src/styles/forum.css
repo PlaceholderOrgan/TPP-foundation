@@ -1,51 +1,56 @@
+/* Container styling for the forum page */
 .forum-page {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 15px;
-    background-color: #f7f7f7;
-    border-radius: 8px;
-  }
-  
-  .post-form {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-  }
-  
-  .post-textarea {
-    resize: vertical;
-    min-height: 100px;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .post-submit-btn {
-    align-self: flex-end;
-    padding: 8px 16px;
-    background-color: #0078d7;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .post-submit-btn:hover {
-    background-color: #005a9e;
-  }
-  
-  .post {
-    background-color: white;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  }
-  
-  .post-timestamp {
-    display: block;
-    font-size: 0.8em;
-    color: #666;
-    margin-top: 5px;
-  }
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 15px;
+  background-color: #f7f7f7;
+  border-radius: 8px;
+}
+
+/* Styling for the post form */
+.post-form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+/* Textarea styling for a post */
+.post-textarea {
+  resize: vertical;
+  min-height: 100px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Button styling for submitting a post */
+.post-submit-btn {
+  align-self: flex-end;
+  padding: 8px 16px;
+  background-color: #0078d7;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.post-submit-btn:hover {
+  background-color: #005a9e;
+}
+
+/* Styling for individual posts */
+.post {
+  background-color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Timestamp styling inside posts */
+.post-timestamp {
+  display: block;
+  font-size: 0.8em;
+  color: #666;
+  margin-top: 5px;
+}
