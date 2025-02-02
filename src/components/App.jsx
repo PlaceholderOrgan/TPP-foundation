@@ -4,11 +4,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Forum from './Forum';
 import Home from './Home';
 import LoginPopup from './Login';
+import News from './News';
 
 // Import navigation button images.
 var welcomeButton = require('../assets/test_button.webp');
-var forumButton = require('../assets/test_button.webp');
 var newsButton = require('../assets/test_button.webp');
+var forumButton = require('../assets/test_button.webp');
 var loginButon = require('../assets/test_button.webp');
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
             />
             {/* Dummy button for news (no action specified) */}
             <button
+              onClick={() => window.location.href = '/news'}
               style={{ backgroundImage: `url(${newsButton})` }}
               className="nav-img-btn"
             />
@@ -71,6 +73,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/forum" element={<Forum />} />
+            <Route path="/news" element={<News />} />
           </Routes>
         </main>
 

@@ -17,7 +17,7 @@ app.listen(PORT, () => {
 });
 
 // Initialize SQLite database connection.
-const db = new sqlite3.Database('./users.db', (err) => {
+const db = new sqlite3.Database('./database/users.db', (err) => {
   if (err) {
     console.error("Error opening users.db:", err.message);
   } else {
