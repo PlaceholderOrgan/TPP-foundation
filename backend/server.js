@@ -53,6 +53,9 @@ app.post('/api/register', (req, res) => {
   );
 });
 
+const jwt = require('jsonwebtoken');
+const SECRET_KEY = 'your_secret_key'; // Use a secure key in production
+
 // API endpoint for user login.
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
@@ -65,10 +68,21 @@ app.post('/api/login', (req, res) => {
       return res.status(400).json({ error: 'User not found' });
     }
     if (user.password === password) {
-      return res.status(200).json({ message: 'Login successful', userId: user.id });
+      const token = jwt.sign({ userId: user.id }, SECRET_KEY, { expiresIn: '1h' });
+      return res.status(200).json({ message: 'Login successful', token });
     } else {
       return res.status(400).json({ error: 'Incorrect password' });
     }
+  });
+});
+
+app.post('/api/validate-token', (req, res) => {
+  const { token } = req.body;
+  jwt.verify(token, SECRET_KEY, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ valid: false });
+    }
+    return res.status(200).json({ valid: true });
   });
 });
 

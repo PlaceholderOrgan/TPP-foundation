@@ -1,5 +1,5 @@
 // Main component that sets up routing and navigation for the application.
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Forum from './Forum';
 import Home from './Home';
@@ -18,10 +18,36 @@ function App() {
   // State to track if the user is logged in.
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // Check for token in local storage and validate it on app initialization.
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      fetch('/api/validate-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.valid) {
+            setIsLoggedIn(true);
+          } else {
+            localStorage.removeItem('authToken');
+          }
+        })
+        .catch(err => {
+          console.error('Token validation failed:', err);
+          localStorage.removeItem('authToken');
+        });
+    }
+  }, []);
+
   // Log the user out.
   const handleLogout = () => {
     setIsLoggedIn(false);
+    localStorage.removeItem('authToken');
     alert("Logged out");
+    window.location.reload(); // Refresh the page
   };
 
   return (

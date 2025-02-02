@@ -46,7 +46,9 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
       const data = await response.json();
       if (response.ok) {
         alert('Login successful');
+        localStorage.setItem('authToken', data.token); // Store the token
         if (onLoginSuccess) onLoginSuccess();
+        window.location.reload(); // Refresh the page
       } else {
         alert(data.error || 'Invalid credentials');
       }
@@ -73,12 +75,20 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
       const data = await response.json();
       if (response.ok) {
         alert('Registration successful');
-        // Reset form fields.
-        setUsername('');
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
-        setIsRegister(false);
+        // Automatically log in the user after registration
+        const loginResponse = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }),
+        });
+        const loginData = await loginResponse.json();
+        if (loginResponse.ok) {
+          localStorage.setItem('authToken', loginData.token); // Store the token
+          if (onLoginSuccess) onLoginSuccess();
+          window.location.reload(); // Refresh the page
+        } else {
+          alert(loginData.error || 'Login failed after registration');
+        }
       } else {
         alert(data.error || 'Registration failed');
       }

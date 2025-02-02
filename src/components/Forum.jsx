@@ -14,9 +14,22 @@ function Forum() {
       .catch((err) => console.error('Error fetching posts:', err));
 
     // Check if the user is authenticated
-    const user = localStorage.getItem('user');
-    if (user) {
-      setIsAuthenticated(true);
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      fetch('http://localhost:5000/api/validate-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.valid) {
+            setIsAuthenticated(true);
+          } else {
+            localStorage.removeItem('authToken');
+          }
+        })
+        .catch((err) => console.error('Error validating token:', err));
     }
   }, []);
 
