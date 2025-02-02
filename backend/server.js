@@ -54,7 +54,7 @@ app.post('/api/register', (req, res) => {
 });
 
 const jwt = require('jsonwebtoken');
-const SECRET_KEY = 'your_secret_key'; // Use a secure key in production
+const SECRET_KEY = 'A1B2C3-D4E5F6-G7H8I9-J0K1L2'; // Use a secure key in production
 
 // API endpoint for user login.
 app.post('/api/login', (req, res) => {
