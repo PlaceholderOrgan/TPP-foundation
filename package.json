@@ -3,16 +3,23 @@
     "version": "1.0.0",
     "private": true,
     "dependencies": {
+        "cors": "^2.8.5",
+        "has-symbols": "^1.1.0",
+        "jsonwebtoken": "^9.0.2",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-router-dom": "^7.1.5",
-        "react-scripts": "^5.0.1"
+        "react-scripts": "^5.0.1",
+        "sqlite3": "^5.1.7"
     },
     "scripts": {
         "start": "craco start",
-        "build": "craco build",
+        "build:frontend": "craco build",
+        "build:backend": "babel backend --out-dir build_backend",
+        "build": "npm run build:frontend && npm run build:backend",
         "server": "nodemon backend/server.js",
-        "dev": "concurrently \"npm run server\" \"npm start\""
+        "dev": "concurrently \"npm run server\" \"npm start\"",
+        "start:prod": "npm run build && concurrently \"node build_backend/server.js\" \"serve -s build\""
     },
     "proxy": "http://localhost:5000",
     "overrides": {
@@ -32,7 +39,10 @@
         ]
     },
     "devDependencies": {
+        "@babel/cli": "^7.26.4",
+        "@babel/core": "^7.26.7",
         "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+        "@babel/preset-env": "^7.26.7",
         "@craco/craco": "^7.1.0",
         "concurrently": "^9.1.2",
         "cross-env": "^7.0.3",

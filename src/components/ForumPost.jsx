@@ -10,7 +10,7 @@ function ForumPost() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/posts/${id}`)
+    fetch(`http://spackcloud.duckdns.org:5000/api/posts/${id}`)
       .then(res => res.json())
       .then(data => {
         setPost(data.post);
@@ -26,7 +26,7 @@ function ForumPost() {
     e.preventDefault();
     if (!newComment.trim()) return;
 
-    fetch(`http://localhost:5000/api/posts/${id}/comments`, {
+    fetch(`http://spackcloud.duckdns.org:5000/api/posts/${id}/comments`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -39,7 +39,7 @@ function ForumPost() {
       .then(() => {
         setNewComment('');
         // Refresh comments
-        return fetch(`http://localhost:5000/api/posts/${id}`);
+        return fetch(`http://spackcloud.duckdns.org:5000/api/posts/${id}`);
       })
       .then(res => res.json())
       .then(data => setComments(data.comments))

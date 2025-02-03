@@ -8,7 +8,7 @@ function Forum() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/posts')
+    fetch('http://spackcloud.duckdns.org:5000/api/posts')
       .then((res) => res.json())
       .then((data) => setPosts(data))
       .catch((err) => console.error('Error fetching posts:', err));
@@ -16,7 +16,7 @@ function Forum() {
     // Check if the user is authenticated
     const token = localStorage.getItem('authToken');
     if (token) {
-      fetch('http://localhost:5000/api/validate-token', {
+      fetch('http://spackcloud.duckdns.org:5000/api/validate-token', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token }),
@@ -41,7 +41,7 @@ function Forum() {
       description: postDescription.trim(),
       timestamp: new Date().toLocaleString(),
     };
-    fetch('http://localhost:5000/api/posts', {
+    fetch('http://spackcloud.duckdns.org:5000/api/posts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newPost),
@@ -50,7 +50,7 @@ function Forum() {
       .then(() => {
         setPostTitle('');
         setPostDescription('');
-        return fetch('http://localhost:5000/api/posts');
+        return fetch('http://spackcloud.duckdns.org:5000/api/posts');
       })
       .then((res) => res.json())
       .then((updatedPosts) => setPosts(updatedPosts))

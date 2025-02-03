@@ -1,17 +1,13 @@
-// LoginPopup component for logging in or registering a user.
 import React, { useState } from 'react';
 import "../styles/login.css";
 
 const LoginPopup = ({ onClose, onLoginSuccess }) => {
-  // State to toggle between login and register forms.
   const [isRegister, setIsRegister] = useState(false);
-  // Input states.
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  // Style objects for overlay and modal.
   const overlayStyle = {
     position: 'fixed',
     top: 0,
@@ -31,14 +27,15 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
     borderRadius: '8px',
     width: '300px',
     textAlign: 'center',
-    animation: 'fadeInMove 0.5s', // Animation defined in CSS.
+    animation: 'fadeInMove 0.5s',
   };
 
-  // Handle login form submission.
+  const baseUrl = 'https://spackcloud.duckdns.org/api';
+
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch(`${baseUrl}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -46,9 +43,9 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
       const data = await response.json();
       if (response.ok) {
         alert('Login successful');
-        localStorage.setItem('authToken', data.token); // Store the token
+        localStorage.setItem('authToken', data.token);
         if (onLoginSuccess) onLoginSuccess();
-        window.location.reload(); // Refresh the page
+        window.location.reload();
       } else {
         alert(data.error || 'Invalid credentials');
       }
@@ -58,16 +55,14 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
     }
   };
 
-  // Handle register form submission.
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
-    // Check if passwords match.
     if (password !== confirmPassword) {
       alert('Passwords do not match');
       return;
     }
     try {
-      const response = await fetch('/api/register', {
+      const response = await fetch(`${baseUrl}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password }),
@@ -75,17 +70,16 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
       const data = await response.json();
       if (response.ok) {
         alert('Registration successful');
-        // Automatically log in the user after registration
-        const loginResponse = await fetch('/api/login', {
+        const loginResponse = await fetch(`${baseUrl}/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, password }),
         });
         const loginData = await loginResponse.json();
         if (loginResponse.ok) {
-          localStorage.setItem('authToken', loginData.token); // Store the token
+          localStorage.setItem('authToken', loginData.token);
           if (onLoginSuccess) onLoginSuccess();
-          window.location.reload(); // Refresh the page
+          window.location.reload();
         } else {
           alert(loginData.error || 'Login failed after registration');
         }
@@ -99,7 +93,6 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
   };
 
   return (
-    // Clicking the overlay will close the popup.
     <div style={overlayStyle} className="login-overlay" onClick={onClose}>
       <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
         {!isRegister ? (
@@ -107,7 +100,6 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
             <h2>Login</h2>
             <form onSubmit={handleLoginSubmit}>
               <div>
-                {/* Input for username */}
                 <input
                   type="text"
                   placeholder="Username"
@@ -118,7 +110,6 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
                 />
               </div>
               <div>
-                {/* Input for password */}
                 <input
                   type="password"
                   placeholder="Password"
@@ -135,7 +126,6 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
                 Cancel
               </button>
             </form>
-            {/* Toggle to registration mode */}
             <p style={{ marginTop: '15px' }}>
               Don't have an account?{' '}
               <a href="#" onClick={() => setIsRegister(true)}>
@@ -194,7 +184,6 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
                 Cancel
               </button>
             </form>
-            {/* Toggle back to login mode */}
             <p style={{ marginTop: '15px' }}>
               Already have an account?{' '}
               <a href="#" onClick={() => setIsRegister(false)}>
