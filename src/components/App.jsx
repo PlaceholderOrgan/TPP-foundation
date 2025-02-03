@@ -14,41 +14,43 @@ var forumButton = require('../assets/test_button.webp');
 var loginButon = require('../assets/test_button.webp');
 
 function App() {
-  // State to control display of the login popup.
   const [showLogin, setShowLogin] = useState(false);
-  // State to track if the user is logged in.
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem('isLoggedIn') === 'true'
+  );
 
-  // Check for token in local storage and validate it on app initialization.
   useEffect(() => {
     const token = localStorage.getItem('authToken');
-    if (token) {
-      fetch('/api/validate-token', {
+    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (token && loggedIn) {
+      fetch(`${process.env.REACT_APP_API_URL || 'http://spackcloud.duckdns.org:5000'}/api/validate-token`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token }),
       })
         .then(response => response.json())
         .then(data => {
-          if (data.valid) {
-            setIsLoggedIn(true);
-          } else {
+          setIsLoggedIn(data.valid);
+          if (!data.valid) {
             localStorage.removeItem('authToken');
+            localStorage.removeItem('isLoggedIn');
           }
         })
         .catch(err => {
           console.error('Token validation failed:', err);
           localStorage.removeItem('authToken');
+          localStorage.removeItem('isLoggedIn');
+          setIsLoggedIn(false);
         });
     }
   }, []);
 
-  // Log the user out.
   const handleLogout = () => {
     setIsLoggedIn(false);
     localStorage.removeItem('authToken');
+    localStorage.removeItem('isLoggedIn');
     alert("Logged out");
-    window.location.reload(); // Refresh the page
+    window.location.reload();
   };
 
   return (

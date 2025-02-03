@@ -44,21 +44,13 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
         body: JSON.stringify({ username, password }),
       });
 
-      // Add response type checking
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        console.error('Server returned non-JSON response');
-        console.error('Response URL:', response.url);
-        console.error('Response status:', response.status);
-        alert('Server error: Expected JSON response');
-        return;
-      }
-
       const data = await response.json();
       
       if (response.ok) {
         localStorage.setItem('authToken', data.token);
+        localStorage.setItem('isLoggedIn', 'true');  // Add this line
         if (onLoginSuccess) onLoginSuccess();
+        onClose();  // Close the login popup
         window.location.reload();
       } else {
         alert(`Login failed: ${data.error || 'Unknown error'}`);
