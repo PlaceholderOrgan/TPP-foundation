@@ -30,7 +30,7 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
     animation: 'fadeInMove 0.5s',
   };
 
-  const baseUrl = 'http://spackcloud.duckdns.org:3000/api';
+  const baseUrl = 'http://spackcloud.duckdns.org:5000/api';
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();

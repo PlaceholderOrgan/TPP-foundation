@@ -8,7 +8,13 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Apply middleware.
-app.use(cors()); // Enable CORS for cross-origin requests.
+// Update CORS configuration
+app.use(cors({
+  origin: ['http://spackcloud.duckdns.org:3000', 'http://localhost:3000'],
+  methods: ['GET', 'POST'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Accept']
+}));
 app.use(express.json()); // Enable parsing of JSON bodies.
 
 // Start the server.
