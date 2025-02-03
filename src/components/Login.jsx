@@ -70,15 +70,22 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
         },
         body: JSON.stringify({ username, email, password }),
       });
-      const data = await response.json();
-      
-      // Debug logging
-      console.log('Registration Response:', {
-        status: response.status,
-        statusText: response.statusText,
-        data: data
-      });
 
+      // Debug: Log raw response
+      const rawResponse = await response.text();
+      console.log('Raw server response:', rawResponse);
+      
+      // Try parsing JSON only if content is actually JSON
+      let data;
+      try {
+        data = JSON.parse(rawResponse);
+      } catch (e) {
+        console.error('Server returned non-JSON response:', rawResponse);
+        alert('Server error: Invalid response format');
+        return;
+      }
+
+      // Rest of your existing code...
       if (response.ok) {
         alert('Registration successful');
         const loginResponse = await fetch(`${baseUrl}/login`, {
