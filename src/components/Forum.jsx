@@ -41,9 +41,12 @@ function Forum() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!postTitle.trim() || !postDescription.trim()) return;
+    // Retrieve username from localStorage or use a default value.
+    const username = localStorage.getItem('username') || 'User';
     const newPost = {
       title: postTitle.trim(),
       description: postDescription.trim(),
+      username: username,
       timestamp: new Date().toLocaleString(),
     };
     fetch(`${baseUrl}/posts`, {
@@ -98,7 +101,10 @@ function Forum() {
             >
               {post.pinned === 1 && <span className="pinned-badge">PINNED</span>}
               <h3 className="post-title">{post.title}</h3>
-              <span className="post-timestamp">{post.timestamp}</span>
+              <div className="post-info">
+                <span className="post-author">Posted by {post.username}</span>
+                <span className="post-timestamp">{post.timestamp}</span>
+              </div>
             </div>
           ))
         )}

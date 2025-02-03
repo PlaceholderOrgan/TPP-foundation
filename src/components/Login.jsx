@@ -35,38 +35,40 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
     ? 'http://localhost:5000/api'
     : 'http://spackcloud.duckdns.org:5000/api';
 
-  const handleLoginSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch(`${baseUrl}/login`, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({ username, password }),
-      });
-
-      const data = await response.json();
-      
-      if (response.ok) {
-        localStorage.setItem('authToken', data.token);
-        localStorage.setItem('isLoggedIn', 'true');
-        if (onLoginSuccess) onLoginSuccess();
-        onClose();
-        window.location.reload();
-      } else {
-        alert(`Login failed: ${data.error || 'Unknown error'}`);
+    const handleLoginSubmit = async (e) => {
+      e.preventDefault();
+      try {
+        const response = await fetch(`${baseUrl}/login`, {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({ username, password }),
+        });
+        const data = await response.json();
+        
+        if (response.ok) {
+          localStorage.setItem('authToken', data.token);
+          localStorage.setItem('isLoggedIn', 'true');
+          // Store actual username
+          localStorage.setItem('username', username);
+          if (onLoginSuccess) onLoginSuccess();
+          onClose();
+          window.location.reload();
+        } else {
+          alert(`Login failed: ${data.error || 'Unknown error'}`);
+        }
+      } catch (err) {
+        console.error('Login error:', err);
+        alert(`Login failed: ${err.message}`);
       }
-    } catch (err) {
-      console.error('Login error:', err);
-      alert(`Login failed: ${err.message}`);
-    }
-  };
-
-  const handleRegisterSubmit = async (e) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
+    };
+    
+    const handleRegisterSubmit = async (e) => {
+      e.preventDefault();
+      
+      if (password !== confirmPassword) {
       alert('Passwords do not match');
       return;
     }

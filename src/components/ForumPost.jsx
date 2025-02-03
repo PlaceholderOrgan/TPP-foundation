@@ -30,20 +30,22 @@ function ForumPost() {
   const handleAddComment = (e) => {
     e.preventDefault();
     if (!newComment.trim()) return;
-
+  
+    // Retrieve the stored username
+    const storedUsername = localStorage.getItem('username') || 'User';
+  
     fetch(`${baseUrl}/api/posts/${id}/comments`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         content: newComment,
-        userId: 1, // Get from auth context in real app
-        username: 'User' // Get from auth context in real app
+        userId: 1,
+        username: storedUsername
       }),
     })
       .then(res => res.json())
       .then(() => {
         setNewComment('');
-        // Refresh comments
         return fetch(`${baseUrl}/api/posts/${id}`);
       })
       .then(res => res.json())
@@ -60,6 +62,7 @@ function ForumPost() {
       <div className="post-details">
         <h2>{post.title}</h2>
         <p>{post.description}</p>
+        <span className="post-author">Posted by {post.username}</span>
         <span className="timestamp">{post.timestamp}</span>
       </div>
 
