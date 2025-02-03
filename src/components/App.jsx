@@ -8,7 +8,7 @@ import News from './News';
 import ForumPost from './ForumPost'
 
 // Import navigation button images.
-var welcomeButton = require('../assets/test_button.webp');
+var welcomeButton = require('../assets/logo_malakia.webp');
 var newsButton = require('../assets/test_button.webp');
 var forumButton = require('../assets/test_button.webp');
 var loginButon = require('../assets/test_button.webp');
