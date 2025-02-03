@@ -37,21 +37,35 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
     try {
       const response = await fetch(`${baseUrl}/login`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: JSON.stringify({ username, password }),
       });
+
+      // Add response type checking
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        console.error('Server returned non-JSON response');
+        console.error('Response URL:', response.url);
+        console.error('Response status:', response.status);
+        alert('Server error: Expected JSON response');
+        return;
+      }
+
       const data = await response.json();
+      
       if (response.ok) {
-        alert('Login successful');
         localStorage.setItem('authToken', data.token);
         if (onLoginSuccess) onLoginSuccess();
         window.location.reload();
       } else {
-        alert(data.error || 'Invalid credentials');
+        alert(`Login failed: ${data.error || 'Unknown error'}`);
       }
     } catch (err) {
-      console.error(err);
-      alert('Login failed');
+      console.error('Login error:', err);
+      alert(`Login failed: ${err.message}`);
     }
   };
 
