@@ -65,15 +65,19 @@ function ForumPost() {
 
       <div className="comments-section">
         <h3>Comments</h3>
-        {isAuthenticated && (
-          <form onSubmit={handleAddComment} className="comment-form">
-            <textarea
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              placeholder="Add a comment..."
-            />
-            <button type="submit">Submit</button>
-          </form>
+        {post.locked ? (
+          <p>This thread has been locked and no more comments can be made</p>
+        ) : (
+          isAuthenticated && (
+            <form onSubmit={handleAddComment} className="comment-form">
+              <textarea
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="Add a comment..."
+              />
+              <button type="submit">Submit</button>
+            </form>
+          )
         )}
 
         <div className="comments-list">

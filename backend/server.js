@@ -209,7 +209,9 @@ const forumDb = new sqlite3.Database('./database/forumListings.db', (err) => {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
         description TEXT NOT NULL,
-        timestamp TEXT NOT NULL
+        timestamp TEXT NOT NULL,
+        pinned INTEGER DEFAULT 0,
+        locked INTEGER DEFAULT 0
       )`,
       (tableErr) => {
         if (tableErr) console.error('Error creating posts table:', tableErr.message);
@@ -251,7 +253,7 @@ app.post('/api/posts', (req, res) => {
 
 // API endpoint for retrieving forum posts.
 app.get('/api/posts', (req, res) => {
-  forumDb.all('SELECT * FROM posts ORDER BY id DESC', [], (err, rows) => {
+  forumDb.all('SELECT * FROM posts ORDER BY (pinned * 1) DESC, id DESC', [], (err, rows) => {
     if (err) {
       console.error('Error fetching posts:', err.message);
       return res.status(500).json({ error: 'Failed to fetch posts.' });
@@ -285,6 +287,58 @@ app.post('/api/posts/:id/comments', (req, res) => {
     function(err) {
       if (err) return res.status(500).json({ error: 'Failed to add comment' });
       res.status(201).json({ message: 'Comment added', commentId: this.lastID });
+    }
+  );
+});
+
+// API endpoint to toggle pinned status of a post.
+app.put('/api/posts/:id/pin', (req, res) => {
+  const postId = req.params.id;
+  const { pinned } = req.body; // Expecting a boolean value.
+  const pinnedValue = pinned ? 1 : 0;
+  forumDb.run(
+    'UPDATE posts SET pinned = ? WHERE id = ?',
+    [pinnedValue, postId],
+    function (err) {
+      if (err) {
+        console.error('Error updating pin status:', err.message);
+        return res.status(500).json({ error: 'Failed to update pin status.' });
+      }
+      res.status(200).json({ message: 'Pin status updated.', pinned: !!pinnedValue });
+    }
+  );
+});
+
+// API endpoint to toggle locked status of a post.
+app.put('/api/posts/:id/lock', (req, res) => {
+  const postId = req.params.id;
+  const { locked } = req.body; // Expecting a boolean value.
+  const lockedValue = locked ? 1 : 0;
+  forumDb.run(
+    'UPDATE posts SET locked = ? WHERE id = ?',
+    [lockedValue, postId],
+    function (err) {
+      if (err) {
+        console.error('Error updating locked status:', err.message);
+        return res.status(500).json({ error: 'Failed to update locked status.' });
+      }
+      res.status(200).json({ message: 'Locked status updated.', locked: !!lockedValue });
+    }
+  );
+});
+
+// API endpoint to delete a post.
+app.delete('/api/posts/:id', (req, res) => {
+  const postId = req.params.id;
+  forumDb.run(
+    'DELETE FROM posts WHERE id = ?',
+    [postId],
+    function(err) {
+      if (err) {
+        console.error('Error deleting post:', err.message);
+        return res.status(500).json({ error: 'Failed to delete post.' });
+      }
+      res.status(200).json({ message: 'Post deleted successfully.' });
     }
   );
 });

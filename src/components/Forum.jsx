@@ -96,6 +96,7 @@ function Forum() {
               onClick={() => window.location.href = `/forum/${post.id}`}
               style={{ cursor: 'pointer' }}
             >
+              {post.pinned && <span className="pinned-badge">PINNED</span>}
               <h3 className="post-title">{post.title}</h3>
               <span className="post-timestamp">{post.timestamp}</span>
             </div>
