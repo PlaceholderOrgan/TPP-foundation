@@ -7,6 +7,8 @@ const AdminDash = () => {
   const [users, setUsers] = useState([]);
   const [forumPosts, setForumPosts] = useState([]);
   const [view, setView] = useState('users'); // 'users' or 'forum'
+  const [searchTerm, setSearchTerm] = useState('');
+  const [forumSearchTerm, setForumSearchTerm] = useState('');
   const navigate = useNavigate();
   const [loggedUserId, setLoggedUserId] = useState(null);
 
@@ -157,6 +159,19 @@ const AdminDash = () => {
     }
   };
 
+  // Filter users based on search term (by username, email or ID)
+  const filteredUsers = users.filter(user => 
+    user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.id.toString().includes(searchTerm)
+  );
+
+  // Filter forum posts based on search term (by ID or Title)
+  const filteredForumPosts = forumPosts.filter(post => 
+    post.title.toLowerCase().includes(forumSearchTerm.toLowerCase()) ||
+    post.id.toString().includes(forumSearchTerm)
+  );
+
   return (
     <div className="admin-dash">
       <h2>Admin Dashboard</h2>
@@ -172,6 +187,15 @@ const AdminDash = () => {
       {view === 'users' && (
         <div>
           <h2>User Management</h2>
+          <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+            <input
+              type="text"
+              placeholder="Search by username, email or ID"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{ padding: '0.5rem', width: '80%', maxWidth: '400px' }}
+            />
+          </div>
           <table>
             <thead>
               <tr>
@@ -184,7 +208,7 @@ const AdminDash = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map(user => (
+              {filteredUsers.map(user => (
                 <tr key={user.id}>
                   <td>{user.id}</td>
                   <td>{user.username}</td>
@@ -218,6 +242,15 @@ const AdminDash = () => {
       {view === 'forum' && (
         <div>
           <h2>Forum Management</h2>
+          <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+            <input
+              type="text"
+              placeholder="Search by post title or ID"
+              value={forumSearchTerm}
+              onChange={(e) => setForumSearchTerm(e.target.value)}
+              style={{ padding: '0.5rem', width: '80%', maxWidth: '400px' }}
+            />
+          </div>
           <table>
             <thead>
               <tr>
@@ -230,7 +263,7 @@ const AdminDash = () => {
               </tr>
             </thead>
             <tbody>
-              {forumPosts.map(post => (
+              {filteredForumPosts.map(post => (
                 <tr key={post.id}>
                   <td>{post.id}</td>
                   <td>{post.title}</td>
