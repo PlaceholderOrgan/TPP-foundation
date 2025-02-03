@@ -2,7 +2,7 @@
 body {
   margin: 0;
   font-family: sans-serif;
-  background: url('../assets/placeholder_back.webp') no-repeat center center fixed;
+  background-color: rgb(255, 255, 255);
   background-size: cover;
 }
 
