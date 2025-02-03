@@ -9,8 +9,13 @@ function ForumPost() {
   const [newComment, setNewComment] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  // Choose base URL based on current hostname. Priority is localhost.
+  const baseUrl = window.location.hostname === 'localhost'
+    ? 'http://localhost:5000'
+    : 'http://spackcloud.duckdns.org:5000';
+
   useEffect(() => {
-    fetch(`http://spackcloud.duckdns.org:5000/api/posts/${id}`)
+    fetch(`${baseUrl}/api/posts/${id}`)
       .then(res => res.json())
       .then(data => {
         setPost(data.post);
@@ -20,13 +25,13 @@ function ForumPost() {
     
     const token = localStorage.getItem('authToken');
     setIsAuthenticated(!!token);
-  }, [id]);
+  }, [id, baseUrl]);
 
   const handleAddComment = (e) => {
     e.preventDefault();
     if (!newComment.trim()) return;
 
-    fetch(`http://spackcloud.duckdns.org:5000/api/posts/${id}/comments`, {
+    fetch(`${baseUrl}/api/posts/${id}/comments`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -39,7 +44,7 @@ function ForumPost() {
       .then(() => {
         setNewComment('');
         // Refresh comments
-        return fetch(`http://spackcloud.duckdns.org:5000/api/posts/${id}`);
+        return fetch(`${baseUrl}/api/posts/${id}`);
       })
       .then(res => res.json())
       .then(data => setComments(data.comments))

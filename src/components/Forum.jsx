@@ -7,8 +7,13 @@ function Forum() {
   const [posts, setPosts] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  // Choose base URL based on current hostname. Priority is localhost.
+  const baseUrl = window.location.hostname === 'localhost'
+    ? 'http://localhost:5000/api'
+    : 'http://spackcloud.duckdns.org:5000/api';
+
   useEffect(() => {
-    fetch('http://spackcloud.duckdns.org:5000/api/posts')
+    fetch(`${baseUrl}/posts`)
       .then((res) => res.json())
       .then((data) => setPosts(data))
       .catch((err) => console.error('Error fetching posts:', err));
@@ -16,7 +21,7 @@ function Forum() {
     // Check if the user is authenticated
     const token = localStorage.getItem('authToken');
     if (token) {
-      fetch('http://spackcloud.duckdns.org:5000/api/validate-token', {
+      fetch(`${baseUrl}/validate-token`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token }),
@@ -31,7 +36,7 @@ function Forum() {
         })
         .catch((err) => console.error('Error validating token:', err));
     }
-  }, []);
+  }, [baseUrl]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,7 +46,7 @@ function Forum() {
       description: postDescription.trim(),
       timestamp: new Date().toLocaleString(),
     };
-    fetch('http://spackcloud.duckdns.org:5000/api/posts', {
+    fetch(`${baseUrl}/posts`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newPost),
@@ -50,7 +55,7 @@ function Forum() {
       .then(() => {
         setPostTitle('');
         setPostDescription('');
-        return fetch('http://spackcloud.duckdns.org:5000/api/posts');
+        return fetch(`${baseUrl}/posts`);
       })
       .then((res) => res.json())
       .then((updatedPosts) => setPosts(updatedPosts))
@@ -92,7 +97,6 @@ function Forum() {
               style={{ cursor: 'pointer' }}
             >
               <h3 className="post-title">{post.title}</h3>
-              {/* Removed description display */}
               <span className="post-timestamp">{post.timestamp}</span>
             </div>
           ))

@@ -1,13 +1,12 @@
-// Main component that sets up routing and navigation for the application.
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Forum from './Forum';
 import Home from './Home';
 import LoginPopup from './Login';
 import News from './News';
-import ForumPost from './ForumPost'
+import ForumPost from './ForumPost';
+import AdminDash from './AdminDash';
 
-// Import navigation button images.
 var welcomeButton = require('../assets/logo_malakia.webp');
 var newsButton = require('../assets/test_button.webp');
 var forumButton = require('../assets/test_button.webp');
@@ -18,12 +17,20 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem('isLoggedIn') === 'true'
   );
+  const [isAdmin, setIsAdmin] = useState(
+    localStorage.getItem('isAdmin') === 'true'
+  );
+
+  // Choose base URL based on current hostname. Priority is localhost.
+  const baseUrl = window.location.hostname === 'localhost'
+    ? 'http://localhost:5000'
+    : 'http://spackcloud.duckdns.org:5000';
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
     if (token && loggedIn) {
-      fetch(`${process.env.REACT_APP_API_URL || 'http://spackcloud.duckdns.org:5000'}/api/validate-token`, {
+      fetch(`${baseUrl}/api/validate-token`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token }),
@@ -31,6 +38,13 @@ function App() {
         .then(response => response.json())
         .then(data => {
           setIsLoggedIn(data.valid);
+          if(data.admin){
+            setIsAdmin(true);
+            localStorage.setItem('isAdmin', 'true');
+          } else {
+            setIsAdmin(false);
+            localStorage.removeItem('isAdmin');
+          }
           if (!data.valid) {
             localStorage.removeItem('authToken');
             localStorage.removeItem('isLoggedIn');
@@ -40,15 +54,19 @@ function App() {
           console.error('Token validation failed:', err);
           localStorage.removeItem('authToken');
           localStorage.removeItem('isLoggedIn');
+          localStorage.removeItem('isAdmin');
           setIsLoggedIn(false);
+          setIsAdmin(false);
         });
     }
-  }, []);
+  }, [baseUrl]);
 
   const handleLogout = () => {
     setIsLoggedIn(false);
+    setIsAdmin(false);
     localStorage.removeItem('authToken');
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('isAdmin');
     alert("Logged out");
     window.location.reload();
   };
@@ -56,29 +74,33 @@ function App() {
   return (
     <Router>
       <>
-        {/* Header with navigation buttons */}
         <header>
           <h3>WELCOME</h3>
           <nav className="nav-buttons">
-            {/* Navigate to Home */}
             <button
               onClick={() => window.location.href = '/'}
               style={{ backgroundImage: `url(${welcomeButton})` }}
               className="nav-img-btn"
             />
-            {/* Dummy button for news (no action specified) */}
             <button
               onClick={() => window.location.href = '/news'}
               style={{ backgroundImage: `url(${newsButton})` }}
               className="nav-img-btn"
             />
-            {/* Navigate to Forum */}
             <button
               onClick={() => window.location.href = '/forum'}
               style={{ backgroundImage: `url(${forumButton})` }}
               className="nav-img-btn"
             />
-            {/* Toggle login or logout button based on logged in state */}
+            {isAdmin && (
+              <button
+                onClick={() => window.location.href = '/admin'}
+                style={{ backgroundColor: "#007BFF", color: "#fff" }}
+                className="nav-img-btn"
+              >
+                Admin Dash
+              </button>
+            )}
             {isLoggedIn ? (
               <button
                 onClick={handleLogout}
@@ -97,22 +119,23 @@ function App() {
           </nav>
         </header>
 
-        {/* Define main application routes */}
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/forum" element={<Forum />} />
             <Route path="/forum/:id" element={<ForumPost />} />
             <Route path="/news" element={<News />} />
-            </Routes>
+            <Route path="/admin" element={<AdminDash />} />
+          </Routes>
         </main>
 
-        {/* Display the LoginPopup when needed */}
         {showLogin && (
           <LoginPopup
             onClose={() => setShowLogin(false)}
             onLoginSuccess={() => {
               setIsLoggedIn(true);
+              const admin = localStorage.getItem('isAdmin') === 'true';
+              setIsAdmin(admin);
               setShowLogin(false);
             }}
           />

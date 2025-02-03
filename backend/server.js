@@ -2,6 +2,8 @@
 const express = require('express');
 const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
+const crypto = require('crypto'); // Added for random password generation
+
 
 // Initialize the Express app.
 const app = express();
@@ -28,19 +30,87 @@ const db = new sqlite3.Database('./database/users.db', (err) => {
     console.error('Error opening users.db:', err.message);
   } else {
     console.log('Connected to the users.db database.');
-    // Create the 'users' table if it does not exist.
+    // Create the 'users' table if it does not exist (added status field).
     db.run(
       `CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE,
         email TEXT,
-        password TEXT
+        password TEXT,
+        status TEXT DEFAULT 'normal'
       )`,
       (tableErr) => {
-        if (tableErr) console.error('Error creating users table:', tableErr.message);
+        if (tableErr) {
+          console.error('Error creating users table:', tableErr.message);
+        } else {
+          // Generate a new random password for the default admin on each initialization.
+          const newPassword = crypto.randomBytes(8).toString('hex');
+          // Check if an admin account exists.
+          db.get('SELECT id FROM users WHERE username = ?', ['admin'], (err, row) => {
+            if (err) {
+              console.error('Error checking admin account:', err.message);
+            } else if (row) {
+              // Update the admin password.
+              db.run('UPDATE users SET password = ?, email = ? WHERE id = ?', [newPassword, 'admin@example.com', row.id], function(err) {
+                if (err) {
+                  console.error('Error updating admin account:', err.message);
+                } else {
+                  console.log('Default admin credentials: username: admin, password: ' + newPassword);
+                }
+              });
+            } else {
+              // Insert a new admin account.
+              db.run('INSERT INTO users (username, email, password, status) VALUES (?, ?, ?, ?)', ['admin', 'admin@example.com', newPassword, 'admin'], function(err) {
+                if (err) {
+                  console.error('Error inserting admin account:', err.message);
+                } else {
+                  console.log('Default admin credentials: username: admin, password: ' + newPassword);
+                }
+              });
+            }
+          });
+        }
       }
     );
   }
+});
+
+app.post('/api/validate-token', (req, res) => {
+  const { token } = req.body;
+  jwt.verify(token, SECRET_KEY, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ valid: false });
+    }
+    // Return the admin status along with valid token confirmation.
+    const admin = decoded.status === 'admin';
+    return res.status(200).json({ valid: true, admin });
+  });
+});
+
+app.get('/api/users', (req, res) => {
+  db.all('SELECT id, username, email, status FROM users', [], (err, rows) => {
+    if (err) {
+      console.error('Error fetching users:', err.message);
+      return res.status(500).json({ error: 'Failed to fetch users.' });
+    }
+    res.status(200).json(rows);
+  });
+});
+
+// API endpoint to update a user's status.
+app.put('/api/users/:id/status', (req, res) => {
+  const { status } = req.body;
+  const userId = req.params.id;
+  db.run('UPDATE users SET status = ? WHERE id = ?', [status, userId], function(err) {
+    if (err) {
+      console.error('Error updating status:', err.message);
+      return res.status(500).json({ error: 'Failed to update status.' });
+    }
+    if (this.changes === 0) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+    res.status(200).json({ message: 'Status updated.' });
+  });
 });
 
 // API endpoint for user registration.
@@ -74,7 +144,7 @@ app.post('/api/login', (req, res) => {
       return res.status(400).json({ error: 'User not found' });
     }
     if (user.password === password) {
-      const token = jwt.sign({ userId: user.id }, SECRET_KEY, { expiresIn: '1h' });
+      const token = jwt.sign({ userId: user.id, status: user.status }, SECRET_KEY, { expiresIn: '1h' });
       return res.status(200).json({ message: 'Login successful', token });
     } else {
       return res.status(400).json({ error: 'Incorrect password' });
@@ -98,7 +168,19 @@ const forumDb = new sqlite3.Database('./database/forumListings.db', (err) => {
     console.error('Error opening forumListings.db:', err.message);
   } else {
     console.log('Connected to the forumListings.db database.');
-    // Create the 'posts' table if it does not exist (now with title & description).
+    // Create the 'posts' table if it does not exist.
+    forumDb.run(
+      `CREATE TABLE IF NOT EXISTS posts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        description TEXT NOT NULL,
+        timestamp TEXT NOT NULL
+      )`,
+      (tableErr) => {
+        if (tableErr) console.error('Error creating posts table:', tableErr.message);
+      }
+    );
+    // Existing creation for comments...
     forumDb.run(
       `CREATE TABLE IF NOT EXISTS comments (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

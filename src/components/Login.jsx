@@ -30,7 +30,10 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
     animation: 'fadeInMove 0.5s',
   };
 
-  const baseUrl = 'http://spackcloud.duckdns.org:5000/api';
+  // Choose base URL based on current hostname. Priority is localhost.
+  const baseUrl = window.location.hostname === 'localhost'
+    ? 'http://localhost:3000/api'
+    : 'http://spackcloud.duckdns.org:3000/api';
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -48,9 +51,9 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
       
       if (response.ok) {
         localStorage.setItem('authToken', data.token);
-        localStorage.setItem('isLoggedIn', 'true');  // Add this line
+        localStorage.setItem('isLoggedIn', 'true');
         if (onLoginSuccess) onLoginSuccess();
-        onClose();  // Close the login popup
+        onClose();
         window.location.reload();
       } else {
         alert(`Login failed: ${data.error || 'Unknown error'}`);
@@ -77,11 +80,9 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
         body: JSON.stringify({ username, email, password }),
       });
 
-      // Debug: Log raw response
       const rawResponse = await response.text();
       console.log('Raw server response:', rawResponse);
       
-      // Try parsing JSON only if content is actually JSON
       let data;
       try {
         data = JSON.parse(rawResponse);
@@ -91,7 +92,6 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
         return;
       }
 
-      // Rest of your existing code...
       if (response.ok) {
         alert('Registration successful');
         const loginResponse = await fetch(`${baseUrl}/login`, {
@@ -104,7 +104,6 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
         });
         const loginData = await loginResponse.json();
 
-        // Debug logging
         console.log('Login Response:', {
           status: loginResponse.status,
           statusText: loginResponse.statusText,
@@ -113,6 +112,7 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
 
         if (loginResponse.ok) {
           localStorage.setItem('authToken', loginData.token);
+          localStorage.setItem('isLoggedIn', 'true');
           if (onLoginSuccess) onLoginSuccess();
           window.location.reload();
         } else {
@@ -125,7 +125,7 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
       console.error('Registration error:', err);
       alert(`Registration failed: ${err.message}`);
     }
-};
+  };
 
   return (
     <div style={overlayStyle} className="login-overlay" onClick={onClose}>
