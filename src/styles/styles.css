@@ -61,7 +61,7 @@ img {
 /* Styling for navigation buttons container */
 .nav-buttons {
   display: flex;
-  gap: 4rem;
+  gap: 20rem;
   justify-content: center;
 }
 
@@ -82,16 +82,33 @@ img {
   color: #fff;
 }
 
-.btn-forum{
+.btn-forum {
   border: none;
   padding: 0.75rem 1.5rem;
   cursor: pointer;
   outline: none;
   border-radius: 20px;
   font-size: medium;
+  font-weight: bold;
+  transition: transform 0.2s, background-color 0.2s;
+  background-color: #4caf50; 
+  color: #fff;
 }
 
-.btn-login{
+.btn-articles {
+  border: none;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  outline: none;
+  border-radius: 20px;
+  font-size: medium;
+  font-weight: bold;
+  transition: transform 0.2s, background-color 0.2s;
+  background-color: #4caf50; 
+  color: #fff;
+}
+
+.btn-login {
   position: absolute;
   right: 100px;
   top: 15px;
@@ -107,7 +124,7 @@ img {
   color: #fff;
 }
 
-.btn-logout{
+.btn-logout {
   position: absolute;
   right: 100px;
   top: 15px;
@@ -123,8 +140,26 @@ img {
   color: #fff;
 }
 
+.btn-home:hover {
+  transform: scale(1.05);
+  background-color: #5bd15fb9;
+}
 
-/* Hover effect */
+.btn-forum:hover {
+  transform: scale(1.05);
+  background-color: #5bd15fb9;
+}
+
+.btn-articles:hover {
+  transform: scale(1.05);
+  background-color: #5bd15fb9;
+}
+
+.btn-login:hover {
+  transform: scale(1.05);
+  background-color: #5bd15fb9;
+}
+
 .btn-logout:hover {
   transform: scale(1.05);
   background-color: #d76666; /* Ελαφρώς πιο σκούρα απόχρωση για το εφέ hover */
