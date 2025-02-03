@@ -331,6 +331,7 @@ const createArticlesTable = `
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     description TEXT NOT NULL,
+    content TEXT NOT NULL,
     author TEXT NOT NULL,
     date_published TEXT NOT NULL
   )`;
@@ -338,9 +339,10 @@ createTable(db, createArticlesTable, 'articles');
 
 // Add these API endpoints
 app.post('/api/articles', (req, res) => {
-  const { title, description, author, date_published } = req.body;
-  db.run('INSERT INTO articles (title, description, author, date_published) VALUES (?, ?, ?, ?)',
-    [title, description, author, date_published],
+  const { title, description, content, author, date_published } = req.body;
+  db.run(
+    'INSERT INTO articles (title, description, content, author, date_published) VALUES (?, ?, ?, ?, ?)',
+    [title, description, content, author, date_published],
     function(err) {
       if (err) {
         return res.status(500).json({ error: 'Failed to create article' });
