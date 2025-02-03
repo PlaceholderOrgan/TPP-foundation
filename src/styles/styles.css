@@ -66,7 +66,10 @@ img {
 }
 
 /* Navigation buttons general style */
-.nav-btn {
+.btn-home {
+  position: absolute;
+  left: 100px;
+  top: 15px;
   border: none;
   padding: 0.75rem 1.5rem;
   cursor: pointer;
@@ -75,12 +78,54 @@ img {
   font-size: medium;
   font-weight: bold;
   transition: transform 0.2s, background-color 0.2s;
-  background-color: #4caf50; /* Ορίστε το επιθυμητό χρώμα */
+  background-color: #4caf50; 
   color: #fff;
 }
 
+.btn-forum{
+  border: none;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  outline: none;
+  border-radius: 20px;
+  font-size: medium;
+}
+
+.btn-login{
+  position: absolute;
+  right: 100px;
+  top: 15px;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  outline: none;
+  border-radius: 20px;
+  font-size: medium;
+  font-weight: bold;
+  transition: transform 0.2s, background-color 0.2s;
+  background-color: #4caf50; 
+  color: #fff;
+}
+
+.btn-logout{
+  position: absolute;
+  right: 100px;
+  top: 15px;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  outline: none;
+  border-radius: 20px;
+  font-size: medium;
+  font-weight: bold;
+  transition: transform 0.2s, background-color 0.2s;
+  background-color: #fc0000; 
+  color: #fff;
+}
+
+
 /* Hover effect */
-.nav-btn:hover {
+.btn-logout:hover {
   transform: scale(1.05);
-  background-color: #388E3C; /* Ελαφρώς πιο σκούρα απόχρωση για το εφέ hover */
+  background-color: #d76666; /* Ελαφρώς πιο σκούρα απόχρωση για το εφέ hover */
 }
