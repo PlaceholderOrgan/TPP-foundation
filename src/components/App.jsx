@@ -7,11 +7,6 @@ import News from './News';
 import ForumPost from './ForumPost';
 import AdminDash from './AdminDash';
 
-var welcomeButton = require('../assets/logo_malakia.webp');
-var newsButton = require('../assets/test_button.webp');
-var forumButton = require('../assets/test_button.webp');
-var loginButon = require('../assets/test_button.webp');
-
 function App() {
   const [showLogin, setShowLogin] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(
@@ -21,7 +16,6 @@ function App() {
     localStorage.getItem('isAdmin') === 'true'
   );
 
-  // Choose base URL based on current hostname. Priority is localhost.
   const baseUrl = window.location.hostname === 'localhost'
     ? 'http://localhost:5000'
     : 'http://spackcloud.duckdns.org:5000';
@@ -79,24 +73,26 @@ function App() {
           <nav className="nav-buttons">
             <button
               onClick={() => window.location.href = '/'}
-              style={{ backgroundImage: `url(${welcomeButton})` }}
-              className="nav-img-btn"
-            />
+              className="nav-btn btn-home"
+            >
+              Home
+            </button>
             <button
               onClick={() => window.location.href = '/news'}
-              style={{ backgroundImage: `url(${newsButton})` }}
-              className="nav-img-btn"
-            />
+              className="nav-btn btn-news"
+            >
+              News
+            </button>
             <button
               onClick={() => window.location.href = '/forum'}
-              style={{ backgroundImage: `url(${forumButton})` }}
-              className="nav-img-btn"
-            />
+              className="nav-btn btn-forum"
+            >
+              Forum
+            </button>
             {isAdmin && (
               <button
                 onClick={() => window.location.href = '/admin'}
-                style={{ backgroundColor: "#007BFF", color: "#fff" }}
-                className="nav-img-btn"
+                className="nav-btn btn-admin"
               >
                 Admin Dash
               </button>
@@ -104,17 +100,17 @@ function App() {
             {isLoggedIn ? (
               <button
                 onClick={handleLogout}
-                style={{ backgroundColor: "#f00", color: "#fff" }}
-                className="nav-img-btn"
+                className="nav-btn btn-logout"
               >
                 Log Out
               </button>
             ) : (
               <button
                 onClick={() => setShowLogin(true)}
-                style={{ backgroundImage: `url(${loginButon})` }}
-                className="nav-img-btn"
-              />
+                className="nav-btn btn-login"
+              >
+                Login
+              </button>
             )}
           </nav>
         </header>

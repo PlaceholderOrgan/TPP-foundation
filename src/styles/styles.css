@@ -78,3 +78,50 @@ img {
   background-color: #2c4160;
   transform: scale(1.05);
 }
+
+/* Navigation buttons general style */
+.nav-btn {
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  outline: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+/* Hover effect */
+.nav-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Specific button styles */
+.btn-home {
+  background-color: #2c4160;
+  color: #fff;
+}
+
+.btn-news {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.btn-forum {
+  background-color: #ff9800;
+  color: #fff;
+}
+
+.btn-admin {
+  background-color: #007BFF;
+  color: #fff;
+}
+
+.btn-logout {
+  background-color: #f00;
+  color: #fff;
+}
+
+.btn-login {
+  background-color: #9c27b0;
+  color: #fff;
+}
