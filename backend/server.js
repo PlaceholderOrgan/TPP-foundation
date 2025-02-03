@@ -147,20 +147,33 @@ app.put('/api/users/:id/status', (req, res) => {
 
 app.post('/api/register', (req, res) => {
   const { username, email, password } = req.body;
-  db.get('SELECT email FROM banned_emails WHERE email = ?', [email], (err, row) => {
+  db.get('SELECT email FROM banned_emails WHERE email = ?', [email], (err, bannedRow) => {
     if (err) {
       console.error('Error checking banned emails:', err.message);
       return res.status(500).json({ error: 'Registration failed.' });
     }
-    if (row) {
+    if (bannedRow) {
       return res.status(403).json({ error: 'Registration blocked: email is banned.' });
     }
-    db.run('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [username, email, password], function (err) {
+    
+    // Check if the email is already registered.
+    db.get('SELECT id FROM users WHERE email = ?', [email], (err, existingUser) => {
       if (err) {
-        console.error('Error inserting user:', err.message);
-        return res.status(500).json({ error: 'Registration failed. The username might already be taken.' });
+        console.error('Error checking existing email:', err.message);
+        return res.status(500).json({ error: 'Registration failed.' });
       }
-      res.status(201).json({ message: 'Registration successful', userId: this.lastID });
+      if (existingUser) {
+        return res.status(400).json({ error: 'Registration failed: email already registered.' });
+      }
+      
+      // Insert new user if email is not in use.
+      db.run('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [username, email, password], function (err) {
+        if (err) {
+          console.error('Error inserting user:', err.message);
+          return res.status(500).json({ error: 'Registration failed. The username might already be taken.' });
+        }
+        res.status(201).json({ message: 'Registration successful', userId: this.lastID });
+      });
     });
   });
 });

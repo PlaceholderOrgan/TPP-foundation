@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Forum from './Forum';
 import Home from './Home';
 import LoginPopup from './Login';
-import News from './News';
+import Info from './Info';
 import ForumPost from './ForumPost';
 import AdminDash from './AdminDash';
 
@@ -77,10 +77,10 @@ function App() {
               Home
             </button>
             <button
-              onClick={() => window.location.href = '/news'}
-              className="nav-btn btn-news"
+              onClick={() => window.location.href = '/info'}
+              className="nav-btn btn-info"
             >
-              News
+              Info
             </button>
             <button
               onClick={() => window.location.href = '/forum'}
