@@ -2,7 +2,7 @@
 body {
   margin: 0;
   font-family: sans-serif;
-  background-color: rgb(255, 255, 255);
+  background-color: rgba(8, 150, 153, 0.297);
   background-size: cover;
 }
 
@@ -13,9 +13,14 @@ header, footer {
   text-align: center;
   padding: 1rem;
 }
+
 header {
-  border-bottom-left-radius: 7px;
-  border-bottom-right-radius: 7px;
+  border-bottom-left-radius: 70px;
+  border-bottom-right-radius: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px; /* Adjust the height as needed */
 }
 footer {
   border-top-left-radius: 7px;
@@ -57,17 +62,17 @@ img {
 .nav-buttons {
   display: flex;
   gap: 4rem;
-  margin-top: 1rem;
   justify-content: center;
 }
 
 /* Navigation buttons general style */
 .nav-btn {
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1.5rem;
   cursor: pointer;
   outline: none;
-  border-radius: 5px;
+  border-radius: 20px;
+  font-size: medium;
   font-weight: bold;
   transition: transform 0.2s, background-color 0.2s;
   background-color: #4caf50; /* Ορίστε το επιθυμητό χρώμα */
