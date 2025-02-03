@@ -78,7 +78,7 @@ function App() {
             </button>
             <button
               onClick={() => window.location.href = '/info'}
-              className="nav-btn btn-info"
+              className="nav-btn btn-articles"
             >
               Articles
             </button>
@@ -119,7 +119,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/forum" element={<Forum />} />
             <Route path="/forum/:id" element={<ForumPost />} />
-            <Route path="/news" element={<News />} />
+            <Route path="/info" element={<Articles />} />
             <Route path="/admin" element={<AdminDash />} />
           </Routes>
         </main>
