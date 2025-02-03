@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Forum from './Forum';
 import Home from './Home';
 import LoginPopup from './Login';
-import Info from './Info';
+import Articles from './Articles';
 import ForumPost from './ForumPost';
 import AdminDash from './AdminDash';
 
@@ -80,7 +80,7 @@ function App() {
               onClick={() => window.location.href = '/info'}
               className="nav-btn btn-info"
             >
-              Info
+              Articles
             </button>
             <button
               onClick={() => window.location.href = '/forum'}

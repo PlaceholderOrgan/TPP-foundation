@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/news.css';
 
-function Info() {
+function Articles() {
   return (
     <div className="news-container">
       <h2>Our Newsletter</h2>
@@ -11,4 +11,4 @@ function Info() {
   );
 }
 
-export default Info;
+export default Articles;
