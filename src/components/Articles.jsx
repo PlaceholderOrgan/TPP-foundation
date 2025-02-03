@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import ArticleModal from './ArticleModal';
+import CreateArticleModal from './CreateArticleModal';
 import '../styles/articles.css';
 
 const Articles = () => {
   const [articles, setArticles] = useState([]);
-  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [newArticle, setNewArticle] = useState({
-    title: '',
-    description: '',
-    author: ''
-  });
 
   // Check if user is admin
   useEffect(() => {
@@ -34,20 +32,15 @@ const Articles = () => {
       .catch(console.error);
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleCreateSubmit = async (articleData) => {
     try {
       const response = await fetch('http://localhost:5000/api/articles', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...newArticle,
-          date_published: new Date().toISOString()
-        })
+        body: JSON.stringify(articleData)
       });
       if (response.ok) {
-        setShowCreateForm(false);
-        // Refresh articles list
+        setShowCreateModal(false);
         const updatedArticles = await fetch('http://localhost:5000/api/articles').then(res => res.json());
         setArticles(updatedArticles);
       }
@@ -61,44 +54,32 @@ const Articles = () => {
       <h1>Articles</h1>
       
       {isAdmin && (
-        <button 
-          className="write-button"
-          onClick={() => setShowCreateForm(true)}
-        >
+        <button className="write-button" onClick={() => setShowCreateModal(true)}>
           Write
         </button>
       )}
 
-      {showCreateForm && (
-        <form onSubmit={handleSubmit} className="article-form">
-          <input
-            type="text"
-            placeholder="Title"
-            value={newArticle.title}
-            onChange={e => setNewArticle({...newArticle, title: e.target.value})}
-            required
-          />
-          <textarea
-            placeholder="Description"
-            value={newArticle.description}
-            onChange={e => setNewArticle({...newArticle, description: e.target.value})}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Author"
-            value={newArticle.author}
-            onChange={e => setNewArticle({...newArticle, author: e.target.value})}
-            required
-          />
-          <button type="submit">Publish</button>
-          <button type="button" onClick={() => setShowCreateForm(false)}>Cancel</button>
-        </form>
+      {showCreateModal && (
+        <CreateArticleModal
+          onClose={() => setShowCreateModal(false)}
+          onSubmit={handleCreateSubmit}
+        />
+      )}
+
+      {selectedArticle && (
+        <ArticleModal
+          article={selectedArticle}
+          onClose={() => setSelectedArticle(null)}
+        />
       )}
 
       <div className="articles-list">
         {articles.map(article => (
-          <article key={article.id} className="article-card">
+          <article 
+            key={article.id} 
+            className="article-card"
+            onClick={() => setSelectedArticle(article)}
+          >
             <h2>{article.title}</h2>
             <p>{article.description}</p>
             <div className="article-meta">
