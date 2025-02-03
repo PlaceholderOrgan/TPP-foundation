@@ -92,7 +92,7 @@ function Forum() {
               style={{ cursor: 'pointer' }}
             >
               <h3 className="post-title">{post.title}</h3>
-              <p className="post-content">{post.description}</p>
+              {/* Removed description display */}
               <span className="post-timestamp">{post.timestamp}</span>
             </div>
           ))
