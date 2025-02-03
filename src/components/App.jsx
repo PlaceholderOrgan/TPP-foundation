@@ -69,7 +69,6 @@ function App() {
     <Router>
       <>
         <header>
-          <h3>WELCOME</h3>
           <nav className="nav-buttons">
             <button
               onClick={() => window.location.href = '/'}
