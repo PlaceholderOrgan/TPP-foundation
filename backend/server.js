@@ -9,7 +9,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors({
-  origin: ['http://spackcloud.duckdns.org:3000', 'http://localhost:3000'],
+  origin: ['http://localhost:3000', 'http://spackcloud.duckdns.org:3000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Accept']
@@ -323,5 +323,38 @@ app.delete('/api/posts/:id', (req, res) => {
       return res.status(500).json({ error: 'Failed to delete post.' });
     }
     res.status(200).json({ message: 'Post deleted successfully.' });
+  });
+});
+
+const createArticlesTable = `
+  CREATE TABLE IF NOT EXISTS articles (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    author TEXT NOT NULL,
+    date_published TEXT NOT NULL
+  )`;
+createTable(db, createArticlesTable, 'articles');
+
+// Add these API endpoints
+app.post('/api/articles', (req, res) => {
+  const { title, description, author, date_published } = req.body;
+  db.run('INSERT INTO articles (title, description, author, date_published) VALUES (?, ?, ?, ?)',
+    [title, description, author, date_published],
+    function(err) {
+      if (err) {
+        return res.status(500).json({ error: 'Failed to create article' });
+      }
+      res.status(201).json({ id: this.lastID });
+    }
+  );
+});
+
+app.get('/api/articles', (req, res) => {
+  db.all('SELECT * FROM articles ORDER BY date_published DESC', [], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: 'Failed to fetch articles' });
+    }
+    res.json(rows);
   });
 });
