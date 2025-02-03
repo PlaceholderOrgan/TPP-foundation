@@ -88,6 +88,12 @@ function App() {
             >
               Forum
             </button>
+            <button
+              onClick={() => window.location.href = '/faq'}
+              className="nav-btn btn-faq"
+            >
+              FAQ
+            </button>
             {isAdmin && (
               <button
                 onClick={() => window.location.href = '/admin'}

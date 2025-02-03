@@ -21,15 +21,17 @@ app.listen(PORT, () => {
 });
 
 // Helper to create tables
-const createTable = (db, query, tableName) => {
+const createTable = (db, query, tableName, callback) => {
   db.run(query, (err) => {
     if (err) {
       console.error(`Error creating ${tableName} table:`, err.message);
     } else {
       console.log(`${tableName} table ready.`);
+      if (callback) callback();
     }
   });
 };
+
 
 // Initialize SQLite database for users.
 const db = new sqlite3.Database('./database/users.db', (err) => {
@@ -46,30 +48,31 @@ const db = new sqlite3.Database('./database/users.db', (err) => {
         password TEXT,
         status TEXT DEFAULT 'normal'
       )`;
-    createTable(db, createUsersTable, 'users');
-
-    // Setup admin account
-    const newPassword = crypto.randomBytes(8).toString('hex');
-    db.get('SELECT id FROM users WHERE username = ?', ['admin'], (err, row) => {
-      if (err) {
-        console.error('Error checking admin account:', err.message);
-      } else if (row) {
-        db.run('UPDATE users SET password = ?, email = ? WHERE id = ?', [newPassword, 'admin@example.com', row.id], function (err) {
-          if (err) {
-            console.error('Error updating admin account:', err.message);
-          } else {
-            console.log('Default admin credentials: username: admin, password: ' + newPassword);
-          }
-        });
-      } else {
-        db.run('INSERT INTO users (username, email, password, status) VALUES (?, ?, ?, ?)', ['admin', 'admin@example.com', newPassword, 'admin'], function (err) {
-          if (err) {
-            console.error('Error inserting admin account:', err.message);
-          } else {
-            console.log('Default admin credentials: username: admin, password: ' + newPassword);
-          }
-        });
-      }
+    
+    createTable(db, createUsersTable, 'users', () => {
+      // Setup admin account
+      const newPassword = crypto.randomBytes(8).toString('hex');
+      db.get('SELECT id FROM users WHERE username = ?', ['admin'], (err, row) => {
+        if (err) {
+          console.error('Error checking admin account:', err.message);
+        } else if (row) {
+          db.run('UPDATE users SET password = ?, email = ? WHERE id = ?', [newPassword, 'admin@example.com', row.id], function (err) {
+            if (err) {
+              console.error('Error updating admin account:', err.message);
+            } else {
+              console.log('Default admin credentials: username: admin, password: ' + newPassword);
+            }
+          });
+        } else {
+          db.run('INSERT INTO users (username, email, password, status) VALUES (?, ?, ?, ?)', ['admin', 'admin@example.com', newPassword, 'admin'], function (err) {
+            if (err) {
+              console.error('Error inserting admin account:', err.message);
+            } else {
+              console.log('Default admin credentials: username: admin, password: ' + newPassword);
+            }
+          });
+        }
+      });
     });
 
     const createBannedEmailsTable = `
