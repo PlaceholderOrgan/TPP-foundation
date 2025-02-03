@@ -64,33 +64,55 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
     try {
       const response = await fetch(`${baseUrl}/register`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: JSON.stringify({ username, email, password }),
       });
       const data = await response.json();
+      
+      // Debug logging
+      console.log('Registration Response:', {
+        status: response.status,
+        statusText: response.statusText,
+        data: data
+      });
+
       if (response.ok) {
         alert('Registration successful');
         const loginResponse = await fetch(`${baseUrl}/login`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
           body: JSON.stringify({ username, password }),
         });
         const loginData = await loginResponse.json();
+
+        // Debug logging
+        console.log('Login Response:', {
+          status: loginResponse.status,
+          statusText: loginResponse.statusText,
+          data: loginData
+        });
+
         if (loginResponse.ok) {
           localStorage.setItem('authToken', loginData.token);
           if (onLoginSuccess) onLoginSuccess();
           window.location.reload();
         } else {
-          alert(loginData.error || 'Login failed after registration');
+          alert(`Login failed: ${loginData.error || 'Unknown error'}`);
         }
       } else {
-        alert(data.error || 'Registration failed');
+        alert(`Registration failed: ${data.error || 'Unknown error'}`);
       }
     } catch (err) {
-      console.error(err);
-      alert('Registration failed');
+      console.error('Registration error:', err);
+      alert(`Registration failed: ${err.message}`);
     }
-  };
+};
 
   return (
     <div style={overlayStyle} className="login-overlay" onClick={onClose}>
