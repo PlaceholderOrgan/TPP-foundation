@@ -6,13 +6,11 @@ const router = express.Router();
 
 // Create a post
 router.post('/', (req, res) => {
-  // Expect title, description (for content), username, and timestamp from client.
   const { title, description, username, timestamp } = req.body;
-  // Default userId to 1 or adjust according to your auth system.
-  const userId = 1;
+  // Removed the hardcoded userId to ensure correct username is saved.
   forumDb.run(
-    'INSERT INTO posts (title, content, userId, timestamp, username) VALUES (?, ?, ?, ?, ?)',
-    [title, description, userId, timestamp, username],
+    'INSERT INTO posts (title, content, timestamp, username) VALUES (?, ?, ?, ?)',
+    [title, description, timestamp, username],
     function (err) {
       if (err) {
         return res.status(500).json({ error: 'Failed to create post' });
