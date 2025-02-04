@@ -52,145 +52,85 @@ img {
   display: block;
 }
 
+/* Group common styles for all navigation buttons */
 .nav-buttons {
   display: flex;
-  gap: 15rem;
-  justify-content: center;
+  gap: 60px;
+  margin: 10px;
 }
 
-
-.btn-home {
-  position: absolute;
-  left: 100px;
-  top: 15px;
+.nav-buttons .nav-btn {
+  padding: 10px 50px;
   border: none;
-  padding: 0.75rem 1.5rem;
+  border-radius: 15px;
   cursor: pointer;
-  outline: none;
-  border-radius: 20px;
   font-size: medium;
   font-weight: bold;
-  transition: transform 0.2s, background-color 0.2s;
-  background-color: #4caf50; 
   color: #fff;
+  transition: background-color 0.3s ease;
 }
 
-.btn-forum {
-  border: none;
-  padding: 0.75rem 1.5rem;
-  cursor: pointer;
-  outline: none;
-  border-radius: 20px;
-  font-size: medium;
-  font-weight: bold;
-  transition: transform 0.2s, background-color 0.2s;
-  background-color: #4caf50; 
-  color: #fff;
+/* Specific styles for each button based on differences */
+.nav-buttons .btn-home {
+  background-color: #28a745;
 }
 
-.btn-faq {
-  border: none;
-  padding: 0.75rem 1.5rem;
-  cursor: pointer;
-  outline: none;
-  border-radius: 20px;
-  font-size: medium;
-  font-weight: bold;
-  transition: transform 0.2s, background-color 0.2s;
-  background-color: #4caf50; 
-  color: #fff;
+.nav-buttons .btn-articles {
+  background-color: #28a745;
 }
 
-.btn-articles {
-  border: none;
-  padding: 0.75rem 1.5rem;
-  cursor: pointer;
-  outline: none;
-  border-radius: 20px;
-  font-size: medium;
-  font-weight: bold;
-  transition: transform 0.2s, background-color 0.2s;
-  background-color: #4caf50; 
-  color: #fff;
+.nav-buttons .btn-forum {
+  background-color: #28a745;
 }
 
-.btn-admin {
-  border: none;
-  padding: 0.75rem 1.5rem;
-  cursor: pointer;
-  outline: none;
-  border-radius: 20px;
-  font-size: medium;
-  font-weight: bold;
-  transition: transform 0.2s, background-color 0.2s;
-  background-color: #4e4caf; 
-  color: #fff;
+.nav-buttons .btn-faq {
+  background-color: #28a745;
 }
 
-.btn-login {
-  position: absolute;
-  right: 100px;
-  top: 15px;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  cursor: pointer;
-  outline: none;
-  border-radius: 20px;
-  font-size: medium;
-  font-weight: bold;
-  transition: transform 0.2s, background-color 0.2s;
-  background-color: #4caf50; 
-  color: #fff;
+.nav-buttons .btn-admin {
+  background-color: #2406ad;
 }
 
-.btn-logout {
-  position: absolute;
-  right: 100px;
-  top: 15px;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  cursor: pointer;
-  outline: none;
-  border-radius: 20px;
-  font-size: medium;
-  font-weight: bold;
-  transition: transform 0.2s, background-color 0.2s;
-  background-color: #fc0000; 
-  color: #fff;
+.nav-buttons .btn-login {
+  background-color: #0a76b5;
 }
 
-.btn-home:hover {
+.nav-buttons .btn-logout {
+  background-color: #ff00009d;
+}
+
+/* Optional: hover effects for better user experience */
+.nav-buttons .btn-home:hover {
   transform: scale(1.05);
-  background-color: #5bd15fb9;
+  background-color: #38894b;
 }
 
-.btn-forum:hover {
+.nav-buttons .btn-articles:hover {
   transform: scale(1.05);
-  background-color: #5bd15fb9;
+  background-color: #38894b;
 }
 
-.btn-faq:hover {
+.nav-buttons .btn-forum:hover {
   transform: scale(1.05);
-  background-color: #5bd15fb9;
+  background-color: #38894b;
 }
 
-
-.btn-articles:hover {
+.nav-buttons .btn-faq:hover {
   transform: scale(1.05);
-  background-color: #5bd15fb9;
+  background-color: #38894b;
 }
 
-.btn-admin:hover {
+.nav-buttons .btn-admin:hover {
   transform: scale(1.05);
-  background-color :#5350aadf;
+  background-color: #2c06d2
 }
 
-.btn-login:hover {
+.nav-buttons .btn-login:hover {
   transform: scale(1.05);
-  background-color: #5bd15fb9;
+  background-color: #0369a4;
 }
 
-.btn-logout:hover {
+.nav-buttons .btn-logout:hover {
   transform: scale(1.05);
-  background-color: #d76666; 
+  background-color: #ff0019b4;
 }
