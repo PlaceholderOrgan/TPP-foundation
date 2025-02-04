@@ -76,11 +76,3 @@
   min-height: 200px;
   margin: 10px 0;
 }
-
-.article-footer {
-  margin-top: 20px;
-  padding-top: 10px;
-  border-top: 1px solid #eee;
-  display: flex;
-  justify-content: space-between;
-}

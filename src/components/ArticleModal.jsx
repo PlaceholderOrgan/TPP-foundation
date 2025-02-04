@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/articleModal.css';
 
 const ArticleModal = ({ article, onClose }) => {
   if (!article) return null;
