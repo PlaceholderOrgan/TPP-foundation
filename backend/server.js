@@ -168,7 +168,8 @@ app.post('/api/validate-token', (req, res) => {
     if (err) {
       return res.status(401).json({ error: 'Invalid token' });
     }
-    res.json({ valid: true, decoded });
+    // Return an extra "admin" field for easier client-side checks.
+    res.json({ valid: true, admin: decoded.status === 'admin', decoded });
   });
 });
 
