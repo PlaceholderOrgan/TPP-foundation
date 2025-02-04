@@ -59,7 +59,7 @@ const Articles = () => {
       
       {canWrite && (
         <button className="write-button" onClick={() => setShowCreateModal(true)}>
-          Write
+          Write✎
         </button>
       )}
 
