@@ -134,7 +134,7 @@ function App() {
 
         {/* Footer added below main */}
         <footer>
-          <span>©2025 Your Company Name</span>
+          <span>©2025 RiverHealth Solutions</span>
         </footer>
 
         {showLogin && (
