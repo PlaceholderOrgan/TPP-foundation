@@ -26,18 +26,18 @@ footer {
 }
 
 main {
-  padding: 2rem;
+  padding: 3rem;
   text-align: center;
 }
-h1, h2, h3 {
-  margin: 1rem 0;
+h1, h2 , h3 {
+  margin: 2rem;
 }
 
 .section-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-top: 2rem;
+  gap: 4rem;
+  margin-top: 4rem;
 }
 
 .section-card {
@@ -54,7 +54,7 @@ img {
 
 .nav-buttons {
   display: flex;
-  gap: 20rem;
+  gap: 15rem;
   justify-content: center;
 }
 
@@ -76,6 +76,19 @@ img {
 }
 
 .btn-forum {
+  border: none;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  outline: none;
+  border-radius: 20px;
+  font-size: medium;
+  font-weight: bold;
+  transition: transform 0.2s, background-color 0.2s;
+  background-color: #4caf50; 
+  color: #fff;
+}
+
+.btn-faq {
   border: none;
   padding: 0.75rem 1.5rem;
   cursor: pointer;
@@ -155,6 +168,12 @@ img {
   transform: scale(1.05);
   background-color: #5bd15fb9;
 }
+
+.btn-faq:hover {
+  transform: scale(1.05);
+  background-color: #5bd15fb9;
+}
+
 
 .btn-articles:hover {
   transform: scale(1.05);
