@@ -83,7 +83,6 @@ img {
   transition: background-color 0.3s ease;
 }
 
-/* Specific styles for each button based on differences */
 .nav-buttons .btn-home {
   background-color: #28a745;
 }
@@ -112,7 +111,6 @@ img {
   background-color: #ff00009d;
 }
 
-/* Optional: hover effects for better user experience */
 .nav-buttons .btn-home:hover {
   transform: scale(1.05);
   background-color: #38894b;
