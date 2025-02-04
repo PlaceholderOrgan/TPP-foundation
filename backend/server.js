@@ -46,7 +46,8 @@ const usersDb = new sqlite3.Database('./database/users.db', (err) => {
         password TEXT,
         status TEXT DEFAULT 'user'
        )`,
-      'users'
+      'users',
+      setupAdminUser // Add as callback
     );
   }
 });
@@ -121,6 +122,41 @@ const faqDb = new sqlite3.Database('./database/faq.db', (err) => {
     );
   }
 });
+
+const generatePassword = (length = 12) => {
+  return crypto.randomBytes(length)
+    .toString('base64')
+    .slice(0, length)
+    .replace(/[/+=]/g, '!'); // Replace URL-unsafe chars
+};
+
+const setupAdminUser = () => {
+  const adminPassword = generatePassword();
+  usersDb.get('SELECT id FROM users WHERE username = ?', ['admin'], (err, row) => {
+    if (err) {
+      console.error('Error checking admin user:', err.message);
+      return;
+    }
+    
+    if (row) {
+      // Update existing admin
+      usersDb.run('UPDATE users SET password = ?, status = ? WHERE username = ?', 
+        [adminPassword, 'admin', 'admin']);
+    } else {
+      // Create new admin
+      usersDb.run('INSERT INTO users (username, password, status) VALUES (?, ?, ?)',
+        ['admin', adminPassword, 'admin']);
+    }
+    
+    console.log('----------------------------------------');
+    console.log('Admin account created/updated');
+    console.log('Username: admin');
+    console.log('Password:', adminPassword);
+    console.log('----------------------------------------');
+  });
+};
+
+
 
 // API endpoints for users
 app.post('/api/validate-token', (req, res) => {
