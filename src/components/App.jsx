@@ -6,6 +6,7 @@ import LoginPopup from './Login';
 import Articles from './Articles';
 import ForumPost from './ForumPost';
 import AdminDash from './AdminDash';
+import FAQ from './FAQ';
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
@@ -88,6 +89,12 @@ function App() {
             >
               Forum
             </button>
+            <button
+              onClick={() => window.location.href = '/faq'}
+              className="nav-btn btn-faq"
+            >
+              FAQ
+            </button>
             {isAdmin && (
               <button
                 onClick={() => window.location.href = '/admin'}
@@ -121,6 +128,7 @@ function App() {
             <Route path="/forum/:id" element={<ForumPost />} />
             <Route path="/info" element={<Articles />} />
             <Route path="/admin" element={<AdminDash />} />
+            <Route path="/faq" element={<FAQ />} />
           </Routes>
         </main>
 
