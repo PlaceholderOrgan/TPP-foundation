@@ -12,7 +12,7 @@ app.use(cors({
   origin: ['http://localhost:3000', 'http://spackcloud.duckdns.org:3000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
-  allowedHeaders: ['Content-Type', 'Accept']
+  allowedHeaders: ['Content-Type', 'Accept', 'Authorization']
 }));
 app.use(express.json());
 
@@ -24,263 +24,228 @@ app.listen(PORT, () => {
 const createTable = (db, query, tableName, callback) => {
   db.run(query, (err) => {
     if (err) {
-      console.error(`Error creating ${tableName} table:`, err.message);
+      console.error(`Failed to create table '${tableName}':`, err.message);
     } else {
-      console.log(`${tableName} table ready.`);
-      if (callback) callback();
+      console.log(`Table '${tableName}' created or already exists.`);
     }
+    if (callback) callback();
   });
 };
 
-
-// Initialize SQLite database for users.
-const db = new sqlite3.Database('./database/users.db', (err) => {
+// Initialize SQLite database for users
+const usersDb = new sqlite3.Database('./database/users.db', (err) => {
   if (err) {
     console.error('Error opening users.db:', err.message);
   } else {
     console.log('Connected to the users.db database.');
-
-    const createUsersTable = `
-      CREATE TABLE IF NOT EXISTS users (
+    createTable(
+      usersDb,
+      `CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE,
-        email TEXT,
         password TEXT,
-        status TEXT DEFAULT 'normal'
-      )`;
-    
-    createTable(db, createUsersTable, 'users', () => {
-      // Setup admin account
-      const newPassword = crypto.randomBytes(8).toString('hex');
-      db.get('SELECT id FROM users WHERE username = ?', ['admin'], (err, row) => {
-        if (err) {
-          console.error('Error checking admin account:', err.message);
-        } else if (row) {
-          db.run('UPDATE users SET password = ?, email = ? WHERE id = ?', [newPassword, 'admin@example.com', row.id], function (err) {
-            if (err) {
-              console.error('Error updating admin account:', err.message);
-            } else {
-              console.log('Default admin credentials: username: admin, password: ' + newPassword);
-            }
-          });
-        } else {
-          db.run('INSERT INTO users (username, email, password, status) VALUES (?, ?, ?, ?)', ['admin', 'admin@example.com', newPassword, 'admin'], function (err) {
-            if (err) {
-              console.error('Error inserting admin account:', err.message);
-            } else {
-              console.log('Default admin credentials: username: admin, password: ' + newPassword);
-            }
-          });
-        }
-      });
-    });
+        status TEXT DEFAULT 'user'
+       )`,
+      'users'
+    );
+  }
+});
 
-    const createBannedEmailsTable = `
-      CREATE TABLE IF NOT EXISTS banned_emails (
-        email TEXT PRIMARY KEY
-      )`;
-    createTable(db, createBannedEmailsTable, 'banned_emails');
+// Initialize SQLite database for forum posts
+const forumDb = new sqlite3.Database('./database/forumListings.db', (err) => {
+  if (err) {
+    console.error('Error opening forumListings.db:', err.message);
+  } else {
+    console.log('Connected to the forumListings.db database.');
+    createTable(
+      forumDb,
+      `CREATE TABLE IF NOT EXISTS posts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT,
+        content TEXT,
+        userId INTEGER,
+        timestamp TEXT,
+        pinned INTEGER DEFAULT 0,
+        locked INTEGER DEFAULT 0
+      )`,
+      'posts'
+    );
+    createTable(
+      forumDb,
+      `CREATE TABLE IF NOT EXISTS comments (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        postId INTEGER,
+        content TEXT,
+        userId INTEGER,
+        timestamp TEXT
+      )`,
+      'comments'
+    );
+  }
+});
+
+// Initialize SQLite database for articles
+const articlesDb = new sqlite3.Database('./database/articles.db', (err) => {
+  if (err) {
+    console.error('Error opening articles.db:', err.message);
+  } else {
+    console.log('Connected to the articles.db database.');
+    createTable(
+      articlesDb,
+      `CREATE TABLE IF NOT EXISTS articles (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT,
+        content TEXT,
+        userId INTEGER,
+        timestamp TEXT
+      )`,
+      'articles'
+    );
+  }
+});
+
+// Initialize SQLite database for FAQ
+const faqDb = new sqlite3.Database('./database/faq.db', (err) => {
+  if (err) {
+    console.error('Error opening faq.db:', err.message);
+  } else {
+    console.log('Connected to the faq.db database.');
+    createTable(
+      faqDb,
+      `CREATE TABLE IF NOT EXISTS faq (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        question TEXT,
+        answer TEXT
+      )`,
+      'faq'
+    );
   }
 });
 
 // API endpoints for users
 app.post('/api/validate-token', (req, res) => {
   const { token } = req.body;
+  if (!token) {
+    return res.status(400).json({ error: 'Token missing' });
+  }
   jwt.verify(token, SECRET_KEY, (err, decoded) => {
-    if (err) return res.status(401).json({ valid: false });
-    const admin = decoded.status === 'admin';
-    res.status(200).json({ valid: true, admin });
+    if (err) {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+    res.json({ valid: true, decoded });
   });
 });
 
 app.get('/api/users', (req, res) => {
-  db.all('SELECT id, username, email, status FROM users', [], (err, rows) => {
+  usersDb.all('SELECT id, username, status FROM users', [], (err, rows) => {
     if (err) {
-      console.error('Error fetching users:', err.message);
-      return res.status(500).json({ error: 'Failed to fetch users.' });
+      return res.status(500).json({ error: 'Failed to retrieve users' });
     }
-    res.status(200).json(rows);
+    res.json(rows);
   });
 });
 
 app.delete('/api/users/:id/ban', (req, res) => {
   const userId = req.params.id;
-  db.get('SELECT email FROM users WHERE id = ?', [userId], (err, row) => {
+  usersDb.run('DELETE FROM users WHERE id = ?', [userId], function (err) {
     if (err) {
-      console.error('Error fetching user for ban:', err.message);
-      return res.status(500).json({ error: 'Failed to ban user.' });
+      return res.status(500).json({ error: 'Failed to ban user' });
     }
-    if (!row) {
-      return res.status(404).json({ error: 'User not found.' });
-    }
-    const email = row.email;
-    db.run('DELETE FROM users WHERE id = ?', [userId], function (err) {
-      if (err) {
-        console.error('Error deleting user:', err.message);
-        return res.status(500).json({ error: 'Failed to ban user.' });
-      }
-      if (this.changes === 0) {
-        return res.status(404).json({ error: 'User not found.' });
-      }
-      db.run('INSERT INTO banned_emails (email) VALUES (?)', [email], function (err) {
-        if (err) {
-          console.error('Error banning email:', err.message);
-          return res.status(500).json({ error: 'Failed to ban user email.' });
-        }
-        res.status(200).json({ message: 'User banned successfully.' });
-      });
-    });
+    res.json({ message: 'User banned successfully' });
   });
 });
 
 app.put('/api/users/:id/status', (req, res) => {
-  const { status } = req.body;
   const userId = req.params.id;
-  db.run('UPDATE users SET status = ? WHERE id = ?', [status, userId], function (err) {
-    if (err) {
-      console.error('Error updating status:', err.message);
-      return res.status(500).json({ error: 'Failed to update status.' });
+  const { status } = req.body;
+  usersDb.run(
+    'UPDATE users SET status = ? WHERE id = ?',
+    [status, userId],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: 'Failed to update user status' });
+      }
+      res.json({ message: 'User status updated successfully' });
     }
-    if (this.changes === 0) {
-      return res.status(404).json({ error: 'User not found.' });
-    }
-    res.status(200).json({ message: 'Status updated.' });
-  });
+  );
 });
 
 app.post('/api/register', (req, res) => {
-  const { username, email, password } = req.body;
-  db.get('SELECT email FROM banned_emails WHERE email = ?', [email], (err, bannedRow) => {
-    if (err) {
-      console.error('Error checking banned emails:', err.message);
-      return res.status(500).json({ error: 'Registration failed.' });
-    }
-    if (bannedRow) {
-      return res.status(403).json({ error: 'Registration blocked: email is banned.' });
-    }
-    
-    // Check if the email is already registered.
-    db.get('SELECT id FROM users WHERE email = ?', [email], (err, existingUser) => {
+  const { username, password } = req.body;
+  usersDb.run(
+    'INSERT INTO users (username, password) VALUES (?, ?)',
+    [username, password],
+    function (err) {
       if (err) {
-        console.error('Error checking existing email:', err.message);
-        return res.status(500).json({ error: 'Registration failed.' });
+        return res.status(500).json({ error: 'Failed to register user' });
       }
-      if (existingUser) {
-        return res.status(400).json({ error: 'Registration failed: email already registered.' });
-      }
-      
-      // Insert new user if email is not in use.
-      db.run('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [username, email, password], function (err) {
-        if (err) {
-          console.error('Error inserting user:', err.message);
-          return res.status(500).json({ error: 'Registration failed. The username might already be taken.' });
-        }
-        res.status(201).json({ message: 'Registration successful', userId: this.lastID });
-      });
-    });
-  });
+      res.status(201).json({ message: 'User registered successfully' });
+    }
+  );
 });
 
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
-  db.get('SELECT * FROM users WHERE username = ?', [username], (err, user) => {
-    if (err) {
-      console.error('Error during login:', err.message);
-      return res.status(500).json({ error: 'Login failed' });
+  usersDb.get(
+    'SELECT id, username, password, status FROM users WHERE username = ?',
+    [username],
+    (err, row) => {
+      if (err) {
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+      if (!row || row.password !== password) {
+        return res.status(401).json({ error: 'Invalid credentials' });
+      }
+      const token = jwt.sign({ userId: row.id, status: row.status }, SECRET_KEY);
+      res.json({ token });
     }
-    if (!user) {
-      return res.status(400).json({ error: 'User not found' });
-    }
-    if (user.password === password) {
-      const token = jwt.sign({ userId: user.id, status: user.status }, SECRET_KEY, { expiresIn: '1h' });
-      res.status(200).json({ message: 'Login successful', token });
-    } else {
-      res.status(400).json({ error: 'Incorrect password' });
-    }
-  });
-});
-
-// Initialize SQLite database for forum posts.
-const forumDb = new sqlite3.Database('./database/forumListings.db', (err) => {
-  if (err) {
-    console.error('Error opening forumListings.db:', err.message);
-  } else {
-    console.log('Connected to the forumListings.db database.');
-    const createPostsTable = `
-      CREATE TABLE IF NOT EXISTS posts (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        description TEXT NOT NULL,
-        username TEXT NOT NULL,
-        timestamp TEXT NOT NULL,
-        pinned INTEGER DEFAULT 0,
-        locked INTEGER DEFAULT 0
-      )`;
-    createTable(forumDb, createPostsTable, 'posts');
-
-    const createCommentsTable = `
-      CREATE TABLE IF NOT EXISTS comments (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        post_id INTEGER,
-        user_id INTEGER,
-        username TEXT,
-        content TEXT,
-        timestamp TEXT,
-        FOREIGN KEY (post_id) REFERENCES posts (id),
-        FOREIGN KEY (user_id) REFERENCES users (id)
-      )`;
-    createTable(forumDb, createCommentsTable, 'comments');
-  }
+  );
 });
 
 // API endpoints for forum posts
 app.post('/api/posts', (req, res) => {
-  const { title, description, username, timestamp } = req.body;
-  forumDb.run('INSERT INTO posts (title, description, username, timestamp) VALUES (?, ?, ?, ?)',
-    [title, description, username, timestamp],
+  const { title, content, userId, timestamp } = req.body;
+  forumDb.run(
+    'INSERT INTO posts (title, content, userId, timestamp) VALUES (?, ?, ?, ?)',
+    [title, content, userId, timestamp],
     function (err) {
       if (err) {
-        console.error('Error inserting post:', err.message);
-        return res.status(500).json({ error: 'Failed to add post.' });
+        return res.status(500).json({ error: 'Failed to create post' });
       }
-      res.status(201).json({ message: 'Post added', postId: this.lastID });
+      res.status(201).json({ message: 'Post created', postId: this.lastID });
     }
   );
 });
 
 app.get('/api/posts', (req, res) => {
-  forumDb.all('SELECT * FROM posts ORDER BY (pinned * 1) DESC, id DESC', [], (err, rows) => {
+  forumDb.all('SELECT * FROM posts', [], (err, rows) => {
     if (err) {
-      console.error('Error fetching posts:', err.message);
-      return res.status(500).json({ error: 'Failed to fetch posts.' });
+      return res.status(500).json({ error: 'Failed to retrieve posts' });
     }
-    res.status(200).json(rows);
+    res.json(rows);
   });
 });
 
 app.get('/api/posts/:id', (req, res) => {
   const postId = req.params.id;
-  forumDb.get('SELECT * FROM posts WHERE id = ?', [postId], (err, post) => {
-    if (err || !post) {
-      return res.status(500).json({ error: 'Failed to fetch post' });
+  forumDb.get('SELECT * FROM posts WHERE id = ?', [postId], (err, row) => {
+    if (err) {
+      return res.status(500).json({ error: 'Failed to retrieve post' });
     }
-    forumDb.all('SELECT * FROM comments WHERE post_id = ?', [postId], (err, comments) => {
-      if (err) {
-        return res.status(500).json({ error: 'Failed to fetch comments' });
-      }
-      res.json({ post, comments });
-    });
+    res.json(row);
   });
 });
 
 app.post('/api/posts/:id/comments', (req, res) => {
-  const { content, userId, username } = req.body;
   const postId = req.params.id;
-  const timestamp = new Date().toLocaleString();
-  forumDb.run('INSERT INTO comments (post_id, user_id, username, content, timestamp) VALUES (?, ?, ?, ?, ?)',
-    [postId, userId, username, content, timestamp],
+  const { content, userId, timestamp } = req.body;
+  forumDb.run(
+    'INSERT INTO comments (postId, content, userId, timestamp) VALUES (?, ?, ?, ?)',
+    [postId, content, userId, timestamp],
     function (err) {
-      if (err) return res.status(500).json({ error: 'Failed to add comment' });
+      if (err) {
+        return res.status(500).json({ error: 'Failed to add comment' });
+      }
       res.status(201).json({ message: 'Comment added', commentId: this.lastID });
     }
   );
@@ -288,78 +253,125 @@ app.post('/api/posts/:id/comments', (req, res) => {
 
 app.put('/api/posts/:id/pin', (req, res) => {
   const postId = req.params.id;
-  const { pinned } = req.body; // Expecting a boolean value.
-  const pinnedValue = pinned ? 1 : 0;
-  forumDb.run('UPDATE posts SET pinned = ? WHERE id = ?',
-    [pinnedValue, postId],
-    function (err) {
-      if (err) {
-        console.error('Error updating pin status:', err.message);
-        return res.status(500).json({ error: 'Failed to update pin status.' });
-      }
-      res.status(200).json({ message: 'Pin status updated.', pinned: !!pinnedValue });
+  forumDb.run('UPDATE posts SET pinned = 1 WHERE id = ?', [postId], function (err) {
+    if (err) {
+      return res.status(500).json({ error: 'Failed to pin post' });
     }
-  );
+    res.json({ message: 'Post pinned successfully' });
+  });
 });
 
 app.put('/api/posts/:id/lock', (req, res) => {
   const postId = req.params.id;
-  const { locked } = req.body; // Expecting a boolean value.
-  const lockedValue = locked ? 1 : 0;
-  forumDb.run('UPDATE posts SET locked = ? WHERE id = ?',
-    [lockedValue, postId],
-    function (err) {
-      if (err) {
-        console.error('Error updating locked status:', err.message);
-        return res.status(500).json({ error: 'Failed to update locked status.' });
-      }
-      res.status(200).json({ message: 'Locked status updated.', locked: !!lockedValue });
+  forumDb.run('UPDATE posts SET locked = 1 WHERE id = ?', [postId], function (err) {
+    if (err) {
+      return res.status(500).json({ error: 'Failed to lock post' });
     }
-  );
+    res.json({ message: 'Post locked successfully' });
+  });
 });
 
 app.delete('/api/posts/:id', (req, res) => {
   const postId = req.params.id;
   forumDb.run('DELETE FROM posts WHERE id = ?', [postId], function (err) {
     if (err) {
-      console.error('Error deleting post:', err.message);
-      return res.status(500).json({ error: 'Failed to delete post.' });
+      return res.status(500).json({ error: 'Failed to delete post' });
     }
-    res.status(200).json({ message: 'Post deleted successfully.' });
+    res.json({ message: 'Post deleted successfully' });
   });
 });
 
-const createArticlesTable = `
-  CREATE TABLE IF NOT EXISTS articles (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    description TEXT NOT NULL,
-    content TEXT NOT NULL,
-    author TEXT NOT NULL,
-    date_published TEXT NOT NULL
-  )`;
-createTable(db, createArticlesTable, 'articles');
-
-// Add these API endpoints
+// API endpoints for articles
 app.post('/api/articles', (req, res) => {
-  const { title, description, content, author, date_published } = req.body;
-  db.run(
-    'INSERT INTO articles (title, description, content, author, date_published) VALUES (?, ?, ?, ?, ?)',
-    [title, description, content, author, date_published],
-    function(err) {
+  const { title, content, userId, timestamp } = req.body;
+  articlesDb.run(
+    'INSERT INTO articles (title, content, userId, timestamp) VALUES (?, ?, ?, ?)',
+    [title, content, userId, timestamp],
+    function (err) {
       if (err) {
         return res.status(500).json({ error: 'Failed to create article' });
       }
-      res.status(201).json({ id: this.lastID });
+      res.status(201).json({ message: 'Article created', articleId: this.lastID });
     }
   );
 });
 
 app.get('/api/articles', (req, res) => {
-  db.all('SELECT * FROM articles ORDER BY date_published DESC', [], (err, rows) => {
+  articlesDb.all('SELECT * FROM articles', [], (err, rows) => {
     if (err) {
-      return res.status(500).json({ error: 'Failed to fetch articles' });
+      return res.status(500).json({ error: 'Failed to retrieve articles' });
     }
     res.json(rows);
+  });
+});
+
+// Middleware to check for admin
+const isAdmin = (req, res, next) => {
+  const token = req.headers['authorization'];
+  if (!token) {
+    return res.status(403).json({ error: 'No token provided' });
+  }
+
+  jwt.verify(token, SECRET_KEY, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+    if (decoded.status !== 'admin') {
+      return res.status(403).json({ error: 'Access forbidden' });
+    }
+    next();
+  });
+};
+
+// API endpoints for FAQ
+app.get('/api/faq', (req, res) => {
+  faqDb.all('SELECT * FROM faq', [], (err, rows) => {
+    if (err) {
+      console.error('Error fetching FAQs:', err);
+      return res.status(500).json({ error: 'Failed to fetch FAQs' });
+    }
+    res.json(rows);
+  });
+});
+
+app.post('/api/faq', isAdmin, (req, res) => {
+  const { question, answer } = req.body;
+  faqDb.run(
+    'INSERT INTO faq (question, answer) VALUES (?, ?)',
+    [question, answer],
+    function (err) {
+      if (err) {
+        console.error('Error adding FAQ:', err.message);
+        return res.status(500).json({ error: 'Failed to add FAQ' });
+      }
+      res.status(201).json({ message: 'FAQ added', faqId: this.lastID });
+    }
+  );
+});
+
+app.put('/api/faq/:id', isAdmin, (req, res) => {
+  const faqId = req.params.id;
+  const { question, answer } = req.body;
+  faqDb.run(
+    'UPDATE faq SET question = ?, answer = ? WHERE id = ?',
+    [question, answer, faqId],
+    function (err) {
+      if (err) {
+        console.error('Error updating FAQ:', err.message);
+        return res.status(500).json({ error: 'Failed to update FAQ' });
+      }
+      res.json({ message: 'FAQ updated successfully' });
+    }
+  );
+});
+
+app.delete('/api/faq/:id', isAdmin, (req, res) => {
+  const faqId = req.params.id;
+  faqDb.run('DELETE FROM faq WHERE id = ?', [faqId], function (err) {
+    if (err) {
+      console.error('Error deleting FAQ:', err.message);
+      return res.status(500).json({ error: 'Failed to delete FAQ' });
+    }
+    res.json({ message: 'FAQ deleted successfully' });
   });
 });
