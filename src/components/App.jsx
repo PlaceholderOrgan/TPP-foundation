@@ -132,6 +132,11 @@ function App() {
           </Routes>
         </main>
 
+        {/* Footer added below main */}
+        <footer>
+          <span>©2025 Your Company Name</span>
+        </footer>
+
         {showLogin && (
           <LoginPopup
             onClose={() => setShowLogin(false)}
