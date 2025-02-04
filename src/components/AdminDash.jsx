@@ -6,18 +6,21 @@ import '../styles/adminDash.css';
 const AdminDash = () => {
   const [users, setUsers] = useState([]);
   const [forumPosts, setForumPosts] = useState([]);
-  const [view, setView] = useState('users'); // 'users' or 'forum'
+  const [articles, setArticles] = useState([]);
+  const [view, setView] = useState('users'); // 'users', 'forum' or 'articles'
   const [searchTerm, setSearchTerm] = useState('');
   const [forumSearchTerm, setForumSearchTerm] = useState('');
+  const [articleSearchTerm, setArticleSearchTerm] = useState('');
   const navigate = useNavigate();
   const [loggedUserId, setLoggedUserId] = useState(null);
+  // NEW: state for statuses and new status input
+  const [statuses, setStatuses] = useState(["normal", "writer", "admin"]);
+  const [newStatus, setNewStatus] = useState('');
 
-  // Choose base URL based on current hostname. Priority is localhost.
   const baseUrl = window.location.hostname === 'localhost'
     ? 'http://localhost:5000'
     : 'http://spackcloud.duckdns.org:5000';
 
-  // Check if the logged in user is admin and store their id.
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (!token) {
@@ -37,7 +40,6 @@ const AdminDash = () => {
     }
   }, [navigate]);
 
-  // Fetch users for User Management.
   const fetchUsers = async () => {
     try {
       const res = await fetch(`${baseUrl}/api/users`, { credentials: 'include' });
@@ -48,13 +50,10 @@ const AdminDash = () => {
     }
   };
 
-  // Fetch forum posts for Forum Management.
   const fetchForumPosts = async () => {
     try {
       const res = await fetch(`${baseUrl}/api/posts`);
       const data = await res.json();
-      // Assuming posts have "pinned" and "locked" properties.
-      // Sort posts so that pinned posts appear first.
       data.sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
       setForumPosts(data);
     } catch (err) {
@@ -62,12 +61,24 @@ const AdminDash = () => {
     }
   };
 
-  // Fetch users or forum posts depending on the current view.
+  // NEW: fetch articles for Article Management.
+  const fetchArticles = async () => {
+    try {
+      const res = await fetch(`${baseUrl}/api/articles`);
+      const data = await res.json();
+      setArticles(data);
+    } catch (err) {
+      console.error('Error fetching articles:', err);
+    }
+  };
+
   useEffect(() => {
     if (view === 'users') {
       fetchUsers();
     } else if (view === 'forum') {
       fetchForumPosts();
+    } else if (view === 'articles') {
+      fetchArticles();
     }
   }, [view]);
 
@@ -107,7 +118,17 @@ const AdminDash = () => {
     }
   };
 
-  // Forum management actions
+  const handleAddStatus = (e) => {
+    e.preventDefault();
+    const statusToAdd = newStatus.trim().toLowerCase();
+    if (!statusToAdd) return;
+    if (statuses.includes(statusToAdd)) {
+      alert('Status already exists.');
+      return;
+    }
+    setStatuses([...statuses, statusToAdd]);
+    setNewStatus('');
+  };
 
   const handlePinToggle = async (postId, currentStatus) => {
     try {
@@ -159,17 +180,38 @@ const AdminDash = () => {
     }
   };
 
-  // Filter users based on search term (by username, email or ID)
+  // NEW: delete an article
+  const handleDeleteArticle = async (articleId) => {
+    if (!window.confirm('Are you sure you want to delete this article?')) return;
+    try {
+      const res = await fetch(`${baseUrl}/api/articles/${articleId}`, {
+        method: 'DELETE'
+      });
+      if (!res.ok) {
+        console.error('Error deleting article');
+      } else {
+        fetchArticles();
+      }
+    } catch (err) {
+      console.error('Error deleting article:', err);
+    }
+  };
+
   const filteredUsers = users.filter(user => 
     user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (user.email && user.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
     user.id.toString().includes(searchTerm)
   );
 
-  // Filter forum posts based on search term (by ID or Title)
   const filteredForumPosts = forumPosts.filter(post => 
     post.title.toLowerCase().includes(forumSearchTerm.toLowerCase()) ||
     post.id.toString().includes(forumSearchTerm)
+  );
+
+  // NEW: filter articles based on search term by ID or Title.
+  const filteredArticles = articles.filter(article =>
+    article.title.toLowerCase().includes(articleSearchTerm.toLowerCase()) ||
+    article.id.toString().includes(articleSearchTerm)
   );
 
   return (
@@ -179,8 +221,11 @@ const AdminDash = () => {
         <button onClick={() => setView('users')} disabled={view === 'users'} style={{ marginRight: '1rem' }}>
           User Management
         </button>
-        <button onClick={() => setView('forum')} disabled={view === 'forum'}>
+        <button onClick={() => setView('forum')} disabled={view === 'forum'} style={{ marginRight: '1rem' }}>
           Forum Management
+        </button>
+        <button onClick={() => setView('articles')} disabled={view === 'articles'}>
+          Articles Management
         </button>
       </div>
 
@@ -220,8 +265,9 @@ const AdminDash = () => {
                       onChange={(e) => handleStatusChange(user.id, e.target.value)}
                       disabled={user.id === loggedUserId}
                     >
-                      <option value="normal">Normal</option>
-                      <option value="admin">Admin</option>
+                      {statuses.map(s => (
+                        <option key={s} value={s}>{s}</option>
+                      ))}
                     </select>
                   </td>
                   <td>
@@ -236,6 +282,24 @@ const AdminDash = () => {
               ))}
             </tbody>
           </table>
+          <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+            <h3>Create New Status</h3>
+            <form onSubmit={handleAddStatus}>
+              <input
+                type="text"
+                placeholder="Enter new status"
+                value={newStatus}
+                onChange={(e) => setNewStatus(e.target.value)}
+                style={{ padding: '0.5rem', width: '200px', marginRight: '0.5rem' }}
+              />
+              <button type="submit">Add Status</button>
+            </form>
+            {statuses.length > 0 && (
+              <div style={{ marginTop: '1rem' }}>
+                <strong>Available statuses:</strong> {statuses.join(', ')}
+              </div>
+            )}
+          </div>
         </div>
       )}
 
@@ -278,6 +342,49 @@ const AdminDash = () => {
                       {post.locked ? 'Unlock' : 'Lock'}
                     </button>
                     <button onClick={() => handleDeletePost(post.id)} style={{ marginLeft: '0.5rem' }}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {view === 'articles' && (
+        <div>
+          <h2>Articles Management</h2>
+          <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+            <input
+              type="text"
+              placeholder="Search by article title or ID"
+              value={articleSearchTerm}
+              onChange={(e) => setArticleSearchTerm(e.target.value)}
+              style={{ padding: '0.5rem', width: '80%', maxWidth: '400px' }}
+            />
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Author</th>
+                <th>Timestamp</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredArticles.map(article => (
+                <tr key={article.id}>
+                  <td>{article.id}</td>
+                  <td>{article.title}</td>
+                  <td>{article.description}</td>
+                  <td>{article.author}</td>
+                  <td>{article.timestamp}</td>
+                  <td>
+                    <button onClick={() => handleDeleteArticle(article.id)}>
                       Delete
                     </button>
                   </td>

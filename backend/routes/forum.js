@@ -54,10 +54,10 @@ router.get('/:id', (req, res) => {
 // Add a comment to a post
 router.post('/:id/comments', (req, res) => {
   const postId = req.params.id;
-  const { content, userId, timestamp } = req.body;
+  const { content, userId, timestamp, username } = req.body;
   forumDb.run(
-    'INSERT INTO comments (postId, content, userId, timestamp) VALUES (?, ?, ?, ?)',
-    [postId, content, userId, timestamp],
+    'INSERT INTO comments (postId, content, userId, timestamp, username) VALUES (?, ?, ?, ?, ?)',
+    [postId, content, userId, timestamp, username],
     function (err) {
       if (err) {
         return res.status(500).json({ error: 'Failed to add comment' });

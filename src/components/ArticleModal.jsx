@@ -10,9 +10,9 @@ const ArticleModal = ({ article, onClose }) => {
         <h2>{article.title}</h2>
         <p className="description">{article.description}</p>
         <div className="content">{article.content}</div>
-        <div className="article-footer">
-          <span>{article.author}</span>
-          <span>{new Date(article.date_published).toLocaleDateString()}</span>
+          <div className="article-footer">
+            <span>{article.author}</span>
+            <span>{new Date(article.timestamp).toLocaleDateString()}</span>
         </div>
       </div>
     </div>

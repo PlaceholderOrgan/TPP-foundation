@@ -29,4 +29,15 @@ router.get('/', (req, res) => {
   });
 });
 
+// Add new DELETE route at the end of the file
+router.delete('/:id', (req, res) => {
+  const id = req.params.id;
+  articlesDb.run('DELETE FROM articles WHERE id = ?', id, function (err) {
+    if (err) {
+      return res.status(500).json({ error: 'Failed to delete article' });
+    }
+    res.json({ message: 'Article deleted' });
+  });
+});
+
 module.exports = router;

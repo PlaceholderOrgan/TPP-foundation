@@ -7,9 +7,9 @@ const Articles = () => {
   const [articles, setArticles] = useState([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [canWrite, setCanWrite] = useState(false);
 
-  // Check if user is admin
+  // Check if user is writer or admin
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (token) {
@@ -19,7 +19,11 @@ const Articles = () => {
         body: JSON.stringify({ token })
       })
       .then(res => res.json())
-      .then(data => setIsAdmin(data.admin))
+      .then(data => {
+        if (data.decoded && (data.decoded.status === 'admin' || data.decoded.status === 'writer')) {
+          setCanWrite(true);
+        }
+      })
       .catch(console.error);
     }
   }, []);
@@ -53,7 +57,7 @@ const Articles = () => {
     <div className="articles-container">
       <h1>Articles</h1>
       
-      {isAdmin && (
+      {canWrite && (
         <button className="write-button" onClick={() => setShowCreateModal(true)}>
           Write
         </button>
@@ -76,17 +80,17 @@ const Articles = () => {
       <div className="articles-list">
         {articles.map(article => (
           <article 
-          key={article.id} 
-          className="article-card"
-          onClick={() => setSelectedArticle(article)}
-        >
-          <h2>{article.title}</h2>
-          <p>{article.description}</p>
-          <div className="article-meta">
-            <span>By {article.author}</span>
-            <span>{new Date(article.timestamp).toLocaleDateString()}</span>
-          </div>
-        </article>
+            key={article.id} 
+            className="article-card"
+            onClick={() => setSelectedArticle(article)}
+          >
+            <h2>{article.title}</h2>
+            <p>{article.description}</p>
+            <div className="article-meta">
+              <span>By {article.author}</span>
+              <span>{new Date(article.timestamp).toLocaleDateString()}</span>
+            </div>
+          </article>
         ))}
       </div>
     </div>

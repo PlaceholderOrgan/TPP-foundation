@@ -33,6 +33,7 @@ function ForumPost() {
   
     // Retrieve the stored username
     const storedUsername = localStorage.getItem('username') || 'User';
+    const timestamp = new Date().toLocaleString(); // Generate current timestamp
   
     fetch(`${baseUrl}/posts/${id}/comments`, {
       method: 'POST',
@@ -40,7 +41,8 @@ function ForumPost() {
       body: JSON.stringify({
         content: newComment,
         userId: 1,
-        username: storedUsername
+        username: storedUsername,
+        timestamp: timestamp
       }),
     })
       .then(res => res.json())
@@ -61,7 +63,8 @@ function ForumPost() {
       
       <div className="post-details">
         <h2>{post.title}</h2>
-        <p>{post.description}</p>
+        {/* Update to use post.content instead of post.description */}
+        <p>{post.content}</p>
         <span className="post-author">Posted by {post.username}</span>
         <span className="timestamp">{post.timestamp}</span>
       </div>
@@ -88,8 +91,7 @@ function ForumPost() {
             <div key={comment.id} className="comment">
               <p>{comment.content}</p>
               <div className="comment-meta">
-                <span className="username">{comment.username}</span>
-                <span className="timestamp">{comment.timestamp}</span>
+                Posted by {comment.username} on {comment.timestamp}
               </div>
             </div>
           ))}
