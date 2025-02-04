@@ -52,7 +52,6 @@ img {
   display: block;
 }
 
-/* Group common styles for all navigation buttons */
 .nav-buttons {
   display: flex;
   gap: 60px;
