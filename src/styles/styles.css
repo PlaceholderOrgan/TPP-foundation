@@ -21,8 +21,15 @@ header {
   height: 40px; 
 }
 footer {
-  border-top-left-radius: 7px;
-  border-top-right-radius: 7px;
+  border-top-left-radius: 70px;
+  border-top-right-radius: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 main {
