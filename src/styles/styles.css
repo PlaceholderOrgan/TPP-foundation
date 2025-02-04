@@ -3,6 +3,9 @@ body {
   font-family: sans-serif;
   background-color: rgba(8, 150, 153, 0.297);
   background-size: cover;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 header, footer {
@@ -22,6 +25,7 @@ header {
 }
 
 footer {
+  margin: 0;
   border-top-left-radius: 70px;
   border-top-right-radius: 70px;
   display: flex;
@@ -29,18 +33,17 @@ footer {
   font-weight: bold;
   justify-content: center;
   align-items: center;
-  position: fixed;
   height: 25px;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  width: auto;
 }
 
 main {
   padding: 3rem;
   text-align: center;
+  flex: 1;
 }
-h1, h2 , h3 {
+
+h1, h2, h3 {
   margin: 2rem;
 }
 
@@ -132,7 +135,7 @@ img {
 
 .nav-buttons .btn-admin:hover {
   transform: scale(1.05);
-  background-color: #2c06d2
+  background-color: #2c06d2;
 }
 
 .nav-buttons .btn-login:hover {

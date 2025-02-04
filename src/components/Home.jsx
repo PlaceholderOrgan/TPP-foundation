@@ -8,7 +8,6 @@ function Home() {
         {/* Main title and description */}
         <h2>RiverHealth Solutions</h2>
         <p>Well-being of river communities and clean water solutions</p>
-        {/* Display a placeholder image */}
         {/* Grid layout section with three cards */}
         <div className="section-grid">
           <div className="section-card">
@@ -25,10 +24,6 @@ function Home() {
           </div>
         </div>
       </main>
-      {/* Footer */}
-      <footer>
-        <p>© 2023 RiverHealth Solutions</p>
-      </footer>
     </>
   );
 }
