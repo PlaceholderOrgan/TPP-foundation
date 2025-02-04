@@ -32,8 +32,8 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
 
   // Choose base URL based on current hostname. Priority is localhost.
   const baseUrl = window.location.hostname === 'localhost'
-    ? 'http://localhost:5000/api'
-    : 'http://spackcloud.duckdns.org:5000/api';
+    ? 'http://localhost:5000/api/users'
+    : 'http://spackcloud.duckdns.org:5000/api/users';
 
     const handleLoginSubmit = async (e) => {
       e.preventDefault();

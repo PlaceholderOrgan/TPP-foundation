@@ -11,11 +11,11 @@ function ForumPost() {
 
   // Choose base URL based on current hostname. Priority is localhost.
   const baseUrl = window.location.hostname === 'localhost'
-    ? 'http://localhost:5000'
-    : 'http://spackcloud.duckdns.org:5000';
+    ? 'http://localhost:5000/api'
+    : 'http://spackcloud.duckdns.org:5000/api';
 
   useEffect(() => {
-    fetch(`${baseUrl}/api/posts/${id}`)
+    fetch(`${baseUrl}/posts/${id}`)
       .then(res => res.json())
       .then(data => {
         setPost(data.post);
@@ -34,7 +34,7 @@ function ForumPost() {
     // Retrieve the stored username
     const storedUsername = localStorage.getItem('username') || 'User';
   
-    fetch(`${baseUrl}/api/posts/${id}/comments`, {
+    fetch(`${baseUrl}/posts/${id}/comments`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -46,7 +46,7 @@ function ForumPost() {
       .then(res => res.json())
       .then(() => {
         setNewComment('');
-        return fetch(`${baseUrl}/api/posts/${id}`);
+        return fetch(`${baseUrl}/posts/${id}`);
       })
       .then(res => res.json())
       .then(data => setComments(data.comments))
