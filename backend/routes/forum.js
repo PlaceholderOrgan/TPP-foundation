@@ -70,22 +70,24 @@ router.post('/:id/comments', (req, res) => {
 // Pin a post
 router.put('/:id/pin', (req, res) => {
   const postId = req.params.id;
-  forumDb.run('UPDATE posts SET pinned = 1 WHERE id = ?', [postId], function (err) {
+  const { pinned } = req.body; // expects a boolean
+  forumDb.run('UPDATE posts SET pinned = ? WHERE id = ?', [pinned ? 1 : 0, postId], function (err) {
     if (err) {
-      return res.status(500).json({ error: 'Failed to pin post' });
+      return res.status(500).json({ error: 'Failed to update pin status' });
     }
-    res.json({ message: 'Post pinned successfully' });
+    res.json({ message: pinned ? 'Post pinned successfully' : 'Post unpinned successfully' });
   });
 });
 
 // Lock a post
 router.put('/:id/lock', (req, res) => {
   const postId = req.params.id;
-  forumDb.run('UPDATE posts SET locked = 1 WHERE id = ?', [postId], function (err) {
+  const { locked } = req.body; // expects a boolean
+  forumDb.run('UPDATE posts SET locked = ? WHERE id = ?', [locked ? 1 : 0, postId], function (err) {
     if (err) {
-      return res.status(500).json({ error: 'Failed to lock post' });
+      return res.status(500).json({ error: 'Failed to update lock status' });
     }
-    res.json({ message: 'Post locked successfully' });
+    res.json({ message: locked ? 'Post locked successfully' : 'Post unlocked successfully' });
   });
 });
 

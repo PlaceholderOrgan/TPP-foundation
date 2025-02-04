@@ -1,3 +1,4 @@
+// Language: jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import '../styles/forumPost.css';
@@ -74,7 +75,7 @@ function ForumPost() {
         {post.locked ? (
           <p>This thread has been locked and no more comments can be made</p>
         ) : (
-          isAuthenticated && (
+          isAuthenticated ? (
             <form onSubmit={handleAddComment} className="comment-form">
               <textarea
                 value={newComment}
@@ -83,6 +84,8 @@ function ForumPost() {
               />
               <button type="submit">Submit</button>
             </form>
+          ) : (
+            <p>Please sign in to comment.</p>
           )
         )}
 
