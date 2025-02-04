@@ -12,8 +12,9 @@ const db = new sqlite3.Database('./database/articles.db', (err) => {
       `CREATE TABLE IF NOT EXISTS articles (
          id INTEGER PRIMARY KEY AUTOINCREMENT,
          title TEXT,
+         description TEXT,
          content TEXT,
-         userId INTEGER,
+         author TEXT,
          timestamp TEXT
        )`,
       'articles'

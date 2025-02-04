@@ -6,10 +6,10 @@ const router = express.Router();
 
 // Create an article
 router.post('/', (req, res) => {
-  const { title, content, userId, timestamp } = req.body;
+  const { title, description, content, author, timestamp } = req.body;
   articlesDb.run(
-    'INSERT INTO articles (title, content, userId, timestamp) VALUES (?, ?, ?, ?)',
-    [title, content, userId, timestamp],
+    'INSERT INTO articles (title, description, content, author, timestamp) VALUES (?, ?, ?, ?, ?)',
+    [title, description, content, author, timestamp],
     function (err) {
       if (err) {
         return res.status(500).json({ error: 'Failed to create article' });

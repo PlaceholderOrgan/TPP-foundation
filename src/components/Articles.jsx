@@ -76,17 +76,17 @@ const Articles = () => {
       <div className="articles-list">
         {articles.map(article => (
           <article 
-            key={article.id} 
-            className="article-card"
-            onClick={() => setSelectedArticle(article)}
-          >
-            <h2>{article.title}</h2>
-            <p>{article.description}</p>
-            <div className="article-meta">
-              <span>By {article.author}</span>
-              <span>{new Date(article.date_published).toLocaleDateString()}</span>
-            </div>
-          </article>
+          key={article.id} 
+          className="article-card"
+          onClick={() => setSelectedArticle(article)}
+        >
+          <h2>{article.title}</h2>
+          <p>{article.description}</p>
+          <div className="article-meta">
+            <span>By {article.author}</span>
+            <span>{new Date(article.timestamp).toLocaleDateString()}</span>
+          </div>
+        </article>
         ))}
       </div>
     </div>

@@ -10,7 +10,7 @@ const CreateArticleModal = ({ onClose, onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ ...article, date_published: new Date().toISOString() });
+    onSubmit({ ...article, timestamp: new Date().toISOString() });
   };
 
   return (
