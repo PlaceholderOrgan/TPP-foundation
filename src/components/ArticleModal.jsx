@@ -9,10 +9,17 @@ const ArticleModal = ({ article, onClose }) => {
         <button className="close-button" onClick={onClose}>×</button>
         <h2>{article.title}</h2>
         <p className="description">{article.description}</p>
-        <div className="content">{article.content}</div>
-          <div className="article-footer">
-            <span>{article.author}</span>
-            <span>{new Date(article.timestamp).toLocaleDateString()}</span>
+        <div className="content">
+          {article.content.split('\n').map((line, index) => (
+            <React.Fragment key={index}>
+              {line}
+              <br />
+            </React.Fragment>
+          ))}
+        </div>
+        <div className="article-footer">
+          <span>{article.author}</span>
+          <span>{new Date(article.timestamp).toLocaleDateString()}</span>
         </div>
       </div>
     </div>

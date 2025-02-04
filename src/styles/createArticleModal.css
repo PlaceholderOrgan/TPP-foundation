@@ -1,0 +1,85 @@
+/* Overlay to darken the background */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999; /* Ensure it sits on top */
+  }
+  
+  /* The popup container */
+  .modal-content {
+    position: relative;
+    width: 600px;           /* Adjust as needed */
+    background-color: #fff; /* White background */
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* The close (X) button in the top right corner */
+  .close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  /* The form that holds all fields */
+  .article-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between fields */
+  }
+  
+  /* Individual fields */
+  .title-input,
+  .description-textarea,
+  .content-textarea,
+  .author-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    font-family: inherit;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Short description area */
+  .description-textarea {
+    height: 60px; /* Adjust as needed */
+    resize: none; /* Remove manual resizing if you prefer */
+  }
+  
+  /* Main article content area */
+  .content-textarea {
+    height: 150px; /* Larger text area for the article content */
+    resize: vertical; /* You can allow vertical resizing if you want */
+  }
+  
+  /* Publish button */
+  .publish-button {
+    width: 100px;
+    align-self: flex-end; /* Align button to the right */
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #007bff; /* Bootstrap-ish blue */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+  }
+  
+  /* Optional hover effect for the Publish button */
+  .publish-button:hover {
+    background-color: #0056b3;
+  }
+  
