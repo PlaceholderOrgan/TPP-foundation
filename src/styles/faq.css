@@ -1,39 +1,50 @@
-.faq-container {
-    padding: 20px;
+/* Group common styles for all navigation buttons */
+.nav-buttons {
+    display: flex;
+    gap: 10px;
+    margin: 10px;
   }
   
-  .faq-container h1 {
-    text-align: center;
-  }
-  
-  .faq-container ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .faq-container li {
-    margin-bottom: 20px;
-  }
-  
-  .faq-container h3 {
-    margin: 0;
-  }
-  
-  .faq-container p {
-    margin: 5px 0 10px;
-  }
-  
-  .faq-container form {
-    margin-top: 20px;
-  }
-  
-  .faq-container form input,
-  .faq-container form textarea {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
-  }
-  
-  .faq-container form button {
+  .nav-buttons .nav-btn {
     padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #fff;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Specific styles for each button based on differences */
+  .nav-buttons .btn-home {
+    background-color: #007bff;
+  }
+  
+  .nav-buttons .btn-articles {
+    background-color: #28a745;
+  }
+  
+  .nav-buttons .btn-forum {
+    background-color: #6f42c1;
+  }
+  
+  .nav-buttons .btn-faq {
+    background-color: #fd7e14;
+  }
+  
+  .nav-buttons .btn-admin {
+    background-color: #dc3545;
+  }
+  
+  .nav-buttons .btn-login {
+    background-color: #17a2b8;
+  }
+  
+  .nav-buttons .btn-logout {
+    background-color: #6c757d;
+  }
+  
+  /* Optional: hover effects for better user experience */
+  .nav-buttons .nav-btn:hover {
+    opacity: 0.85;
   }
