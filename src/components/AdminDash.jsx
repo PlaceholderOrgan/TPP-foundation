@@ -13,9 +13,7 @@ const AdminDash = () => {
   const [articleSearchTerm, setArticleSearchTerm] = useState('');
   const navigate = useNavigate();
   const [loggedUserId, setLoggedUserId] = useState(null);
-  // NEW: state for statuses and new status input
-  const [statuses, setStatuses] = useState(["normal", "writer", "admin"]);
-  const [newStatus, setNewStatus] = useState('');
+  const [statuses] = useState(["normal", "writer", "admin"]);
 
   const baseUrl = window.location.hostname === 'localhost'
     ? 'http://localhost:5000'
@@ -61,7 +59,6 @@ const AdminDash = () => {
     }
   };
 
-  // NEW: fetch articles for Article Management.
   const fetchArticles = async () => {
     try {
       const res = await fetch(`${baseUrl}/api/articles`);
@@ -118,18 +115,6 @@ const AdminDash = () => {
     }
   };
 
-  const handleAddStatus = (e) => {
-    e.preventDefault();
-    const statusToAdd = newStatus.trim().toLowerCase();
-    if (!statusToAdd) return;
-    if (statuses.includes(statusToAdd)) {
-      alert('Status already exists.');
-      return;
-    }
-    setStatuses([...statuses, statusToAdd]);
-    setNewStatus('');
-  };
-
   const handlePinToggle = async (postId, currentStatus) => {
     try {
       const res = await fetch(`${baseUrl}/api/posts/${postId}/pin`, {
@@ -180,7 +165,6 @@ const AdminDash = () => {
     }
   };
 
-  // NEW: delete an article
   const handleDeleteArticle = async (articleId) => {
     if (!window.confirm('Are you sure you want to delete this article?')) return;
     try {
@@ -208,7 +192,6 @@ const AdminDash = () => {
     post.id.toString().includes(forumSearchTerm)
   );
 
-  // NEW: filter articles based on search term by ID or Title.
   const filteredArticles = articles.filter(article =>
     article.title.toLowerCase().includes(articleSearchTerm.toLowerCase()) ||
     article.id.toString().includes(articleSearchTerm)
@@ -282,24 +265,6 @@ const AdminDash = () => {
               ))}
             </tbody>
           </table>
-          <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-            <h3>Create New Status</h3>
-            <form onSubmit={handleAddStatus}>
-              <input
-                type="text"
-                placeholder="Enter new status"
-                value={newStatus}
-                onChange={(e) => setNewStatus(e.target.value)}
-                style={{ padding: '0.5rem', width: '200px', marginRight: '0.5rem' }}
-              />
-              <button type="submit">Add Status</button>
-            </form>
-            {statuses.length > 0 && (
-              <div style={{ marginTop: '1rem' }}>
-                <strong>Available statuses:</strong> {statuses.join(', ')}
-              </div>
-            )}
-          </div>
         </div>
       )}
 

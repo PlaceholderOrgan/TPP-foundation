@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/forum.css';
+import { jwtDecode } from 'jwt-decode';
+
 
 function Forum() {
   const [postTitle, setPostTitle] = useState('');
@@ -41,12 +43,21 @@ function Forum() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!postTitle.trim() || !postDescription.trim()) return;
-    // Retrieve username from localStorage or use a default value.
-    const username = localStorage.getItem('username') || 'User';
+    // Get username from the auth token
+    const token = localStorage.getItem('authToken');
+    let username = 'User';
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        username = decoded.username;
+      } catch (err) {
+        console.error('Invalid token', err);
+      }
+    }
     const newPost = {
       title: postTitle.trim(),
       description: postDescription.trim(),
-      username: username,
+      username, // use the decoded username
       timestamp: new Date().toLocaleString(),
     };
     fetch(`${baseUrl}/posts`, {

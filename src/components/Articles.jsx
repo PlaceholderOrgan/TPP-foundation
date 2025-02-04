@@ -55,6 +55,7 @@ const Articles = () => {
 
   return (
     <div className="articles-container">
+      <div className="articles-header">
       <h1>Articles</h1>
       
       {canWrite && (
@@ -76,7 +77,7 @@ const Articles = () => {
           onClose={() => setSelectedArticle(null)}
         />
       )}
-
+      </div>
       <div className="articles-list">
         {articles.map(article => (
           <article 
