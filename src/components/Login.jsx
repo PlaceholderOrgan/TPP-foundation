@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
 import "../styles/login.css";
 
 const LoginPopup = ({ onClose, onLoginSuccess }) => {
@@ -36,27 +37,28 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
     : 'http://spackcloud.duckdns.org:5000/api/users';
 
     const handleLoginSubmit = async (e) => {
-      e.preventDefault();
-      try {
-        const response = await fetch(`${baseUrl}/login`, {
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          body: JSON.stringify({ username, password }),
-        });
-        const data = await response.json();
-        
-        if (response.ok) {
-          localStorage.setItem('authToken', data.token);
-          localStorage.setItem('isLoggedIn', 'true');
-          // Store actual username
-          localStorage.setItem('username', username);
-          if (onLoginSuccess) onLoginSuccess();
-          onClose();
-          window.location.reload();
-        } else {
+    e.preventDefault();
+    try {
+      const response = await fetch(`${baseUrl}/login`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await response.json();
+      
+      if (response.ok) {
+        // Decode the token to extract user details and save them to localStorage
+        const decoded = jwtDecode(data.token);
+        localStorage.setItem('authToken', data.token);
+        localStorage.setItem('userId', decoded.userId);
+        localStorage.setItem('username', decoded.username);
+        localStorage.setItem('isLoggedIn', 'true');
+        onLoginSuccess && onLoginSuccess(data.token);
+        window.location.reload();
+      } else {
           alert(`Login failed: ${data.error || 'Unknown error'}`);
         }
       } catch (err) {
@@ -144,6 +146,8 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
                   onChange={(e) => setUsername(e.target.value)}
                   style={{ width: '100%', margin: '10px 0', padding: '8px' }}
                   required
+                  minLength="3"
+                  maxLength="24"
                 />
               </div>
               <div>
@@ -182,6 +186,8 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
                   onChange={(e) => setUsername(e.target.value)}
                   style={{ width: '100%', margin: '10px 0', padding: '8px' }}
                   required
+                  minLength="3"
+                  maxLength="24"
                 />
               </div>
               <div>

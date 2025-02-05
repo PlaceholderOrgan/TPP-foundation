@@ -46,6 +46,10 @@ router.put('/:id/status', (req, res) => {
 // Register
 router.post('/register', (req, res) => {
   const { username, password } = req.body;
+  // Validate username length
+  if (!username || username.length < 3 || username.length > 24) {
+    return res.status(400).json({ error: 'Username must be between 3 and 24 characters long' });
+  }
   usersDb.run(
     'INSERT INTO users (username, password) VALUES (?, ?)',
     [username, password],

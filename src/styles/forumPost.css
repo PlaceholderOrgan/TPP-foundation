@@ -18,6 +18,16 @@
     margin-bottom: 20px;
   }
   
+  .post-details h2 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  .post-details p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
   .comments-section {
     margin-top: 30px;
   }
@@ -35,12 +45,16 @@
     border-radius: 8px;
     margin-bottom: 15px;
     border: 1px solid #ddd;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
   
   .comment-meta {
     font-size: 0.9em;
     color: #666;
     margin-top: 5px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
   
   .username {

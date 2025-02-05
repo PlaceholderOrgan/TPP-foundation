@@ -1,11 +1,21 @@
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+
 body {
   margin: 0;
   font-family: sans-serif;
   background-color: rgba(8, 150, 153, 0.297);
   background-size: cover;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+}
+
+main {
+  padding: 3rem;
+  text-align: center;
+  flex: 1 0 auto; 
 }
 
 header, footer {
@@ -35,12 +45,7 @@ footer {
   align-items: center;
   height: 25px;
   width: auto;
-}
-
-main {
-  padding: 3rem;
-  text-align: center;
-  flex: 1;
+  flex-shrink: 0;
 }
 
 h1, h2, h3 {

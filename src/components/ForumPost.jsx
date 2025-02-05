@@ -10,7 +10,6 @@ function ForumPost() {
   const [newComment, setNewComment] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Choose base URL based on current hostname. Priority is localhost.
   const baseUrl = window.location.hostname === 'localhost'
     ? 'http://localhost:5000/api'
     : 'http://spackcloud.duckdns.org:5000/api';
@@ -32,16 +31,20 @@ function ForumPost() {
     e.preventDefault();
     if (!newComment.trim()) return;
   
-    // Retrieve the stored username
-    const storedUsername = localStorage.getItem('username') || 'User';
-    const timestamp = new Date().toLocaleString(); // Generate current timestamp
+    const storedUsername = localStorage.getItem('username');
+    const storedUserId = localStorage.getItem('userId'); // Removed default value of 1
+    if (!storedUserId || !storedUsername) {
+      alert("You must be logged in to comment.");
+      return;
+    }
+    const timestamp = new Date().toLocaleString();
   
     fetch(`${baseUrl}/posts/${id}/comments`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         content: newComment,
-        userId: 1,
+        userId: storedUserId,
         username: storedUsername,
         timestamp: timestamp
       }),
@@ -64,7 +67,6 @@ function ForumPost() {
       
       <div className="post-details">
         <h2>{post.title}</h2>
-        {/* Update to use post.content instead of post.description */}
         <p>{post.content}</p>
         <span className="post-author">Posted by {post.username}</span>
         <span className="timestamp">{post.timestamp}</span>
