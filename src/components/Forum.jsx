@@ -83,7 +83,7 @@ function Forum() {
         <form onSubmit={handleSubmit} className="post-form">
           <input
             type="text"
-            placeholder="Post title..."
+            placeholder=" Post title..."
             value={postTitle}
             onChange={(e) => setPostTitle(e.target.value)}
             className="post-title-input"
