@@ -1,4 +1,3 @@
-// Language: jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
@@ -89,7 +88,31 @@ function ForumPost() {
       .catch(err => console.error('Error deleting comment:', err));
   };
 
+  const handlePinComment = (commentId, currentPinned) => {
+    const newPin = !currentPinned;
+    fetch(`${baseUrl}/posts/${id}/comments/${commentId}/pin`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('authToken')
+      },
+      body: JSON.stringify({ pin: newPin })
+    })
+      .then(res => res.json())
+      .then(() => {
+        setComments(comments.map(comment =>
+          comment.id === commentId ? { ...comment, pinned: newPin } : comment
+        ));
+      })
+      .catch(err => console.error('Error updating pin status:', err));
+  };
+
   if (!post) return <div>Loading...</div>;
+
+  // Sort comments so that pinned ones appear first.
+  const sortedComments = [...comments].sort((a, b) => {
+    return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0);
+  });
 
   return (
     <div className="forum-post">
@@ -122,16 +145,26 @@ function ForumPost() {
         )}
 
         <div className="comments-list">
-          {comments.map(comment => (
+          {sortedComments.map(comment => (
             <div key={comment.id} className="comment">
               <p>{comment.content}</p>
               <div className="comment-meta">
                 Posted by {comment.username} on {comment.timestamp}
+                {comment.pinned && (
+                  <span className="pinned-label" style={{ marginLeft: '10px', color: 'green', fontWeight: 'bold' }}>
+                    [Pinned]
+                  </span>
+                )}
               </div>
               {isAdmin && (
-                <button onClick={() => handleDeleteComment(comment.id)}>
-                  Delete
-                </button>
+                <>
+                  <button onClick={() => handleDeleteComment(comment.id)}>
+                    Delete
+                  </button>
+                  <button onClick={() => handlePinComment(comment.id, comment.pinned)}>
+                    {comment.pinned ? 'Unpin' : 'Pin'}
+                  </button>
+                </>
               )}
             </div>
           ))}

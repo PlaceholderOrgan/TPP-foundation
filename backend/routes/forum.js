@@ -101,6 +101,21 @@ router.delete('/:id', (req, res) => {
   });
 });
 
+router.put('/:id/comments/:commentId/pin', isAdmin, (req, res) => {
+  const { commentId } = req.params;
+  const { pin } = req.body; // expects a boolean value
+  forumDb.run(
+    'UPDATE comments SET pinned = ? WHERE id = ?',
+    [pin ? 1 : 0, commentId],
+    function(err) {
+      if (err) {
+        return res.status(500).json({ error: 'Failed to update pin status for comment' });
+      }
+      res.json({ message: pin ? 'Comment pinned successfully' : 'Comment unpinned successfully' });
+    }
+  );
+});
+
 router.delete('/:id/comments/:commentId', isAdmin, (req, res) => {
   const { commentId } = req.params;
   forumDb.run('DELETE FROM comments WHERE id = ?', [commentId], function(err) {
