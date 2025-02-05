@@ -16,8 +16,8 @@
 
 /* Textarea styling for a post */
 .post-textarea {
-  resize: vertical;
-  min-height: 100px;
+  resize: none;
+  min-height: 200px;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
@@ -68,6 +68,12 @@
   font-size: 1.2em;
   font-weight: bold;
   overflow-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 25px;
 }
 
 /* Content styling inside posts */

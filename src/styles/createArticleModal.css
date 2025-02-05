@@ -61,10 +61,9 @@
   
   /* Main article content area */
   .content-textarea {
-    height: 150px; /* Larger text area for the article content */
-    resize: vertical; /* You can allow vertical resizing if you want */
+    height: 500px; /* Larger text area for the article content */
+    resize: none; 
   }
-  
   /* Publish button */
   .publish-button {
     width: 100px;

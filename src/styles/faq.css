@@ -27,11 +27,18 @@
   margin-top: 20px;
 }
 
-.faq-container form input,
-.faq-container form textarea {
+.faq-container form input {
+  resize: none;
   width: 100%;
   margin-bottom: 10px;
   padding: 10px;
+
+}
+.faq-container form textarea {
+  resize: none;
+  width: 100%;
+  margin-bottom: 10px;
+  min-height: 100px;
 }
 
 .faq-container form button {
