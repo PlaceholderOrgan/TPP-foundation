@@ -95,14 +95,6 @@ function App() {
             >
               FAQ
             </button>
-            {isAdmin && (
-              <button
-                onClick={() => window.location.href = '/admin'}
-                className="nav-btn btn-admin"
-              >
-                Admin Dash
-              </button>
-            )}
             {isLoggedIn ? (
               <button
                 onClick={handleLogout}
@@ -137,6 +129,26 @@ function App() {
           <span>©2025 RiverHealth Solutions</span>
         </footer>
 
+{isAdmin && (
+  <button
+    className="admin-floating"
+    onClick={() => window.location.href = '/admin'}
+  >
+    Admin
+  </button>
+)}
+
+{showLogin && (
+  <LoginPopup
+    onClose={() => setShowLogin(false)}
+    onLoginSuccess={() => {
+      setIsLoggedIn(true);
+      const admin = localStorage.getItem('isAdmin') === 'true';
+      setIsAdmin(admin);
+      setShowLogin(false);
+    }}
+  />
+)}
         {showLogin && (
           <LoginPopup
             onClose={() => setShowLogin(false)}
