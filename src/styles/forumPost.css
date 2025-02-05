@@ -91,12 +91,27 @@
   padding: 15px;
   border-radius: 20px;
   margin-bottom: 15px;
-  border: 2px solid black;
+  border: 3px solid black;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
 
+.submit-button {
+  background-color: rgb(38, 211, 241);
+  border: 3px solid rgb(38, 126, 241);
+  margin-top: 20px;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: transform 0.3s , background-color 0.3s ease, border 0.3s ease;
+}
 
+.submit-button:hover {
+  transform: scale(1.05);
+  background-color: rgb(38, 180, 241);
+  border: 3px solid rgb(38, 100, 241);
+}
 .comment-meta {
   font-size: 0.9em;
   color: #666;
