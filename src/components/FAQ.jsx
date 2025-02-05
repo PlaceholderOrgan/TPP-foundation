@@ -82,15 +82,6 @@ const FAQ = () => {
   return (
     <div className="faq-container">
       <h1>Frequently Asked Questions</h1>
-      <ol>
-        {faqs.map(faq => (
-          <li key={faq.id}>
-            <h3>{faq.question}</h3>
-            <p>- {faq.answer}</p>
-            {isAdmin && <button onClick={() => handleDeleteFAQ(faq.id)}>Delete</button>}
-          </li>
-        ))}
-      </ol>
       {isAdmin && (
         <form onSubmit={handleAddFAQ}>
           <h2>Add New FAQ</h2>
@@ -110,6 +101,15 @@ const FAQ = () => {
           <button type="submit">Add FAQ</button>
         </form>
       )}
+      <ol>
+        {faqs.map(faq => (
+          <li key={faq.id}>
+            <h3>{faq.question}</h3>
+            <p>- {faq.answer}</p>
+            {isAdmin && <button className="delete-button" onClick={() => handleDeleteFAQ(faq.id)}>Delete</button>}
+          </li>
+        ))}
+      </ol>
     </div>
   );
 };

@@ -1,4 +1,7 @@
 .faq-container {
+  background-color: #ffffff;
+  border-radius: 50px;
+  border: 2px #000000 solid;
   max-width: 800px; /* limits the container width */
   margin: 0 auto;   /* centers the container horizontally */
   padding: 20px;
@@ -9,12 +12,8 @@
   text-align: center; /* keeps the heading centered */
 }
 
-.faq-container ul {
-  list-style-type: none;
-  padding: 0;
-}
-
 .faq-container li {
+  list-style-type: disc;
   margin-bottom: 20px;
 }
 
@@ -26,11 +25,21 @@
   margin: 5px 0 10px;
 }
 
+.delete-button {
+  background-color: #ffffff;
+  border: 2px #000000 solid;
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 15px;
+}
+
 .faq-container form {
   margin-top: 20px;
 }
 
 .faq-container form input {
+  border-radius: 10px;
+  border: 2px #4e4d4d solid;
   resize: none;
   width: 100%;
   margin-bottom: 10px;
@@ -38,12 +47,29 @@
 }
 
 .faq-container form textarea {
+  border-radius: 10px;
+  border: 2px #4e4d4d solid;
   resize: none;
   width: 100%;
   margin-bottom: 10px;
   min-height: 100px;
+  padding: 10px;
 }
 
 .faq-container form button {
+  background-color: #ffffff;
+  border: 2px #000000 solid;
+  border-radius: 10px;
   padding: 10px 20px;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: #f0f0f0;
+  border: 2px #2f2f2f solid;
+}
+
+.faq-container form button:hover {
+  background-color: #f0f0f0;
+  border: 2px #2f2f2f solid;
 }
