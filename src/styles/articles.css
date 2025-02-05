@@ -1,4 +1,4 @@
-.articles-container h1 {
+.articles-header h1 {
   background-color: #28a745;
   color: white;
   font-family: sans-serif;
@@ -7,6 +7,7 @@
   margin: 0 auto;
   border-radius: 50px;
 }
+
 
 .write-button {
   background-color: #ffffff;
