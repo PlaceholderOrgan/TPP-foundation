@@ -73,7 +73,6 @@
   font-weight: bold;
 }
 
-/* New style for the pinned badge shown in the top right corner */
 .pinned-badge {
   position: absolute;
   top: 8px;
@@ -85,7 +84,6 @@
   border-radius: 3px;
 }
 
-/* Title styling inside posts */
 .post-title {
   text-align: left;
   margin-top: 10;
@@ -100,13 +98,11 @@
   margin-bottom: 25px;
 }
 
-/* Content styling inside posts */
 .post-content {
   text-align: left;
   margin: 5px 0;
 }
 
-/* Timestamp styling inside posts */
 .post-timestamp {
   display: block;
   font-size: 0.8em;
