@@ -1,6 +1,7 @@
 // routes/forum.js
 const express = require('express');
 const forumDb = require('../db/forumDb');
+const { isAdmin } = require('../middlewares/auth');
 
 const router = express.Router();
 
@@ -97,6 +98,16 @@ router.delete('/:id', (req, res) => {
       return res.status(500).json({ error: 'Failed to delete post' });
     }
     res.json({ message: 'Post deleted successfully' });
+  });
+});
+
+router.delete('/:id/comments/:commentId', isAdmin, (req, res) => {
+  const { commentId } = req.params;
+  forumDb.run('DELETE FROM comments WHERE id = ?', [commentId], function(err) {
+    if (err) {
+      return res.status(500).json({ error: 'Failed to delete comment' });
+    }
+    res.json({ message: 'Comment deleted successfully' });
   });
 });
 
