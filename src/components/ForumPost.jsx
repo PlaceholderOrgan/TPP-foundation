@@ -137,38 +137,38 @@ function ForumPost() {
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder="Add a comment..."
               />
-              <button type="submit">Submit</button>
+              <button type="submit" className="submit-button">Submit</button>
             </form>
           ) : (
             <p>Please sign in to comment.</p>
           )
         )}
 
-<div className="comments-list">
-  {sortedComments.map(comment => (
-    <div key={comment.id} className="comment">
-      <p style={{ whiteSpace: 'pre-wrap' }}>{comment.content}</p>
-      <div className="comment-meta">
-        Posted by {comment.username} on {comment.timestamp}
-        {comment.pinned && (
-          <span className="pinned-label" style={{ marginLeft: '10px', color: 'green', fontWeight: 'bold' }}>
-            [Pinned]
-          </span>
-        )}
-      </div>
-      {isAdmin && (
-        <>
-          <button onClick={() => handleDeleteComment(comment.id)}>
-            Delete
-          </button>
-          <button onClick={() => handlePinComment(comment.id, comment.pinned)}>
-            {comment.pinned ? 'Unpin' : 'Pin'}
-          </button>
-        </>
-      )}
-    </div>
-  ))}
-</div>
+        <div className="comments-list">
+          {sortedComments.map(comment => (
+            <div key={comment.id} className="comment">
+              <p style={{ whiteSpace: 'pre-wrap' }}>{comment.content}</p>
+              <div className="comment-meta">
+                Posted by {comment.username} on {comment.timestamp}
+                {comment.pinned && (
+                  <span className="pinned-label" style={{ marginLeft: '10px', color: 'green', fontWeight: 'bold' }}>
+                    [Pinned]
+                  </span>
+                )}
+              </div>
+              {isAdmin && (
+                <>
+                  <button onClick={() => handleDeleteComment(comment.id)}>
+                    Delete
+                  </button>
+                  <button onClick={() => handlePinComment(comment.id, comment.pinned)}>
+                    {comment.pinned ? 'Unpin' : 'Pin'}
+                  </button>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

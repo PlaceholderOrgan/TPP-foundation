@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
 import '../styles/articleModal.css';
 
 const ArticleModal = ({ article, onClose }) => {
@@ -11,12 +12,7 @@ const ArticleModal = ({ article, onClose }) => {
         <h2>{article.title}</h2>
         <p className="description">{article.description}</p>
         <div className="content">
-          {article.content.split('\n').map((line, index) => (
-            <React.Fragment key={index}>
-              {line}
-              <br />
-            </React.Fragment>
-          ))}
+          <ReactMarkdown>{article.content}</ReactMarkdown>
         </div>
         <div className="article-footer">
           <span>{article.author}</span>
