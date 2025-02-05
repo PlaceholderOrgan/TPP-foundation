@@ -1,6 +1,7 @@
 // Language: jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 import '../styles/forumPost.css';
 
 function ForumPost() {
@@ -9,6 +10,7 @@ function ForumPost() {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const baseUrl = window.location.hostname === 'localhost'
     ? 'http://localhost:5000/api'
@@ -25,6 +27,16 @@ function ForumPost() {
     
     const token = localStorage.getItem('authToken');
     setIsAuthenticated(!!token);
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        if (decoded.status === 'admin') {
+          setIsAdmin(true);
+        }
+      } catch (err) {
+        console.error('Token decoding failed:', err);
+      }
+    }
   }, [id, baseUrl]);
 
   const handleAddComment = (e) => {
@@ -32,7 +44,7 @@ function ForumPost() {
     if (!newComment.trim()) return;
   
     const storedUsername = localStorage.getItem('username');
-    const storedUserId = localStorage.getItem('userId'); // Removed default value of 1
+    const storedUserId = localStorage.getItem('userId');
     if (!storedUserId || !storedUsername) {
       alert("You must be logged in to comment.");
       return;
@@ -57,6 +69,24 @@ function ForumPost() {
       .then(res => res.json())
       .then(data => setComments(data.comments))
       .catch(err => console.error('Error:', err));
+  };
+
+  const handleDeleteComment = (commentId) => {
+    if (!window.confirm('Are you sure you want to delete this comment?')) return;
+    fetch(`${baseUrl}/posts/${id}/comments/${commentId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': localStorage.getItem('authToken')
+      }
+    })
+      .then(res => {
+        if (res.ok) {
+          setComments(comments.filter(comment => comment.id !== commentId));
+        } else {
+          console.error('Error deleting comment');
+        }
+      })
+      .catch(err => console.error('Error deleting comment:', err));
   };
 
   if (!post) return <div>Loading...</div>;
@@ -98,6 +128,11 @@ function ForumPost() {
               <div className="comment-meta">
                 Posted by {comment.username} on {comment.timestamp}
               </div>
+              {isAdmin && (
+                <button onClick={() => handleDeleteComment(comment.id)}>
+                  Delete
+                </button>
+              )}
             </div>
           ))}
         </div>
