@@ -82,15 +82,15 @@ const FAQ = () => {
   return (
     <div className="faq-container">
       <h1>Frequently Asked Questions</h1>
-      <ul>
+      <ol>
         {faqs.map(faq => (
           <li key={faq.id}>
             <h3>{faq.question}</h3>
-            <p>{faq.answer}</p>
+            <p>- {faq.answer}</p>
             {isAdmin && <button onClick={() => handleDeleteFAQ(faq.id)}>Delete</button>}
           </li>
         ))}
-      </ul>
+      </ol>
       {isAdmin && (
         <form onSubmit={handleAddFAQ}>
           <h2>Add New FAQ</h2>

@@ -1,9 +1,12 @@
 .faq-container {
+  max-width: 800px; /* limits the container width */
+  margin: 0 auto;   /* centers the container horizontally */
   padding: 20px;
+  text-align: left; /* ensures all text inside is left-aligned */
 }
 
 .faq-container h1 {
-  text-align: center;
+  text-align: center; /* keeps the heading centered */
 }
 
 .faq-container ul {
@@ -32,8 +35,8 @@
   width: 100%;
   margin-bottom: 10px;
   padding: 10px;
-
 }
+
 .faq-container form textarea {
   resize: none;
   width: 100%;
