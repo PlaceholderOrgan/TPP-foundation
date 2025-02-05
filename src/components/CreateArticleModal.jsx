@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import '../styles/createArticleModal.css'; // Make sure to import your CSS here
+import React, { useState, useRef } from 'react';
+import '../styles/createArticleModal.css'; // Ensure CSS is loaded
 
 const CreateArticleModal = ({ onClose, onSubmit }) => {
   const [article, setArticle] = useState({
@@ -8,6 +8,43 @@ const CreateArticleModal = ({ onClose, onSubmit }) => {
     content: '',
     author: ''
   });
+
+  const contentRef = useRef(null);
+
+  const applyFormatting = (formatType) => {
+    const textarea = contentRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = article.content.substring(start, end) || 'text';
+    let formattedText = selectedText;
+
+    switch (formatType) {
+      case 'bold':
+        formattedText = `**${selectedText}**`;
+        break;
+      case 'italic':
+        formattedText = `*${selectedText}*`;
+        break;
+      case 'underline':
+        formattedText = `__${selectedText}__`;
+        break;
+      case 'link': {
+        const url = prompt('Enter URL:');
+        if (url) {
+          formattedText = `[${selectedText}](${url})`;
+        }
+        break;
+      }
+      default:
+        break;
+    }
+
+    const newContent =
+      article.content.slice(0, start) +
+      formattedText +
+      article.content.slice(end);
+    setArticle({ ...article, content: newContent });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,11 +55,7 @@ const CreateArticleModal = ({ onClose, onSubmit }) => {
     <div className="modal-overlay">
       <div className="modal-content">
         {/* Close Button */}
-        <button
-          type="button"
-          className="close-button"
-          onClick={onClose}
-        >
+        <button type="button" className="close-button" onClick={onClose}>
           ×
         </button>
 
@@ -31,7 +64,7 @@ const CreateArticleModal = ({ onClose, onSubmit }) => {
             type="text"
             placeholder="Title"
             value={article.title}
-            onChange={e => setArticle({ ...article, title: e.target.value })}
+            onChange={(e) => setArticle({ ...article, title: e.target.value })}
             required
             className="title-input"
           />
@@ -39,24 +72,45 @@ const CreateArticleModal = ({ onClose, onSubmit }) => {
           <textarea
             placeholder="Short description"
             value={article.description}
-            onChange={e => setArticle({ ...article, description: e.target.value })}
+            onChange={(e) =>
+              setArticle({ ...article, description: e.target.value })
+            }
             required
             className="description-textarea"
           />
 
+          {/* Formatting Toolbar */}
+          <div className="formatting-toolbar">
+            <button type="button" onClick={() => applyFormatting('bold')}>
+              Bold
+            </button>
+            <button type="button" onClick={() => applyFormatting('italic')}>
+              Italic
+            </button>
+            <button type="button" onClick={() => applyFormatting('underline')}>
+              Underline
+            </button>
+            <button type="button" onClick={() => applyFormatting('link')}>
+              Hyperlink
+            </button>
+          </div>
+
           <textarea
             placeholder="Article content"
             value={article.content}
-            onChange={e => setArticle({ ...article, content: e.target.value })}
+            onChange={(e) =>
+              setArticle({ ...article, content: e.target.value })
+            }
             required
             className="content-textarea"
+            ref={contentRef}
           />
 
           <input
             type="text"
             placeholder="Author"
             value={article.author}
-            onChange={e => setArticle({ ...article, author: e.target.value })}
+            onChange={(e) => setArticle({ ...article, author: e.target.value })}
             required
             className="author-input"
           />
