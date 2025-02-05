@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import '../styles/forum.css';
 import { jwtDecode } from 'jwt-decode';
 
-
 function Forum() {
   const [postTitle, setPostTitle] = useState('');
   const [postDescription, setPostDescription] = useState('');
@@ -76,6 +75,9 @@ function Forum() {
       .catch((err) => console.error('Error adding post:', err));
   };
 
+  // Create a sorted copy of posts so that pinned posts are on top
+  const sortedPosts = posts.slice().sort((a, b) => (b.pinned || 0) - (a.pinned || 0));
+
   return (
     <div className="forum-page">
       <h2>Forum</h2>
@@ -103,14 +105,14 @@ function Forum() {
         {posts.length === 0 ? (
           <p>No posts yet. Be the first to post!</p>
         ) : (
-          posts.map((post) => (
+          sortedPosts.map((post) => (
             <div
               key={post.id}
               className="post"
               onClick={() => window.location.href = `/forum/${post.id}`}
               style={{ cursor: 'pointer' }}
             >
-              {post.pinned === 1 && <span className="pinned-badge">PINNED</span>}
+              {post.pinned === 1 && <span className="pinned-badge">🖈</span>}
               <h3 className="post-title">{post.title}</h3>
               <div className="post-info">
                 <span className="post-author">Posted by {post.username}</span>
