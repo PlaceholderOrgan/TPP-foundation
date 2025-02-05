@@ -108,7 +108,7 @@ function App() {
                 onClick={handleLogout}
                 className="nav-btn btn-logout"
               >
-                Log Out
+                Logout
               </button>
             ) : (
               <button

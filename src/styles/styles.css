@@ -81,6 +81,8 @@ img {
   font-weight: bold;
   color: #fff;
   transition: background-color 0.3s ease;
+  width: 150px;
+  height: 40px;
 }
 
 .nav-buttons .btn-home {
@@ -101,6 +103,7 @@ img {
 
 .nav-buttons .btn-admin {
   background-color: #2406ad;
+  width: 200px;
 }
 
 .nav-buttons .btn-login {
