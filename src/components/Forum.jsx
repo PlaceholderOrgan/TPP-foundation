@@ -80,6 +80,7 @@ function Forum() {
 
   return (
     <div className="forum-page">
+      <div className="forum-input">
       <h2>Forum</h2>
       {isAuthenticated ? (
         <form onSubmit={handleSubmit} className="post-form">
@@ -101,6 +102,7 @@ function Forum() {
       ) : (
         <p>Please sign in to post.</p>
       )}
+      </div>
       <div className="posts">
         {posts.length === 0 ? (
           <p>No posts yet. Be the first to post!</p>
