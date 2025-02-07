@@ -16,8 +16,8 @@
   .modal-content {
     position: relative;
     width: 600px;           /* Adjust as needed */
-    background-color: #fff; /* White background */
-    padding: 20px;
+    background-color: #ffffff; /* White background */
+    border: 2px #000000 solid;
     border-radius: 6px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
@@ -25,19 +25,19 @@
   /* The close (X) button in the top right corner */
   .close-button {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: -10;
+    right: -5;
     border: none;
     background: none;
-    font-size: 20px;
+    font-size: 40px;
     cursor: pointer;
   }
   
   /* The form that holds all fields */
   .article-form {
     display: flex;
+    border: 1px #000000 solid;
     flex-direction: column;
-    gap: 10px; /* Space between fields */
   }
   
   /* Individual fields */
@@ -45,12 +45,13 @@
   .description-textarea,
   .content-textarea,
   .author-input {
+    margin-bottom: 10px;
     width: 100%;
     padding: 10px;
     font-size: 16px;
     font-family: inherit;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid #000000;
+    border-radius: 7px;
   }
   
   /* Short description area */
@@ -61,7 +62,7 @@
   
   /* Main article content area */
   .content-textarea {
-    height: 500px; /* Larger text area for the article content */
+    height: 350px; /* Larger text area for the article content */
     resize: none; 
   }
   /* Publish button */
@@ -71,14 +72,41 @@
     padding: 10px;
     font-size: 16px;
     cursor: pointer;
-    background-color: #007bff; /* Bootstrap-ish blue */
-    color: #fff;
-    border: none;
-    border-radius: 4px;
+    background-color: #ffffff; /* Bootstrap-ish blue */
+    color: #000000;
+    border: 2px #000000 solid;
+    border-radius: 20px;
+    transition: background-color 0.2s, border 0.2s;
   }
   
   /* Optional hover effect for the Publish button */
   .publish-button:hover {
-    background-color: #0056b3;
+    background-color: #f0f0f0;
+    border: 2px #2f2f2f solid;
+  }
+
+  .formatting-toolbar {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 10px;
+  }
+  
+  .underline-button,
+  .italics-button,
+  .bold-button,
+  .link-button {
+    padding: 5px 12px;
+    cursor: pointer;
+    background-color: #FFFFFF;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    transition: background-color 0.2s, border 0.2s;
+  }
+  .formatting-toolbar .underline-button:hover,
+  .formatting-toolbar .italics-button:hover,
+  .formatting-toolbar .bold-button:hover,
+  .formatting-toolbar .link-button:hover {
+    background-color: #f0f0f0;
+    border: 1px solid #2f2f2f;
   }
   

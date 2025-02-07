@@ -244,6 +244,7 @@ const AdminDash = () => {
               <select
                 value={user.status}
                 onChange={(e) => handleStatusChange(user.id, e.target.value)}
+                disabled={user.id === loggedUserId}
               >
                 {statuses.map(status => (
                   <option key={status} value={status}>{status}</option>
@@ -251,7 +252,7 @@ const AdminDash = () => {
               </select>
             </td>
             <td>
-              <button onClick={() => handleBan(user.id)}>Ban</button>
+              <button onClick={() => handleBan(user.id)} disabled={user.id === loggedUserId}>Ban</button>
             </td>
           </tr>
         ))}

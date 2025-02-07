@@ -76,7 +76,13 @@ function Forum() {
   };
 
   // Create a sorted copy of posts so that pinned posts are on top
-  const sortedPosts = posts.slice().sort((a, b) => (b.pinned || 0) - (a.pinned || 0));
+  // and then sorted by timestamp
+  const sortedPosts = posts.slice().sort((a, b) => {
+    if ((b.pinned || 0) - (a.pinned || 0) !== 0) {
+      return (b.pinned || 0) - (a.pinned || 0); // Pinned posts first
+    }
+    return new Date(b.timestamp) - new Date(a.timestamp); // Newest posts first
+  });
 
   return (
     <div className="forum-page">

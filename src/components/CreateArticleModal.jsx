@@ -81,16 +81,16 @@ const CreateArticleModal = ({ onClose, onSubmit }) => {
 
           {/* Formatting Toolbar */}
           <div className="formatting-toolbar">
-            <button type="button" onClick={() => applyFormatting('bold')}>
+            <button type="button" className="bold-button" onClick={() => applyFormatting('bold')}>
               Bold
             </button>
-            <button type="button" onClick={() => applyFormatting('italic')}>
+            <button type="button" className="italics-button"onClick={() => applyFormatting('italic')}>
               Italic
             </button>
-            <button type="button" onClick={() => applyFormatting('underline')}>
+            <button type="button" className="underline-button"onClick={() => applyFormatting('underline')}>
               Underline
             </button>
-            <button type="button" onClick={() => applyFormatting('link')}>
+            <button type="button" className="link-button"onClick={() => applyFormatting('link')}>
               Hyperlink
             </button>
           </div>
