@@ -183,10 +183,10 @@ function ForumPost() {
               </div>
               {isAdmin && (
                 <>
-                  <button onClick={() => handleDeleteComment(comment.id)}>
+                  <button className="delete-button" onClick={() => handleDeleteComment(comment.id)}>
                     Delete
                   </button>
-                  <button onClick={() => handlePinComment(comment.id, comment.pinned)}>
+                  <button className="pin-button" onClick={() => handlePinComment(comment.id, comment.pinned)}>
                     {comment.pinned ? 'Unpin' : 'Pin'}
                   </button>
                 </>
