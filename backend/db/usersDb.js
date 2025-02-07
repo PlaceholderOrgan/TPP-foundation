@@ -13,7 +13,9 @@ const db = new sqlite3.Database('./database/users.db', (err) => {
          id INTEGER PRIMARY KEY AUTOINCREMENT,
          username TEXT UNIQUE,
          password TEXT,
-         status TEXT DEFAULT 'user'
+         status TEXT DEFAULT 'user',
+         status_message TEXT,
+         description TEXT
        )`,
       'users',
       setupAdminUser
