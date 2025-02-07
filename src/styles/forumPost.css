@@ -118,6 +118,21 @@
   margin-top: 5px;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+.comment {
+  background: #fff;
+  padding: 15px;
+  border-radius: 20px;
+  margin-bottom: 15px;
+  border: 3px solid black;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  position: relative;
+  padding-bottom: 40px;
 }
 
 .username {
@@ -129,3 +144,21 @@
   color: #999;
 }
 
+.delete-comment-button,
+.pin-button {
+  background-color: #ffffff;
+  border: 2px #000000 solid;
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 15px;
+}
+.delete-comment-button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+.pin-button {
+  position: absolute;
+  bottom: 10px;
+  right: 80px;
+}

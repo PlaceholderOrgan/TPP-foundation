@@ -15,7 +15,7 @@
   /* The popup container */
   .modal-content {
     position: relative;
-    width: 600px;           /* Adjust as needed */
+    width: 600px;        /* Adjust as needed */
     background-color: #ffffff; /* White background */
     border: 2px #000000 solid;
     border-radius: 6px;
