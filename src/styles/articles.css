@@ -40,6 +40,7 @@
 .articles-list {
   background-color: #70c8ff;
   border: 2px solid #000000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.55);
   border-radius: 35px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -54,7 +55,7 @@
 
 .article-card {
   background: #ffffff;
-  box-shadow: rgba(0,0,0, 0.3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.55);
   border: 3px solid #000000;
   border-radius: 40px;
   padding: 20px;
