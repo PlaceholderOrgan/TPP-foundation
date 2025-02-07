@@ -15,7 +15,7 @@ const ArticleModal = ({ article, onClose }) => {
           <ReactMarkdown>{article.content}</ReactMarkdown>
         </div>
         <div className="article-footer">
-          <span>{article.author}</span>
+          <span>By {article.author}</span>
           <span>{new Date(article.timestamp).toLocaleDateString()}</span>
         </div>
       </div>
