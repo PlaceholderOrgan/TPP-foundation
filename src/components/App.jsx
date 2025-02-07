@@ -126,7 +126,7 @@ function App() {
 
         {/* Footer added below main */}
         <footer>
-          <span>©2025 RiverHealth Solutions</span>
+          <span>©2025 The Plant Foundation</span>
         </footer>
 
 {isAdmin && (
