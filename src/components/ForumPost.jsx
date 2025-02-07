@@ -150,8 +150,8 @@ function ForumPost() {
       
       <div className="post-details">
         <h2>{post.title}</h2>
-        <p>{post.content}</p>  // changed from post.description to post.content
-        <span className="post-author">Posted by {post.username}  </span>
+        <p>{post.content}</p>
+        <span className="post-author">Posted by {post.username} </span>
         <span className="timestamp">{post.timestamp}</span>
       </div>
 
