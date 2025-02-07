@@ -1,6 +1,7 @@
 .articles-header h1 {
-  background-color: #28a745;
-  color: white;
+  background-color: #ffffff;
+  color: #000000;
+  border: black 2px solid;
   font-family: sans-serif;
   width: 175px;
   text-align: center;
@@ -15,7 +16,7 @@
 
 .write-button {
   background-color: #ffffff;
-  border: 3px solid #000000;
+  border: 4px solid #000000;
   color: rgb(0, 0, 0);
   margin-top: 10px;
   border-radius: 50px;
@@ -37,6 +38,9 @@
 }
 
 .articles-list {
+  background-color: #70c8ff;
+  border: 2px solid #000000;
+  border-radius: 35px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   row-gap: 80px;
@@ -44,11 +48,13 @@
   padding: 40px;
   max-width: 1200px;
   margin: 0 auto;
+  padding-bottom: 80px;
   justify-content: center;
 }
 
 .article-card {
   background: #ffffff;
+  box-shadow: rgba(0,0,0, 0.3);
   border: 3px solid #000000;
   border-radius: 40px;
   padding: 20px;
