@@ -86,7 +86,7 @@
 
 .post-title {
   text-align: left;
-  margin-top: 10;
+  margin-top: 5px;
   font-size: 1.2em;
   font-weight: bold;
   overflow-wrap: break-word;
@@ -95,7 +95,7 @@
   line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  margin-bottom: 25px;
+  margin-bottom: 60px;
 }
 
 .post-content {
@@ -103,9 +103,18 @@
   margin: 5px 0;
 }
 
+.post-author {
+  position: absolute;
+  bottom: 5px;
+  left: 30px;
+  font-size: 0.9em;
+  color: #333;
+}
+
 .post-timestamp {
-  display: block;
-  font-size: 0.8em;
-  color: #666;
-  margin-top: 5px;
+  position: absolute;
+  bottom: 5px;
+  right: 30px;
+  font-size: 0.9em;
+  color: #333;
 }
