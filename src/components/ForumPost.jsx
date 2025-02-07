@@ -81,14 +81,19 @@ function ForumPost() {
       }),
     })
       .then(res => res.json())
-      .then(() => {
-        setNewComment('');
-        return fetch(`${baseUrl}/posts/${id}`); // Correct route
-      })
-      .then(res => res.json())
       .then(data => {
-        setPost(data.post);
-        setComments(data.comments);
+        // Optimistically update the comments array
+        const newCommentObj = {
+          id: data.commentId,
+          content: newComment,
+          userId: storedUserId,
+          username: storedUsername,
+          timestamp: timestamp,
+          postId: id,
+          pinned: 0
+        };
+        setComments(prevComments => [...prevComments, newCommentObj]);
+        setNewComment('');
       })
       .catch(err => console.error('Error:', err));
   };
@@ -145,7 +150,7 @@ function ForumPost() {
       
       <div className="post-details">
         <h2>{post.title}</h2>
-        <p>{post.description}</p>
+        <p>{post.content}</p>  // changed from post.description to post.content
         <span className="post-author">Posted by {post.username}  </span>
         <span className="timestamp">{post.timestamp}</span>
       </div>

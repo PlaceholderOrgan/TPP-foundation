@@ -149,17 +149,6 @@ function App() {
     }}
   />
 )}
-        {showLogin && (
-          <LoginPopup
-            onClose={() => setShowLogin(false)}
-            onLoginSuccess={() => {
-              setIsLoggedIn(true);
-              const admin = localStorage.getItem('isAdmin') === 'true';
-              setIsAdmin(admin);
-              setShowLogin(false);
-            }}
-          />
-        )}
       </>
     </Router>
   );
