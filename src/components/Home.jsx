@@ -6,8 +6,8 @@ function Home() {
     <div className="home-container">
       <main>
         {/* Main title and description */}
-        <h2>RiverHealth Solutions</h2>
-        <p>Well-being of river communities and clean water solutions</p>
+        <h2>The Plant Foundation</h2>
+        <p>Making the energetic future better, together!</p>
         {/* Grid layout section with three cards */}
         <div className="section-grid">
           <div className="section-card">
