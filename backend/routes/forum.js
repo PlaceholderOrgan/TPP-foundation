@@ -126,14 +126,4 @@ router.delete('/:id/comments/:commentId', isAdmin, (req, res) => {
   });
 });
 
-router.get('/user/:userId/comments', (req, res) => {
-  const userId = req.params.userId;
-  forumDb.all('SELECT * FROM comments WHERE userId = ? ORDER BY timestamp DESC', [userId], (err, comments) => {
-    if (err) {
-      return res.status(500).json({ error: 'Failed to retrieve comments' });
-    }
-    res.json(comments);
-  });
-});
-
 module.exports = router;

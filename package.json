@@ -7,15 +7,12 @@
         "crypto": "^1.0.1",
         "has-symbols": "^1.1.0",
         "jsonwebtoken": "^9.0.2",
-        "process": "^0.11.10",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-markdown": "^9.0.3",
         "react-router-dom": "^7.1.5",
         "react-scripts": "^5.0.1",
-        "sqlite3": "^5.1.7",
-        "util": "^0.12.5",
-        "vm-browserify": "^1.1.2"
+        "sqlite3": "^5.1.7"
     },
     "scripts": {
         "start": "craco start",
@@ -49,14 +46,9 @@
         "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
         "@babel/preset-env": "^7.26.7",
         "@craco/craco": "^7.1.0",
-        "assert": "^2.1.0",
         "concurrently": "^9.1.2",
         "cross-env": "^7.0.3",
-        "crypto-browserify": "^3.12.1",
         "jwt-decode": "^4.0.0",
-        "nodemon": "^3.1.9",
-        "stream-browserify": "^3.0.0",
-        "webpack": "^5.97.1",
-        "webpack-cli": "^6.0.1"
+        "nodemon": "^3.1.9"
     }
 }

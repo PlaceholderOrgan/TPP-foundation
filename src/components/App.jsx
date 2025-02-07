@@ -7,7 +7,6 @@ import Articles from './Articles';
 import ForumPost from './ForumPost';
 import AdminDash from './AdminDash';
 import FAQ from './FAQ';
-import ProfilePage from './ProfilePage'
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
@@ -57,6 +56,16 @@ function App() {
     }
   }, [baseUrl]);
 
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setIsAdmin(false);
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('isAdmin');
+    alert("Logged out");
+    window.location.reload();
+  };
+
   return (
     <Router>
       <>
@@ -88,13 +97,10 @@ function App() {
             </button>
             {isLoggedIn ? (
               <button
-                onClick={() => {
-                const userId = localStorage.getItem('userId');
-                window.location.href = `/profile/${userId}`;
-                }}
+                onClick={handleLogout}
                 className="nav-btn btn-logout"
-          >
-                Profile
+              >
+                Logout
               </button>
             ) : (
               <button
@@ -115,9 +121,9 @@ function App() {
             <Route path="/info" element={<Articles />} />
             <Route path="/admin" element={<AdminDash />} />
             <Route path="/faq" element={<FAQ />} />
-            <Route path="/profile/:profileId/*" element={<ProfilePage />} />
           </Routes>
         </main>
+
         {/* Footer added below main */}
         <footer>
           <span>©2025 RiverHealth Solutions</span>
@@ -143,7 +149,18 @@ function App() {
     }}
   />
 )}
-    </>
+        {showLogin && (
+          <LoginPopup
+            onClose={() => setShowLogin(false)}
+            onLoginSuccess={() => {
+              setIsLoggedIn(true);
+              const admin = localStorage.getItem('isAdmin') === 'true';
+              setIsAdmin(admin);
+              setShowLogin(false);
+            }}
+          />
+        )}
+      </>
     </Router>
   );
 }

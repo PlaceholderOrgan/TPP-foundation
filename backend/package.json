@@ -11,11 +11,9 @@
   "description": "",
   "dependencies": {
     "cors": "^2.8.5",
-    "crypto-browserify": "^3.12.1",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "sqlite3": "^5.1.7",
-    "stream-browserify": "^3.0.0"
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"

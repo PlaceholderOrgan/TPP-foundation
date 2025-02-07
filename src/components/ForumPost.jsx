@@ -43,8 +43,8 @@ function ForumPost() {
     if (!newComment.trim()) return;
   
     const storedUsername = localStorage.getItem('username');
-    const userId = localStorage.getItem('userId');
-    if (!userId || !storedUsername) {
+    const storedUserId = localStorage.getItem('userId');
+    if (!storedUserId || !storedUsername) {
       alert("You must be logged in to comment.");
       return;
     }
@@ -55,7 +55,7 @@ function ForumPost() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         content: newComment,
-        userId: userId,
+        userId: storedUserId,
         username: storedUsername,
         timestamp: timestamp
       }),
