@@ -61,7 +61,7 @@
   
   /* Main article content area */
   .content-textarea {
-    height: 500px; /* Larger text area for the article content */
+    height: 350px; /* Larger text area for the article content */
     resize: none; 
   }
   /* Publish button */
