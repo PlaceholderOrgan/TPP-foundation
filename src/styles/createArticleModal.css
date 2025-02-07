@@ -1,112 +1,103 @@
-/* Overlay to darken the background */
 .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 999; /* Ensure it sits on top */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
   }
   
-  /* The popup container */
   .modal-content {
-    position: relative;
-    width: 600px;        /* Adjust as needed */
-    background-color: #ffffff; /* White background */
-    border: 2px #000000 solid;
-    border-radius: 6px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  width: 600px;
+  background-color: #ffffff;
+  border: 2px #000000 solid;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
   
-  /* The close (X) button in the top right corner */
   .close-button {
-    position: absolute;
-    top: -10;
-    right: -5;
-    border: none;
-    background: none;
-    font-size: 40px;
-    cursor: pointer;
+  position: absolute;
+  top: -10;
+  right: -5;
+  border: none;
+  background: none;
+  font-size: 40px;
+  cursor: pointer;
   }
   
-  /* The form that holds all fields */
   .article-form {
-    display: flex;
-    border: 1px #000000 solid;
-    flex-direction: column;
+  display: flex;
+  border: 1px #000000 solid;
+  flex-direction: column;
   }
   
-  /* Individual fields */
   .title-input,
   .description-textarea,
   .content-textarea,
   .author-input {
-    margin-bottom: 10px;
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    font-family: inherit;
-    border: 1px solid #000000;
-    border-radius: 7px;
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  font-family: inherit;
+  border: 1px solid #000000;
+  border-radius: 7px;
   }
   
-  /* Short description area */
   .description-textarea {
-    height: 60px; /* Adjust as needed */
-    resize: none; /* Remove manual resizing if you prefer */
+  height: 60px;
+  resize: none;
   }
   
-  /* Main article content area */
   .content-textarea {
-    height: 350px; /* Larger text area for the article content */
-    resize: none; 
-  }
-  /* Publish button */
-  .publish-button {
-    width: 100px;
-    align-self: flex-end; /* Align button to the right */
-    padding: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #ffffff; /* Bootstrap-ish blue */
-    color: #000000;
-    border: 2px #000000 solid;
-    border-radius: 20px;
-    transition: background-color 0.2s, border 0.2s;
+  height: 350px;
+  resize: none;
   }
   
-  /* Optional hover effect for the Publish button */
+  .publish-button {
+  width: 100px;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #ffffff;
+  color: #000000;
+  border: 2px #000000 solid;
+  border-radius: 20px;
+  transition: background-color 0.2s, border 0.2s;
+  }
+  
   .publish-button:hover {
-    background-color: #f0f0f0;
-    border: 2px #2f2f2f solid;
+  background-color: #f0f0f0;
+  border: 2px #2f2f2f solid;
   }
 
   .formatting-toolbar {
-    display: flex;
-    justify-content: space-evenly;
-    margin: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  margin: 10px;
   }
   
   .underline-button,
   .italics-button,
   .bold-button,
   .link-button {
-    padding: 5px 12px;
-    cursor: pointer;
-    background-color: #FFFFFF;
-    border: 1px solid #000000;
-    border-radius: 5px;
-    transition: background-color 0.2s, border 0.2s;
+  padding: 5px 12px;
+  cursor: pointer;
+  background-color: #FFFFFF;
+  border: 1px solid #000000;
+  border-radius: 5px;
+  transition: background-color 0.2s, border 0.2s;
   }
+  
   .formatting-toolbar .underline-button:hover,
   .formatting-toolbar .italics-button:hover,
   .formatting-toolbar .bold-button:hover,
   .formatting-toolbar .link-button:hover {
-    background-color: #f0f0f0;
-    border: 1px solid #2f2f2f;
+  background-color: #f0f0f0;
+  border: 1px solid #2f2f2f;
   }
-  
