@@ -1,5 +1,6 @@
 .faq-container {
-  background-color: #ffffff;
+  background-color: rgba(78, 139, 204, 0.745);
+  backdrop-filter: blur(10px);
   border-radius: 50px;
   border: 2px #000000 solid;
   max-width: 800px; /* limits the container width */
