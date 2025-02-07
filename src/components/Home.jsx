@@ -3,7 +3,7 @@ import React from 'react';
 
 function Home() {
   return (
-    <>
+    <div className="home-container">
       <main>
         {/* Main title and description */}
         <h2>RiverHealth Solutions</h2>
@@ -24,7 +24,7 @@ function Home() {
           </div>
         </div>
       </main>
-    </>
+    </div>
   );
 }
 

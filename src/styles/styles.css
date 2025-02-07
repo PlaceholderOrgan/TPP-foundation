@@ -7,8 +7,10 @@
 body {
   margin: 0;
   font-family: sans-serif;
-  background-color: rgba(8, 150, 153, 0.297);
+  background-image: url('../assets/vecteezy_background.svg'); /* Path to the image */
   background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 main {
@@ -18,7 +20,7 @@ main {
 }
 
 header, footer {
-  background-color: rgba(26, 41, 73, 0.7);
+  background-color: #000000;
   color: #fff;
   text-align: center;
   padding: 1rem;
@@ -78,69 +80,39 @@ img {
 
 .nav-buttons .nav-btn {
   padding: 10px 50px;
-  border: none;
+  background-color: #FFFFFF;
+  border: 2px #000000 solid;
   border-radius: 15px;
   cursor: pointer;
   font-size: medium;
   font-weight: bold;
-  color: #fff;
+  color: #000000;
   transition: transform 0.3s ease , background-color 0.3s ease;
   width: 150px;
   height: 40px;
 }
 
-.nav-buttons .btn-home {
-  background-color: #28a745;
-}
-
-.nav-buttons .btn-articles {
-  background-color: #28a745;
-}
-
-.nav-buttons .btn-forum {
-  background-color: #28a745;
-}
-
-.nav-buttons .btn-faq {
-  background-color: #28a745;
+.nav-buttons .nav-btn:hover {
+  transform: scale(1.05);
+  background-color: #f5f5f5;
 }
 
 .nav-buttons .btn-login {
-  background-color: #0a76b5;
+  background-color: #00A0ff;
 }
 
 .nav-buttons .btn-logout {
-  background-color: #ff00009d;
-}
-
-.nav-buttons .btn-home:hover {
-  transform: scale(1.05);
-  background-color: #38894b;
-}
-
-.nav-buttons .btn-articles:hover {
-  transform: scale(1.05);
-  background-color: #38894b;
-}
-
-.nav-buttons .btn-forum:hover {
-  transform: scale(1.05);
-  background-color: #38894b;
-}
-
-.nav-buttons .btn-faq:hover {
-  transform: scale(1.05);
-  background-color: #38894b;
+  background-color: #f00000;
 }
 
 .nav-buttons .btn-login:hover {
   transform: scale(1.05);
-  background-color: #0369a4;
+  background-color: #0090FF;
 }
 
 .nav-buttons .btn-logout:hover {
   transform: scale(1.05);
-  background-color: #ff0019b4;
+  background-color: #D40000;
 }
 
 /* Floating Admin Dashboard Button */
