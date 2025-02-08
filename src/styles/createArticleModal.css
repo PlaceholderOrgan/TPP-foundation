@@ -22,16 +22,32 @@
   border: 1px solid black;
   border-radius: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  padding: 30px;
+  padding-top: 30px;
+  padding-bottom: 5px;
+  padding-left: 30px;
+  padding-right: 30px;
+  animation: zoomIn 0.3s ease-in-out;
 }
-  
-.close-button {
-  position: absolute;
-  top: -5px;
-  right: 2px;
-  border: none;
+
+@keyframes zoomIn {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.close-button-write {
   background: none;
-  font-size: 25px;
+  border: none;
+  color: red;
+  font-size: 2rem;
+  position: absolute;
+  top: -4px;
+  right: 3px;
   cursor: pointer;
 }
   
