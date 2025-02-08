@@ -1,0 +1,4 @@
+congrats on finding this file.
+
+It is necessary to initialize the databases with the current implementation.
+(hackathon limits).

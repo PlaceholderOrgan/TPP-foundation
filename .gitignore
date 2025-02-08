@@ -1,4 +1,4 @@
 node_modules
-database/
+database/*.db
 build/
 build_backend/
