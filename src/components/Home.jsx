@@ -13,7 +13,7 @@ function Home() {
         <div className="section-grid">
           <div className="section-card">
             <h3>PlaceHolder1</h3>
-            <p>Information about sanitation efforts.</p>
+            <p>Information about sanitation eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeefforts.</p>
           </div>
           <div className="section-card">
             <h3>PlaceHolder2</h3>

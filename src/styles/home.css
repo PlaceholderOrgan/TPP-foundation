@@ -2,7 +2,6 @@
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
     color: #333;
     text-align: center;
 }
@@ -16,16 +15,23 @@
 }
 
 .home-container .section-grid {
-    display: inline;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    background-color: rgba(78, 139, 204, 0.745);
+    backdrop-filter: blur(10px);
+    display: inline-grid;
+    grid-template-columns: max-content;
     gap: 20px;
     padding: 20px;
+    border-radius: 15px;
+    border: #000000 solid 1px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 
 .home-container .section-card {
     background-color: #fff;
+    width: auto;
     padding: 20px;
-    border-radius: 8px;
+    margin-bottom: 50px;
+    border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
