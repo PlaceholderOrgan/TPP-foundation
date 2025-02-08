@@ -9,11 +9,15 @@ const Articles = () => {
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [canWrite, setCanWrite] = useState(false);
 
+  const baseUrl = window.location.hostname === 'localhost'
+    ? 'http://localhost:5000'
+    : 'https://tppfoundation.netlify.app:5000';
+
   // Check if user is writer or admin
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (token) {
-      fetch('http://localhost:5000/api/validate-token', {
+      fetch(`${baseUrl}/api/validate-token`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token })
@@ -26,26 +30,26 @@ const Articles = () => {
       })
       .catch(console.error);
     }
-  }, []);
+  }, [baseUrl]);
 
   // Fetch articles
   useEffect(() => {
-    fetch('http://localhost:5000/api/articles')
+    fetch(`${baseUrl}/api/articles`)
       .then(res => res.json())
       .then(data => setArticles(data))
       .catch(console.error);
-  }, []);
+  }, [baseUrl]);
 
   const handleCreateSubmit = async (articleData) => {
     try {
-      const response = await fetch('http://localhost:5000/api/articles', {
+      const response = await fetch(`${baseUrl}/api/articles`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(articleData)
       });
       if (response.ok) {
         setShowCreateModal(false);
-        const updatedArticles = await fetch('http://localhost:5000/api/articles').then(res => res.json());
+        const updatedArticles = await fetch(`${baseUrl}/api/articles`).then(res => res.json());
         setArticles(updatedArticles);
       }
     } catch (error) {

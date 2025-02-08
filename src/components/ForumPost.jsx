@@ -15,7 +15,7 @@ function ForumPost() {
 
   const baseUrl = window.location.hostname === 'localhost'
     ? 'http://localhost:5000/api'
-    : 'http://spackcloud.duckdns.org:5000/api';
+    : 'https://tppfoundation.netlify.app:5000/api';
 
   useEffect(() => {
     const fetchPostAndComments = async () => {

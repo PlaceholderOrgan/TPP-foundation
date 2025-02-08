@@ -19,7 +19,7 @@ function App() {
 
   const baseUrl = window.location.hostname === 'localhost'
     ? 'http://localhost:5000'
-    : 'http://spackcloud.duckdns.org:5000';
+    : 'https://tppfoundation.netlify.app:5000';
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
