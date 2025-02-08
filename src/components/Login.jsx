@@ -200,7 +200,7 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
               </button>
             </form>
             <p>
-              Already have an account?
+              Already have an account? 
               <a href="#" onClick={() => setIsRegister(false)}>
                 Back to Login
               </a>
