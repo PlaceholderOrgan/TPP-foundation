@@ -42,7 +42,7 @@
   font-weight: bold;
   padding: 8px 20px;
   background-color: #ffffff;
-  border: 2px solid #010502;
+  border: 3px solid #010502;
   color: rgb(0, 0, 0);
   border-radius: 10px;
   cursor: pointer;
@@ -51,7 +51,7 @@
 .post-submit-btn:hover {
   transform: scale(1.05);
   background-color: #dbdbdb;
-  border: 2px solid #575757;
+  border: 3px solid #575757;
 }
 
 .posts {

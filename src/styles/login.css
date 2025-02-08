@@ -45,15 +45,16 @@
   width: 100%;
   padding: 10px;
   margin: 10px 0;
-  border: 1px solid black;
+  background-color: rgba(216, 215, 215, 0.5);
+  border: 1px solid rgb(78, 78, 78);
   border-radius: 15px;
   box-sizing: border-box; /* Ensures padding doesn't affect width */
 }
 
 /* Style for buttons */
 .login-modal button {
-  background-color: white;
-  border: 1px solid black;
+  background-color: rgba(216, 215, 215, 0.5);
+  border: 1px solid rgb(78, 78, 78);
   color: black;
   margin: 10px;
   padding: 10px 15px;
@@ -64,8 +65,8 @@
 }
 
 .login-modal button:hover {
-  background-color: lightgrey;
-  border:1 px solid rgb(56, 55, 55);
+  background-color: rgba(179, 178, 178, 0.5);
+  border:1 px solid rgb(54, 54, 54);
 }
 
 /* Style for the register/login toggle link */
