@@ -13,7 +13,7 @@ function Home() {
         <div className="section-grid">
           <div className="section-card">
             <h3>How does a nuclear power plant work?</h3>
-            <p>This is a short, but informative video that provides insight to how nuclear power plants work</p>
+            <p>This is a short, but informative video that provides insight to how nuclear power plants work.</p>
             <iframe
               width="560"
               height="315"
@@ -40,15 +40,6 @@ function Home() {
           <div className="section-card">
             <h3> Renewable Energy 101 | National Geographic</h3>
             <p>A short but informative video regarding renewable energy sources.</p>
-            <iframe
-              width="560"
-              height="315"
-              src="https://www.youtube.com/embed/1kUE0BZtTRc"
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
           </div>
         </div>
       </main>
