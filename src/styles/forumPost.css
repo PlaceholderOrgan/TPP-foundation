@@ -65,6 +65,10 @@
   margin-top: 30px;
   text-align: center;
 }
+.comments-section-meta {
+  padding: 20px;
+  background-color: #049fe2;
+}
 
 .comments-section h3 {
   background-color: #fff;

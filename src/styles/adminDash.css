@@ -15,24 +15,29 @@
 
 .admin-dash .users-table,
 .admin-dash .forums-table,
-.admin-dash .articles-table {
+.admin-dash .articles-table,
+.admin-dash .table {
   width: 100%;
   border-collapse: collapse;
-  background: #ffffff;
+  background-color: #918888;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
 }
 
-.admin-dash th,
-.admin-dash td {
+.admin-dash .table th,
+.admin-dash .table td {
   padding: 12px 15px;
   border-bottom: 1px solid #ddd;
   text-align: left;
 }
 
 .admin-dash th {
+  border-collapse: collapse;
   background-color: #007BFF;
-  color: #fff;
+  color: #000000;
+  border-radius: 20px;
+}
+.admin-dash td {
+  color: #000000;
 }
 
 /* Prevent long text overflow for User Management */
@@ -72,10 +77,10 @@
 }
 
 .admin-dash tr {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 .admin-dash tr:hover {
-  background-color: #f1f1f1;
+  background-color: #585151;
 }
 
 .admin-dash select {
@@ -83,31 +88,6 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: #fff;
-}
-
-.admin-dash .table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #ffffff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
-  margin-bottom: 2rem;
-}
-
-.admin-dash .table th,
-.admin-dash .table td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #eee;
-}
-
-.admin-dash .table th {
-  background-color: #f8f9fa;
-  font-weight: 600;
-}
-
-.admin-dash .table tr:hover {
-  background-color: #f5f5f5;
 }
 
 .admin-dash .table button {

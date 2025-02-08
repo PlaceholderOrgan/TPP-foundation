@@ -157,6 +157,7 @@ function ForumPost() {
 
       <div className="comments-section">
         <h3>Comments</h3>
+        <div className="comments-section-meta">
         {post.locked ? (
           <p>This thread has been locked and no more comments can be made</p>
         ) : (
@@ -198,6 +199,7 @@ function ForumPost() {
               )}
             </div>
           ))}
+        </div>
         </div>
       </div>
     </div>
