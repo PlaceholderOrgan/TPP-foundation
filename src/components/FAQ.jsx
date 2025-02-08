@@ -101,7 +101,7 @@ const FAQ = () => {
           <button type="submit">Add FAQ</button>
         </form>
       )}
-      <ol>
+      <ol className="QNA">
         {faqs.map(faq => (
           <li key={faq.id}>
             <h3>{faq.question}</h3>
