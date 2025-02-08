@@ -9,46 +9,24 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
   const [email, setEmail] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const overlayStyle = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100vw',
-    height: '100vh',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 1000,
-  };
-
-  const modalStyle = {
-    backgroundColor: '#fff',
-    padding: '20px',
-    borderRadius: '8px',
-    width: '300px',
-    textAlign: 'center',
-    animation: 'fadeInMove 0.5s',
-  };
-
   // Choose base URL based on current hostname. Priority is localhost.
   const baseUrl = window.location.hostname === 'localhost'
     ? 'http://localhost:5000/api/users'
     : 'http://spackcloud.duckdns.org:5000/api/users';
 
-    const handleLoginSubmit = async (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch(`${baseUrl}/login`, {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
         body: JSON.stringify({ username, password }),
       });
       const data = await response.json();
-      
+
       if (response.ok) {
         // Decode the token to extract user details and save them to localStorage
         const decoded = jwtDecode(data.token);
@@ -59,25 +37,25 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
         onLoginSuccess && onLoginSuccess(data.token);
         window.location.reload();
       } else {
-          alert(`Login failed: ${data.error || 'Unknown error'}`);
-        }
-      } catch (err) {
-        console.error('Login error:', err);
-        alert(`Login failed: ${err.message}`);
+        alert(`Login failed: ${data.error || 'Unknown error'}`);
       }
-    };
-    
-    const handleRegisterSubmit = async (e) => {
-      e.preventDefault();
-      
-      if (password !== confirmPassword) {
+    } catch (err) {
+      console.error('Login error:', err);
+      alert(`Login failed: ${err.message}`);
+    }
+  };
+
+  const handleRegisterSubmit = async (e) => {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
       alert('Passwords do not match');
       return;
     }
     try {
       const response = await fetch(`${baseUrl}/register`, {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
@@ -86,7 +64,7 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
 
       const rawResponse = await response.text();
       console.log('Raw server response:', rawResponse);
-      
+
       let data;
       try {
         data = JSON.parse(rawResponse);
@@ -100,7 +78,7 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
         alert('Registration successful');
         const loginResponse = await fetch(`${baseUrl}/login`, {
           method: 'POST',
-          headers: { 
+          headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
           },
@@ -132,50 +110,48 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
   };
 
   return (
-    <div style={overlayStyle} className="login-overlay" onClick={onClose}>
-      <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
+    <div className="login-overlay" onClick={onClose}>
+      <div className="login-modal" onClick={(e) => e.stopPropagation()}>
         {!isRegister ? (
-          <>
+          <div className="login-form">
             <h2>Login</h2>
             <form onSubmit={handleLoginSubmit}>
-              <div>
+              <div className="login-user">
                 <input
                   type="text"
                   placeholder="Username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  style={{ width: '100%', margin: '10px 0', padding: '8px' }}
                   required
                   minLength="3"
                   maxLength="24"
                 />
               </div>
-              <div>
+              <div className="login-pass">
                 <input
                   type="password"
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  style={{ width: '100%', margin: '10px 0', padding: '8px' }}
                   required
                 />
               </div>
-              <button type="submit" style={{ padding: '8px 16px', marginRight: '10px' }}>
+              <button type="submit" className="login-submit">
                 Submit
               </button>
-              <button type="button" onClick={onClose} style={{ padding: '8px 16px' }}>
+              <button type="button" className="login-cancel" onClick={onClose}>
                 Cancel
               </button>
             </form>
-            <p style={{ marginTop: '15px' }}>
-              Don't have an account?{' '}
+            <p>
+              Don't have an account?
               <a href="#" onClick={() => setIsRegister(true)}>
                 Register
               </a>
             </p>
-          </>
+          </div>
         ) : (
-          <>
+          <div className="register-form">
             <h2>Register</h2>
             <form onSubmit={handleRegisterSubmit}>
               <div>
@@ -184,7 +160,6 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
                   placeholder="Username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  style={{ width: '100%', margin: '10px 0', padding: '8px' }}
                   required
                   minLength="3"
                   maxLength="24"
@@ -196,7 +171,6 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
                   placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  style={{ width: '100%', margin: '10px 0', padding: '8px' }}
                   required
                 />
               </div>
@@ -206,7 +180,6 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  style={{ width: '100%', margin: '10px 0', padding: '8px' }}
                   required
                 />
               </div>
@@ -216,24 +189,23 @@ const LoginPopup = ({ onClose, onLoginSuccess }) => {
                   placeholder="Confirm Password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  style={{ width: '100%', margin: '10px 0', padding: '8px' }}
                   required
                 />
               </div>
-              <button type="submit" style={{ padding: '8px 16px', marginRight: '10px' }}>
+              <button type="submit">
                 Register
               </button>
-              <button type="button" onClick={onClose} style={{ padding: '8px 16px' }}>
+              <button type="button" onClick={onClose}>
                 Cancel
               </button>
             </form>
-            <p style={{ marginTop: '15px' }}>
-              Already have an account?{' '}
+            <p>
+              Already have an account?
               <a href="#" onClick={() => setIsRegister(false)}>
                 Back to Login
               </a>
             </p>
-          </>
+          </div>
         )}
       </div>
     </div>
