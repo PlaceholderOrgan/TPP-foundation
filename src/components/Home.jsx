@@ -9,7 +9,7 @@ function Home() {
         {/* Main title and description */}
         <div className="title">
           <h1>The Power Plant Foundation</h1>
-          <p>Making the energetic future better, together!</p>
+          <h3>Making the energetic future better, together!</h3>
         </div>
         {/* Grid layout section with three cards */}
         <div className="section-grid">

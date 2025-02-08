@@ -63,14 +63,8 @@ h1, h2, h3 {
 
 .section-card {
   background-color: #fff;
+  border: 3px solid black;
   padding: 1rem;
-  border: 2px solid #040a5f;
-}
-
-img {
-  width: 100%;
-  margin: auto;
-  display: block;
 }
 
 .nav-buttons {
@@ -132,6 +126,7 @@ img {
   background-color: #2406ad;
   border: 3px solid #2406ad;
   color: #fff;
+  font-size: xx-large;
   font-weight: bold;
   cursor: pointer;
   z-index: 10; 

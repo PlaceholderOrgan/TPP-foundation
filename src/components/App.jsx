@@ -134,7 +134,7 @@ function App() {
     className="admin-floating"
     onClick={() => window.location.href = '/admin'}
   >
-    Admin
+    🖳
   </button>
 )}
 
