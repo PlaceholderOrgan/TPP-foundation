@@ -53,7 +53,7 @@ const CreateArticleModal = ({ onClose, onSubmit }) => {
 
   return (
     <div className="modal-overlay">
-      <div className="modal-content">
+      <div className="modal-content-write">
         {/* Close Button */}
         <button type="button" className="close-button" onClick={onClose}>
           ×
