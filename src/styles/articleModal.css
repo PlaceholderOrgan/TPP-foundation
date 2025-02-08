@@ -22,7 +22,9 @@
 }
 
 .modal-content-read {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 30px;
+  backdrop-filter: blur(15px);
   padding: 20px;
   max-width: 600px;
   width: 100%;
@@ -31,13 +33,13 @@
   animation: zoomIn 0.3s ease-in-out;
 }
 
-.close-button {
+.close-button-read {
   background: none;
   border: none;
   color: red;
-  font-size: 1.5rem;
+  font-size: 3rem;
   position: absolute;
-  top: 10px;
+  top: 0px;
   right: 10px;
   cursor: pointer;
 }

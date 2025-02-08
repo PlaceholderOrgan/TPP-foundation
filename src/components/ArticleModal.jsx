@@ -8,7 +8,7 @@ const ArticleModal = ({ article, onClose }) => {
   return (
     <div className="modal-overlay">
       <div className="modal-content-read">
-        <button className="close-button" onClick={onClose}>×</button>
+        <button className="close-button-read" onClick={onClose}>×</button>
         <h2>{article.title}</h2>
         <p className="description">{article.description}</p>
         <div className="content">
