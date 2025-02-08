@@ -223,7 +223,7 @@ const AdminDash = () => {
               style={{ padding: '0.5rem', width: '80%', maxWidth: '400px' }}
             />
           </div>
-          <table>
+          <table className="table users-table">
             <thead>
               <tr>
                 <th>ID</th>
@@ -271,7 +271,7 @@ const AdminDash = () => {
               style={{ padding: '0.5rem', width: '80%', maxWidth: '400px' }}
             />
           </div>
-          <table>
+          <table className="table forums-table">
             <thead>
               <tr>
                 <th>ID</th>
@@ -313,7 +313,7 @@ const AdminDash = () => {
               style={{ padding: '0.5rem', width: '80%', maxWidth: '400px' }}
             />
           </div>
-          <table>
+          <table className="table articles-table">
             <thead>
               <tr>
                 <th>ID</th>

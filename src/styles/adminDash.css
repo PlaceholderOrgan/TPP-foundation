@@ -13,10 +13,12 @@
   color: #000000;
 }
 
-.admin-dash table {
+.admin-dash .users-table,
+.admin-dash .forums-table,
+.admin-dash .articles-table {
   width: 100%;
-  border-collapse: separate;
-  background: #fff;
+  border-collapse: collapse;
+  background: #ffffff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
 }
@@ -29,7 +31,6 @@
 }
 
 .admin-dash th {
-  border-radius: 15px;
   background-color: #007BFF;
   color: #fff;
 }
@@ -63,10 +64,10 @@
   text-overflow: ellipsis;
 }
 
-  .admin-dash .toggle-buttons .users-button,
-  .admin-dash .toggle-buttons .forums-button,
-  .admin-dash .toggle-buttons .articles-button {
-    background-color: aquamarine;
+.admin-dash .toggle-buttons .users-button,
+.admin-dash .toggle-buttons .forums-button,
+.admin-dash .toggle-buttons .articles-button {
+  background-color: aquamarine;
   transition: background 0.3s, color 0.3s;
 }
 
@@ -82,4 +83,42 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: #fff;
+}
+
+.admin-dash .table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  margin-bottom: 2rem;
+}
+
+.admin-dash .table th,
+.admin-dash .table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.admin-dash .table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.admin-dash .table tr:hover {
+  background-color: #f5f5f5;
+}
+
+.admin-dash .table button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+}
+
+.admin-dash .table button:hover {
+  background: #f0f0f0;
 }
