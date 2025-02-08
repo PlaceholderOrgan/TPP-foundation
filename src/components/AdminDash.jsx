@@ -314,7 +314,7 @@ const AdminDash = () => {
             />
           </div>
           <table className="table articles-table">
-            <thead>
+            <thead className="table-head">
               <tr>
                 <th>ID</th>
                 <th>Title</th>
