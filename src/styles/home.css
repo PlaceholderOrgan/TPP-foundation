@@ -10,8 +10,9 @@
     padding: 20px;
 }
 
-.home-container h2 {
-    color: #28a745;
+.home-container h1 {
+    font-size: 2.5rem;
+    color: #000000;
 }
 
 .home-container .section-grid {

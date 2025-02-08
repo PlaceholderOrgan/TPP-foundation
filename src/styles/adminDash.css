@@ -1,21 +1,24 @@
 .admin-dash {
   padding: 2rem;
   font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
+  background-color: rgba(78, 139, 204, 0.745);
+  backdrop-filter: blur(10px);
   color: #333;
+  border-radius: 20px;
 }
 
 .admin-dash h2 {
   text-align: center;
   margin-bottom: 1.5rem;
-  color: #007BFF;
+  color: #000000;
 }
 
 .admin-dash table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
   background: #fff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
 }
 
 .admin-dash th,
@@ -26,6 +29,7 @@
 }
 
 .admin-dash th {
+  border-radius: 15px;
   background-color: #007BFF;
   color: #fff;
 }
@@ -59,12 +63,22 @@
   text-overflow: ellipsis;
 }
 
+  .admin-dash .toggle-buttons .users-button,
+  .admin-dash .toggle-buttons .forums-button,
+  .admin-dash .toggle-buttons .articles-button {
+    background-color: aquamarine;
+  transition: background 0.3s, color 0.3s;
+}
+
+.admin-dash tr {
+  background-color: #FFFFFF;
+}
 .admin-dash tr:hover {
   background-color: #f1f1f1;
 }
 
 .admin-dash select {
-  padding: 5px;
+  padding: 7px;
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: #fff;

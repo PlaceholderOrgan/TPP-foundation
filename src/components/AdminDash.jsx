@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode } from 'jwt-decode';
 import '../styles/adminDash.css';
 
 const AdminDash = () => {
@@ -201,149 +201,146 @@ const AdminDash = () => {
     <div className="admin-dash">
       <h2>Admin Dashboard</h2>
       <div className="toggle-buttons" style={{ marginBottom: '1rem', textAlign: 'center' }}>
-        <button onClick={() => setView('users')} disabled={view === 'users'} style={{ marginRight: '1rem' }}>
+        <button className="users-button"onClick={() => setView('users')} disabled={view === 'users'} style={{ marginRight: '1rem' }}>
           User Management
         </button>
-        <button onClick={() => setView('forum')} disabled={view === 'forum'} style={{ marginRight: '1rem' }}>
+        <button className="forums-button"onClick={() => setView('forum')} disabled={view === 'forum'} style={{ marginRight: '1rem' }}>
           Forum Management
         </button>
-        <button onClick={() => setView('articles')} disabled={view === 'articles'}>
+        <button className="articles-button"onClick={() => setView('articles')} disabled={view === 'articles'}>
           Articles Management
         </button>
       </div>
 
       {view === 'users' && (
-  <div>
-    <h2>User Management</h2>
-    <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-      <input
-        type="text"
-        placeholder="Search by username, email or ID"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        style={{ padding: '0.5rem', width: '80%', maxWidth: '400px' }}
-      />
-    </div>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Username</th>
-          <th>Email</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {filteredUsers.map(user => (
-          <tr key={user.id}>
-            <td>{user.id}</td>
-            <td className="username">{user.username}</td>
-            <td className="email">{user.email}</td>
-            <td>
-              <select
-                value={user.status}
-                onChange={(e) => handleStatusChange(user.id, e.target.value)}
-                disabled={user.id === loggedUserId}
-              >
-                {statuses.map(status => (
-                  <option key={status} value={status}>{status}</option>
-                ))}
-              </select>
-            </td>
-            <td>
-              <button onClick={() => handleBan(user.id)} disabled={user.id === loggedUserId}>Ban</button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-)}
+        <div>
+          <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+            <input
+              type="text"
+              placeholder="Search by username, email or ID"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{ padding: '0.5rem', width: '80%', maxWidth: '400px' }}
+            />
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredUsers.map(user => (
+                <tr key={user.id}>
+                  <td>{user.id}</td>
+                  <td className="username">{user.username}</td>
+                  <td className="email">{user.email}</td>
+                  <td>
+                    <select
+                      value={user.status}
+                      onChange={(e) => handleStatusChange(user.id, e.target.value)}
+                      disabled={user.id === loggedUserId}
+                    >
+                      {statuses.map(status => (
+                        <option key={status} value={status}>{status}</option>
+                      ))}
+                    </select>
+                  </td>
+                  <td>
+                    <button onClick={() => handleBan(user.id)} disabled={user.id === loggedUserId}>Ban</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
-{view === 'forum' && (
-  <div>
-    <h2>Forum Management</h2>
-    <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-      <input
-        type="text"
-        placeholder="Search by forum post title or ID"
-        value={forumSearchTerm}
-        onChange={(e) => setForumSearchTerm(e.target.value)}
-        style={{ padding: '0.5rem', width: '80%', maxWidth: '400px' }}
-      />
-    </div>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Title</th>
-          <th>Timestamp</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-      {filteredForumPosts.map(post => (
-        <tr key={post.id}>
-          <td>{post.id}</td>
-          <td className="forum-title">{post.title}</td>
-          <td>{post.timestamp}</td>
-          <td>
-            <button onClick={() => handlePinToggle(post.id, post.pinned)}>
-              {post.pinned ? "Unpin" : "Pin"}
-            </button>
-            <button onClick={() => handleLockToggle(post.id, post.locked)}>
-              {post.locked ? "Unlock" : "Lock"}
-            </button>
-            <button onClick={() => handleDeletePost(post.id)}>Delete</button>
-          </td>
-        </tr>
-      ))}
-      </tbody>
-    </table>
-  </div>
-)}
+      {view === 'forum' && (
+        <div>
+          <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+            <input
+              type="text"
+              placeholder="Search by forum post title or ID"
+              value={forumSearchTerm}
+              onChange={(e) => setForumSearchTerm(e.target.value)}
+              style={{ padding: '0.5rem', width: '80%', maxWidth: '400px' }}
+            />
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Timestamp</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredForumPosts.map(post => (
+                <tr key={post.id}>
+                  <td>{post.id}</td>
+                  <td className="forum-title">{post.title}</td>
+                  <td>{post.timestamp}</td>
+                  <td>
+                    <button onClick={() => handlePinToggle(post.id, post.pinned)}>
+                      {post.pinned ? "Unpin" : "Pin"}
+                    </button>
+                    <button onClick={() => handleLockToggle(post.id, post.locked)}>
+                      {post.locked ? "Unlock" : "Lock"}
+                    </button>
+                    <button onClick={() => handleDeletePost(post.id)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
-{view === 'articles' && (
-  <div>
-    <h2>Articles Management</h2>
-    <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-      <input
-        type="text"
-        placeholder="Search by article title or ID"
-        value={articleSearchTerm}
-        onChange={(e) => setArticleSearchTerm(e.target.value)}
-        style={{ padding: '0.5rem', width: '80%', maxWidth: '400px' }}
-      />
-    </div>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Title</th>
-          <th>Description</th>
-          <th>Author</th>
-          <th>Timestamp</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {filteredArticles.map(article => (
-          <tr key={article.id}>
-            <td>{article.id}</td>
-            <td className="article-title">{article.title}</td>
-            <td className="article-description">{article.description}</td>
-            <td className="article-author">{article.author}</td>
-            <td>{article.timestamp}</td>
-            <td>
-              <button onClick={() => handleDeleteArticle(article.id)}>Delete</button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-)}
+      {view === 'articles' && (
+        <div>
+          <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+            <input
+              type="text"
+              placeholder="Search by article title or ID"
+              value={articleSearchTerm}
+              onChange={(e) => setArticleSearchTerm(e.target.value)}
+              style={{ padding: '0.5rem', width: '80%', maxWidth: '400px' }}
+            />
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Author</th>
+                <th>Timestamp</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredArticles.map(article => (
+                <tr key={article.id}>
+                  <td>{article.id}</td>
+                  <td className="article-title">{article.title}</td>
+                  <td className="article-description">{article.description}</td>
+                  <td className="article-author">{article.author}</td>
+                  <td>{article.timestamp}</td>
+                  <td>
+                    <button onClick={() => handleDeleteArticle(article.id)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };

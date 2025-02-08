@@ -7,7 +7,7 @@ function Home() {
     <div className="home-container">
       <main>
         {/* Main title and description */}
-        <h2>The Plant Foundation</h2>
+        <h1>The Power Plant Foundation</h1>
         <p>Making the energetic future better, together!</p>
         {/* Grid layout section with three cards */}
         <div className="section-grid">
