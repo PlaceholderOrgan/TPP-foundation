@@ -1,5 +1,6 @@
 // Home component showing the main landing page.
 import React from 'react';
+import "../styles/home.css";
 
 function Home() {
   return (
@@ -11,15 +12,15 @@ function Home() {
         {/* Grid layout section with three cards */}
         <div className="section-grid">
           <div className="section-card">
-            <h3>SANITATION</h3>
+            <h3>PlaceHolder1</h3>
             <p>Information about sanitation efforts.</p>
           </div>
           <div className="section-card">
-            <h3>PROBLEMS</h3>
+            <h3>PlaceHolder2</h3>
             <p>Key problems facing river health.</p>
           </div>
           <div className="section-card">
-            <h3>SUSTAINABLE</h3>
+            <h3>PlaceHolder3</h3>
             <p>Long-term solutions and practices.</p>
           </div>
         </div>
