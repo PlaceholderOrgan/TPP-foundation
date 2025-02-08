@@ -70,6 +70,17 @@ function App() {
     <Router>
       <>
         <header>
+          <img 
+            src={require('../assets/logo.webp')} 
+            alt="Logo" 
+            style={{ 
+              height: '80px', 
+              width: '112px',
+              position: 'absolute', 
+              left: '20px', 
+              top: '5px' 
+            }} 
+          />
           <nav className="nav-buttons">
             <button
               onClick={() => window.location.href = '/'}
