@@ -19,25 +19,38 @@
 .admin-dash .table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #918888;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.admin-dash .table th,
-.admin-dash .table td {
+.admin-dash .table th {
+  border-collapse: collapse;
+  background-color: #007BFF;
   padding: 12px 15px;
   border-bottom: 1px solid #ddd;
   text-align: left;
 }
 
-.admin-dash th {
-  border-collapse: collapse;
-  background-color: #007BFF;
-  color: #000000;
-  border-radius: 20px;
+.admin-dash .table th:first-child {
+  border-top-left-radius: 20px;
 }
+
+.admin-dash .table th:last-child {
+  border-top-right-radius: 20px;
+}
+
 .admin-dash td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
   color: #000000;
+}
+
+.admin-dash tr:last-child td:first-child {
+  border-bottom-left-radius: 20px;
+}
+
+.admin-dash tr:last-child td:last-child {
+  border-bottom-right-radius: 20px;
 }
 
 /* Prevent long text overflow for User Management */
@@ -72,22 +85,38 @@
 .admin-dash .toggle-buttons .users-button,
 .admin-dash .toggle-buttons .forums-button,
 .admin-dash .toggle-buttons .articles-button {
-  background-color: aquamarine;
-  transition: background 0.3s, color 0.3s;
+  font-size: 1.2rem;
+  background-color: #FFFFFF;
+  padding: 10px 20px;
+  transition: background-color 0.3s, translate 0.3s;
+  border-radius: 15px;
+}
+
+.admin-dash .toggle-buttons .users-button:hover,
+.admin-dash .toggle-buttons .forums-button:hover,
+.admin-dash .toggle-buttons .articles-button:hover {
+  translate: scale(1.05);
+  background-color: #E0E0E0;
 }
 
 .admin-dash tr {
   background-color: #ffffff;
 }
 .admin-dash tr:hover {
-  background-color: #585151;
+  background-color: #E0E0E0;
 }
 
 .admin-dash select {
   padding: 7px;
-  border: 1px solid #ccc;
+  border: 1px solid #000000;
   border-radius: 4px;
   background-color: #fff;
+}
+
+.admin-dash select:focus {
+  background-color: #f4f4f4;
+  border-color: #1f1f1f;
+  outline: none;
 }
 
 .admin-dash .table button {
