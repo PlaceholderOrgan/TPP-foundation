@@ -200,14 +200,14 @@ const AdminDash = () => {
   return (
     <div className="admin-dash">
       <h2>Admin Dashboard</h2>
-      <div className="toggle-buttons" style={{ marginBottom: '1rem', textAlign: 'center' }}>
-        <button className="users-button"onClick={() => setView('users')} disabled={view === 'users'} style={{ marginRight: '1rem' }}>
+      <div className="toggle-buttons">
+        <button className="users-button"onClick={() => setView('users')}style={{ marginRight: '1rem' }}>
           User Management
         </button>
-        <button className="forums-button"onClick={() => setView('forum')} disabled={view === 'forum'} style={{ marginRight: '1rem' }}>
+        <button className="forums-button"onClick={() => setView('forum')}style={{ marginRight: '1rem' }}>
           Forum Management
         </button>
-        <button className="articles-button"onClick={() => setView('articles')} disabled={view === 'articles'}>
+        <button className="articles-button"onClick={() => setView('articles')}>
           Articles Management
         </button>
       </div>
