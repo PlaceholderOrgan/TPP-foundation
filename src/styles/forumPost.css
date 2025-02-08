@@ -73,7 +73,8 @@
   padding-left: 30px;
   padding-right: 30px;
   border-radius: 40px;
-  background-color: rgba(78, 139, 204, 0.745);;
+  background-color: rgba(78, 139, 204, 0.745);
+  border: black 3px solid;
   backdrop-filter: blur(10px);
 }
 

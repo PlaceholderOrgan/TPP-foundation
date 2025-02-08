@@ -4,6 +4,7 @@
   background-color: rgba(78, 139, 204, 0.745);
   backdrop-filter: blur(10px);
   color: #333;
+  border: black 2px solid; 
   border-radius: 20px;
 }
 
@@ -43,14 +44,6 @@
   text-align: left;
   border-bottom: 1px solid #ddd;
   color: #000000;
-}
-
-.admin-dash tr:last-child td:first-child {
-  border-bottom-left-radius: 20px;
-}
-
-.admin-dash tr:last-child td:last-child {
-  border-bottom-right-radius: 20px;
 }
 
 /* Prevent long text overflow for User Management */

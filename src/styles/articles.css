@@ -42,7 +42,7 @@
 .articles-list {
   background-color: rgba(78, 139, 204, 0.745);
   backdrop-filter: blur(10px);
-  border: 2px solid #000000;
+  border: 3px solid #000000;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.55);
   border-radius: 35px;
   display: grid;
