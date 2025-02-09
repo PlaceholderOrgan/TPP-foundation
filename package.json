@@ -18,13 +18,13 @@
     "scripts": {
         "start": "craco start",
         "build:frontend": "craco build",
-        "build:backend": "babel backend --out-dir build",
+        "build:backend": "babel backend --out-dir build_backend",
         "build": "npm run build:frontend && npm run build:backend",
         "server": "nodemon backend/server.js",
         "dev": "concurrently \"npm run server\" \"npm start\"",
-        "start:prod": "npm run build && concurrently \"node build_backend/server.js\" \"serve -s build\""
+        "start:prod": "npm install && cd backend && npm install && cd .. && npm run build && concurrently \"node build_backend/server.js\" \"serve -s build\""
     },
-    "proxy": "https://tppfoundation.netlify.app:5000",
+    "proxy": "http://localhost:5000",
     "overrides": {
         "nth-check": "2.0.1",
         "postcss": "8.4.31"
