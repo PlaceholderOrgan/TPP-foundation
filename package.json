@@ -18,7 +18,7 @@
     "scripts": {
         "start": "craco start",
         "build:frontend": "craco build",
-        "build:backend": "babel backend --out-dir build_backend",
+        "build:backend": "babel backend --out-dir build",
         "build": "npm run build:frontend && npm run build:backend",
         "server": "nodemon backend/server.js",
         "dev": "concurrently \"npm run server\" \"npm start\"",
