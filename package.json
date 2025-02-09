@@ -12,6 +12,7 @@
         "react-markdown": "^9.0.3",
         "react-router-dom": "^7.1.5",
         "react-scripts": "^5.0.1",
+        "serve": "^14.2.4",
         "sqlite3": "^5.1.7"
     },
     "scripts": {
