@@ -70,6 +70,17 @@ function App() {
     <Router>
       <>
         <header> 
+          <div className="header-logo">
+            <img
+              src={require("../assets/logo_highdef_ekpathon.webp")}
+              alt="Logo"
+              style={{ 
+                height: "60px",
+                position: "absolute",
+                top: "10px",
+                left: "20px" }}
+            />
+          </div>
           <nav className="nav-buttons">
             <button
               onClick={() => window.location.href = '/'}
